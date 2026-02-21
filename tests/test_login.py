@@ -131,7 +131,7 @@ class TestLoginFallido:
     def test_email_formato_invalido(self, client):
         """Email con formato inválido debe retornar 422."""
         response = client.post("/auth/login", json={
-            "email": "esto-no-es-un-email",
+            "email": "estonoesnemail",
             "password": "password123"
         })
         assert response.status_code == 422

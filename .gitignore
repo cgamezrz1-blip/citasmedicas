@@ -1,0 +1,108 @@
+
+# Entornos virtuales 
+
+venv/ 
+
+env/ 
+
+ENV/ 
+
+.env 
+
+ 
+
+# Python 
+
+__pycache__/ 
+
+*.pyc 
+
+*.pyo 
+
+*.pyd 
+
+.Python 
+
+ 
+
+# IDE 
+
+.vscode/ 
+
+.idea/ 
+
+ 
+
+# Archivos locales 
+
+*.log 
+
+.DS_Store 
+
+ 
+
+# Azure 
+
+bin/ 
+
+obj/ 
+
+deploy.zip 
+
+EOF 
+cat > .gitignore << 'EOF' 
+
+# Entornos virtuales 
+
+venv/ 
+
+env/ 
+
+ENV/ 
+
+.env 
+
+ 
+
+# Python 
+
+__pycache__/ 
+
+*.pyc 
+
+*.pyo 
+
+*.pyd 
+
+.Python 
+
+ 
+
+# IDE 
+
+.vscode/ 
+
+.idea/ 
+
+ 
+
+# Archivos locales 
+
+*.log 
+
+.DS_Store 
+
+ 
+
+# Azure 
+
+bin/ 
+
+obj/ 
+
+deploy.zip 
+
+EOF 
+
+
+

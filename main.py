@@ -4,7 +4,7 @@ app = FastAPI()
 
 @app.get("/")
 def home():
-    return {"mensaje": "Mi API está funcionando"}
+    return {"mensaje": "API Actualizada"}
 
 @app.get("/prueba")
 def evento_prueba():

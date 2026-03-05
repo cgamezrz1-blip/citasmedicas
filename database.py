@@ -4,7 +4,8 @@ from sqlalchemy.orm import sessionmaker
 from datetime import datetime
 
 # ── Configuración de SQLite ────────────────────────────────────
-DATABASE_URL = "sqlite:///./citasmedicas.db"
+import os
+DATABASE_URL = "sqlite:////home/site/wwwroot/citasmedicas.db" if os.getenv("WEBSITE_SITE_NAME") else "sqlite:///./citasmedicas.db"
 
 engine = create_engine(
     DATABASE_URL,

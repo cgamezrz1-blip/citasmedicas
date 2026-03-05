@@ -7,12 +7,13 @@ from pydantic import BaseModel
 from datetime import datetime, timedelta
 from passlib.context import CryptContext
 from jose import JWTError, jwt
-from typing import Optional
+from sqlalchemy.orm import Session
+from database import Usuario, get_db, init_db
 
 # ── Configuración ──────────────────────────────────────────────
 SECRET_KEY = "clave-secreta-cambiala-en-produccion"
 ALGORITHM = "HS256"
-TOKEN_EXPIRE_MINUTOS = 30
+TOKEN_EXPIRE_MINUTOS = 60
 
 app = FastAPI(title="CitasMédicas API")
 
@@ -24,30 +25,17 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# ── Inicializar base de datos al arrancar ──────────────────────
+@app.on_event("startup")
+def startup():
+    init_db()
+
 # ── Servir archivos estáticos ──────────────────────────────────
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 # ── Utilidades ─────────────────────────────────────────────────
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/login")
-
-# ── Usuarios en memoria ────────────────────────────────────────
-usuarios_db = {
-    "doctor@citasmedicas.com": {
-        "id": 1,
-        "nombre": "Dr. Carlos García",
-        "email": "doctor@citasmedicas.com",
-        "rol": "medico",
-        "password": pwd_context.hash("password123"),
-    },
-    "paciente@citasmedicas.com": {
-        "id": 2,
-        "nombre": "María López",
-        "email": "paciente@citasmedicas.com",
-        "rol": "paciente",
-        "password": pwd_context.hash("password123"),
-    },
-}
 
 # ── Modelos ────────────────────────────────────────────────────
 class LoginRequest(BaseModel):
@@ -61,23 +49,15 @@ class RegistroRequest(BaseModel):
     rol: str = "paciente"
 
 # ── Funciones de autenticación ─────────────────────────────────
-def autenticar_usuario(email: str, password: str):
-    usuario = usuarios_db.get(email)
-    if not usuario:
-        return None
-    if not pwd_context.verify(password, usuario["password"]):
-        return None
-    return usuario
-
 def crear_token(email: str) -> str:
     expira = datetime.utcnow() + timedelta(minutes=TOKEN_EXPIRE_MINUTOS)
     return jwt.encode({"sub": email, "exp": expira}, SECRET_KEY, algorithm=ALGORITHM)
 
-async def obtener_usuario_actual(token: str = Depends(oauth2_scheme)):
+async def obtener_usuario_actual(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         email = payload.get("sub")
-        usuario = usuarios_db.get(email)
+        usuario = db.query(Usuario).filter(Usuario.email == email).first()
         if not usuario:
             raise HTTPException(status_code=401, detail="Token inválido")
         return usuario
@@ -93,68 +73,79 @@ def home():
 def pagina_registro():
     return FileResponse("static/registro.html")
 
+@app.get("/dashboard")
+def pagina_dashboard():
+    return FileResponse("static/dashboard.html")
+
 # ── Rutas de autenticación ─────────────────────────────────────
 @app.post("/auth/login")
-def login(datos: LoginRequest):
-    usuario = autenticar_usuario(datos.email, datos.password)
-    if not usuario:
+def login(datos: LoginRequest, db: Session = Depends(get_db)):
+    usuario = db.query(Usuario).filter(Usuario.email == datos.email).first()
+    if not usuario or not pwd_context.verify(datos.password, usuario.password):
         raise HTTPException(status_code=401, detail="Email o contraseña incorrectos")
+    if not usuario.activo:
+        raise HTTPException(status_code=403, detail="Usuario inactivo")
 
-    token = crear_token(usuario["email"])
+    token = crear_token(usuario.email)
     return {
         "access_token": token,
         "token_type": "bearer",
         "usuario": {
-            "id": usuario["id"],
-            "nombre": usuario["nombre"],
-            "email": usuario["email"],
-            "rol": usuario["rol"],
+            "id": usuario.id,
+            "nombre": usuario.nombre,
+            "email": usuario.email,
+            "rol": usuario.rol,
         }
     }
 
 @app.post("/auth/registro")
-def registro(datos: RegistroRequest):
-    if datos.email in usuarios_db:
+def registro(datos: RegistroRequest, db: Session = Depends(get_db)):
+    # Verificar si el email ya existe
+    existente = db.query(Usuario).filter(Usuario.email == datos.email).first()
+    if existente:
         raise HTTPException(status_code=400, detail="Este email ya está registrado")
 
-    roles_permitidos = ["paciente", "medico"]
-    if datos.rol not in roles_permitidos:
+    # Validar rol
+    if datos.rol not in ["paciente", "medico"]:
         raise HTTPException(status_code=400, detail="Rol no válido")
 
-    nuevo_id = len(usuarios_db) + 1
-    usuarios_db[datos.email] = {
-        "id": nuevo_id,
-        "nombre": datos.nombre,
-        "email": datos.email,
-        "rol": datos.rol,
-        "password": pwd_context.hash(datos.password),
-    }
+    # Crear usuario en la base de datos
+    nuevo = Usuario(
+        nombre=datos.nombre,
+        email=datos.email,
+        password=pwd_context.hash(datos.password),
+        rol=datos.rol,
+    )
+    db.add(nuevo)
+    db.commit()
+    db.refresh(nuevo)
 
-    token = crear_token(datos.email)
+    token = crear_token(nuevo.email)
     return {
         "mensaje": "Usuario registrado exitosamente",
         "access_token": token,
         "token_type": "bearer",
         "usuario": {
-            "id": nuevo_id,
-            "nombre": datos.nombre,
-            "email": datos.email,
-            "rol": datos.rol,
+            "id": nuevo.id,
+            "nombre": nuevo.nombre,
+            "email": nuevo.email,
+            "rol": nuevo.rol,
         }
     }
 
 @app.get("/auth/me")
 def mi_perfil(usuario=Depends(obtener_usuario_actual)):
     return {
-        "id": usuario["id"],
-        "nombre": usuario["nombre"],
-        "email": usuario["email"],
-        "rol": usuario["rol"],
+        "id": usuario.id,
+        "nombre": usuario.nombre,
+        "email": usuario.email,
+        "rol": usuario.rol,
     }
 
 @app.get("/auth/usuarios")
-def listar_usuarios(usuario=Depends(obtener_usuario_actual)):
+def listar_usuarios(usuario=Depends(obtener_usuario_actual), db: Session = Depends(get_db)):
+    usuarios = db.query(Usuario).all()
     return [
-        {"id": u["id"], "nombre": u["nombre"], "email": u["email"], "rol": u["rol"]}
-        for u in usuarios_db.values()
+        {"id": u.id, "nombre": u.nombre, "email": u.email, "rol": u.rol}
+        for u in usuarios
     ]

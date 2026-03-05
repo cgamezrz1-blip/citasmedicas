@@ -151,7 +151,7 @@
       localStorage.setItem('token', data.access_token);
       localStorage.setItem('usuario', JSON.stringify(data.usuario));
       mostrarAlerta('✅ Bienvenido, ' + data.usuario.nombre, 'exito');
-      setTimeout(() => { window.location.href = '/registro'; }, 1200);
+      setTimeout(() => { window.location.href = '/dashboard'; }, 1200);
     } catch (err) {
       mostrarAlerta('❌ ' + err.message);
     } finally {

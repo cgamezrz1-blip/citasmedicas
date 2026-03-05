@@ -243,7 +243,7 @@
       localStorage.setItem('usuario', JSON.stringify(data.usuario));
 
       mostrarAlerta('✅ Cuenta creada exitosamente. ¡Bienvenido, ' + data.usuario.nombre + '!', 'exito');
-      setTimeout(() => { window.location.href = '/'; }, 1500);
+      setTimeout(() => { window.location.href = '/dashboard'; }, 1500);
     } catch (err) {
       mostrarAlerta('❌ ' + err.message);
     } finally {

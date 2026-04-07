@@ -93,6 +93,10 @@ def pagina_registro():
 def pagina_dashboard():
     return FileResponse("static/dashboard.html")
 
+@app.get("/mis-citas")
+def pagina_citas():
+    return FileResponse("static/citas.html")
+
 # ── Rutas de autenticación ─────────────────────────────────────
 @app.post("/auth/login")
 def login(datos: LoginRequest, db: Session = Depends(get_db)):

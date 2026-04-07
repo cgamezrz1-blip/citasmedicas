@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CitasMédicas — Mis Citas</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --azul-primario:  #1a56db;
+      --azul-oscuro:    #1e3a8a;
+      --azul-claro:     #dbeafe;
+      --azul-muy-claro: #eff6ff;
+      --blanco:         #ffffff;
+      --gris-texto:     #1f2937;
+      --gris-medio:     #6b7280;
+      --gris-borde:     #e5e7eb;
+      --gris-fondo:     #f8fafc;
+      --verde:          #059669;
+      --verde-claro:    #d1fae5;
+      --naranja:        #d97706;
+      --naranja-claro:  #fef3c7;
+      --error:          #dc2626;
+      --error-claro:    #fee2e2;
+    }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--gris-fondo); min-height: 100vh; }
+
+    /* Navbar */
+    .navbar { background: var(--blanco); border-bottom: 1px solid var(--gris-borde); padding: 0 2rem; height: 64px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
+    .nav-logo { display: flex; align-items: center; gap: .65rem; text-decoration: none; }
+    .nav-logo-mark { width: 38px; height: 38px; background: var(--azul-primario); border-radius: 10px; display: grid; place-items: center; font-size: .8rem; font-weight: 700; color: white; }
+    .nav-logo-name { font-size: 1rem; font-weight: 700; color: var(--gris-texto); }
+    .nav-right { display: flex; align-items: center; gap: 1rem; }
+    .badge { padding: .3rem .8rem; border-radius: 20px; font-size: .75rem; font-weight: 700; }
+    .badge-medico { background: var(--azul-claro); color: var(--azul-oscuro); }
+    .badge-paciente { background: var(--verde-claro); color: var(--verde); }
+    .btn-logout { padding: .45rem 1rem; border: 1.5px solid var(--gris-borde); border-radius: 8px; background: var(--blanco); font-family: 'Plus Jakarta Sans', sans-serif; font-size: .82rem; color: var(--gris-medio); cursor: pointer; transition: all .2s; font-weight: 500; }
+    .btn-logout:hover { border-color: var(--error); color: var(--error); background: var(--error-claro); }
+
+    /* Layout */
+    .layout { display: grid; grid-template-columns: 248px 1fr; min-height: calc(100vh - 64px); }
+
+    /* Sidebar */
+    .sidebar { background: var(--blanco); border-right: 1px solid var(--gris-borde); padding: 1.5rem 1rem; }
+    .sidebar-section { margin-bottom: 1.75rem; }
+    .sidebar-title { font-size: .7rem; font-weight: 700; color: var(--gris-medio); text-transform: uppercase; letter-spacing: .1em; margin-bottom: .6rem; padding: 0 .6rem; }
+    .nav-item { display: flex; align-items: center; gap: .7rem; padding: .6rem .75rem; border-radius: 10px; cursor: pointer; font-size: .875rem; color: var(--gris-medio); transition: all .2s; margin-bottom: .15rem; text-decoration: none; font-weight: 500; }
+    .nav-item:hover { background: var(--azul-muy-claro); color: var(--azul-primario); }
+    .nav-item.activo { background: var(--azul-claro); color: var(--azul-oscuro); font-weight: 700; }
+    .nav-item .icon { font-size: 1.05rem; width: 20px; text-align: center; }
+
+    /* Contenido */
+    .contenido { padding: 2rem 2.5rem; }
+
+    /* Header de página */
+    .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.75rem; }
+    .page-header h1 { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--gris-texto); }
+    .page-header p { color: var(--gris-medio); font-size: .88rem; margin-top: .2rem; }
+    .btn-nueva-cita { display: flex; align-items: center; gap: .5rem; padding: .7rem 1.25rem; background: var(--azul-primario); color: white; border: none; border-radius: 10px; font-family: 'Plus Jakarta Sans', sans-serif; font-size: .9rem; font-weight: 700; cursor: pointer; transition: all .2s; box-shadow: 0 4px 12px rgba(26,86,219,.3); }
+    .btn-nueva-cita:hover { background: var(--azul-oscuro); transform: translateY(-1px); }
+
+    /* Filtros */
+    .filtros { display: flex; gap: .75rem; margin-bottom: 1.5rem; flex-wrap: wrap; align-items: center; }
+    .filtro-input { padding: .6rem 1rem; border: 1.5px solid var(--gris-borde); border-radius: 8px; font-family: 'Plus Jakarta Sans', sans-serif; font-size: .87rem; color: var(--gris-texto); background: var(--blanco); outline: none; transition: border-color .2s; }
+    .filtro-input:focus { border-color: var(--azul-primario); }
+    .filtro-select { padding: .6rem 1rem; border: 1.5px solid var(--gris-borde); border-radius: 8px; font-family: 'Plus Jakarta Sans', sans-serif; font-size: .87rem; color: var(--gris-texto); background: var(--blanco); outline: none; cursor: pointer; }
+    .btn-filtrar { padding: .6rem 1.1rem; background: var(--azul-muy-claro); color: var(--azul-primario); border: 1.5px solid var(--azul-claro); border-radius: 8px; font-family: 'Plus Jakarta Sans', sans-serif; font-size: .87rem; font-weight: 600; cursor: pointer; transition: all .2s; }
+    .btn-filtrar:hover { background: var(--azul-claro); }
+    .btn-limpiar { padding: .6rem 1rem; background: var(--blanco); color: var(--gris-medio); border: 1.5px solid var(--gris-borde); border-radius: 8px; font-family: 'Plus Jakarta Sans', sans-serif; font-size: .87rem; cursor: pointer; transition: all .2s; }
+    .btn-limpiar:hover { border-color: var(--gris-texto); color: var(--gris-texto); }
+
+    /* Stats rápidas */
+    .quick-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
+    .quick-stat { background: var(--blanco); border: 1px solid var(--gris-borde); border-radius: 12px; padding: 1rem 1.25rem; display: flex; align-items: center; gap: .75rem; }
+    .qs-icon { width: 38px; height: 38px; border-radius: 8px; display: grid; place-items: center; font-size: 1.1rem; flex-shrink: 0; }
+    .qs-icon.total { background: var(--azul-claro); }
+    .qs-icon.confirmadas { background: var(--verde-claro); }
+    .qs-icon.pendientes { background: var(--naranja-claro); }
+    .qs-num { font-size: 1.4rem; font-weight: 700; color: var(--gris-texto); font-family: 'Playfair Display', serif; line-height: 1; }
+    .qs-label { font-size: .78rem; color: var(--gris-medio); font-weight: 500; margin-top: .15rem; }
+
+    /* Lista de citas */
+    .citas-lista { display: flex; flex-direction: column; gap: .75rem; }
+    .cita-card { background: var(--blanco); border: 1.5px solid var(--gris-borde); border-radius: 14px; padding: 1.25rem 1.5rem; display: flex; align-items: center; gap: 1.25rem; transition: all .2s; position: relative; overflow: hidden; }
+    .cita-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; }
+    .cita-card.confirmada::before { background: var(--verde); }
+    .cita-card.pendiente::before { background: var(--naranja); }
+    .cita-card:hover { border-color: var(--azul-primario); box-shadow: 0 4px 16px rgba(26,86,219,.1); }
+
+    .cita-fecha { text-align: center; min-width: 60px; background: var(--azul-muy-claro); border-radius: 10px; padding: .5rem; }
+    .cita-dia { font-size: 1.4rem; font-weight: 700; color: var(--azul-oscuro); line-height: 1; }
+    .cita-mes { font-size: .7rem; color: var(--azul-primario); font-weight: 600; text-transform: uppercase; letter-spacing: .05em; }
+
+    .cita-info { flex: 1; }
+    .cita-paciente { font-size: .95rem; font-weight: 700; color: var(--gris-texto); margin-bottom: .2rem; }
+    .cita-medico { font-size: .83rem; color: var(--gris-medio); margin-bottom: .3rem; }
+    .cita-meta { display: flex; gap: 1rem; }
+    .cita-tag { font-size: .76rem; font-weight: 600; display: flex; align-items: center; gap: .3rem; }
+    .cita-tag.hora { color: var(--azul-primario); }
+    .cita-tag.motivo { color: var(--gris-medio); }
+    .cita-tag.costo { color: var(--verde); }
+
+    .cita-estado { flex-shrink: 0; }
+    .estado-badge { padding: .3rem .85rem; border-radius: 20px; font-size: .75rem; font-weight: 700; }
+    .estado-badge.confirmada { background: var(--verde-claro); color: var(--verde); }
+    .estado-badge.pendiente { background: var(--naranja-claro); color: var(--naranja); }
+
+    .cita-acciones { display: flex; gap: .5rem; flex-shrink: 0; }
+    .btn-accion { width: 34px; height: 34px; border: 1.5px solid var(--gris-borde); border-radius: 8px; background: var(--blanco); cursor: pointer; display: grid; place-items: center; font-size: .9rem; transition: all .2s; }
+    .btn-accion:hover { border-color: var(--azul-primario); background: var(--azul-muy-claro); }
+    .btn-accion.eliminar:hover { border-color: var(--error); background: var(--error-claro); }
+
+    /* Empty state */
+    .empty-state { text-align: center; padding: 4rem 2rem; color: var(--gris-medio); }
+    .empty-icon { font-size: 3.5rem; margin-bottom: 1rem; }
+    .empty-state h3 { font-size: 1.1rem; font-weight: 700; color: var(--gris-texto); margin-bottom: .5rem; }
+    .empty-state p { font-size: .9rem; }
+
+    /* Modal */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 200; display: none; place-items: center; backdrop-filter: blur(2px); }
+    .modal-overlay.visible { display: grid; }
+    .modal { background: var(--blanco); border-radius: 16px; padding: 2rem; width: 100%; max-width: 480px; margin: 1rem; box-shadow: 0 20px 60px rgba(0,0,0,.2); animation: modalIn .25s ease; }
+    @keyframes modalIn { from { opacity: 0; transform: scale(.95) translateY(-10px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+    .modal-title { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--gris-texto); }
+    .modal-close { width: 32px; height: 32px; border: none; background: var(--gris-fondo); border-radius: 8px; cursor: pointer; font-size: 1rem; display: grid; place-items: center; }
+    .modal-close:hover { background: var(--error-claro); }
+
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .form-grid .full { grid-column: 1 / -1; }
+    .campo { display: flex; flex-direction: column; gap: .4rem; }
+    .campo label { font-size: .82rem; font-weight: 600; color: var(--gris-texto); }
+    .campo input, .campo select { padding: .72rem .9rem; border: 1.5px solid var(--gris-borde); border-radius: 8px; font-family: 'Plus Jakarta Sans', sans-serif; font-size: .9rem; color: var(--gris-texto); background: var(--gris-fondo); outline: none; transition: border-color .2s; }
+    .campo input:focus, .campo select:focus { border-color: var(--azul-primario); background: var(--blanco); }
+
+    .modal-footer { display: flex; gap: .75rem; margin-top: 1.5rem; }
+    .btn-cancelar { flex: 1; padding: .8rem; border: 1.5px solid var(--gris-borde); border-radius: 10px; background: var(--blanco); font-family: 'Plus Jakarta Sans', sans-serif; font-size: .9rem; font-weight: 600; color: var(--gris-medio); cursor: pointer; transition: all .2s; }
+    .btn-cancelar:hover { border-color: var(--gris-texto); color: var(--gris-texto); }
+    .btn-guardar { flex: 2; padding: .8rem; background: var(--azul-primario); color: white; border: none; border-radius: 10px; font-family: 'Plus Jakarta Sans', sans-serif; font-size: .9rem; font-weight: 700; cursor: pointer; transition: all .2s; box-shadow: 0 4px 12px rgba(26,86,219,.3); }
+    .btn-guardar:hover { background: var(--azul-oscuro); }
+
+    .alerta { padding: .8rem 1rem; border-radius: 8px; font-size: .85rem; margin-bottom: 1rem; display: none; }
+    .alerta.error { background: var(--error-claro); color: var(--error); }
+    .alerta.exito { background: var(--verde-claro); color: var(--verde); }
+
+    @media (max-width: 768px) { .layout { grid-template-columns: 1fr; } .sidebar { display: none; } .contenido { padding: 1.5rem; } .quick-stats { grid-template-columns: 1fr; } .cita-card { flex-wrap: wrap; } .form-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar">
+  <a class="nav-logo" href="/dashboard">
+    <div class="nav-logo-mark">CM</div>
+    <span class="nav-logo-name">CitasMédicas</span>
+  </a>
+  <div class="nav-right">
+    <span class="badge" id="badge-rol"></span>
+    <button class="btn-logout" onclick="cerrarSesion()">Cerrar sesión</button>
+  </div>
+</nav>
+
+<div class="layout">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-title">Principal</div>
+      <a class="nav-item" href="/dashboard"><span class="icon">🏠</span> Inicio</a>
+      <a class="nav-item activo" href="#"><span class="icon">📅</span> Mis citas</a>
+      <a class="nav-item" href="#"><span class="icon">👤</span> Mi perfil</a>
+    </div>
+    <div class="sidebar-section" id="sidebar-medico" style="display:none">
+      <div class="sidebar-title">Médico</div>
+      <a class="nav-item" href="#"><span class="icon">👥</span> Pacientes</a>
+      <a class="nav-item" href="#"><span class="icon">📋</span> Historial</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-title">Sistema</div>
+      <a class="nav-item" href="/docs" target="_blank"><span class="icon">📖</span> API Docs</a>
+      <a class="nav-item" href="#" onclick="cerrarSesion()"><span class="icon">🚪</span> Salir</a>
+    </div>
+  </aside>
+
+  <!-- Contenido -->
+  <main class="contenido">
+    <div class="page-header">
+      <div>
+        <h1>Gestión de Citas</h1>
+        <p>Crea, consulta y administra todas tus citas médicas</p>
+      </div>
+      <button class="btn-nueva-cita" onclick="abrirModal()">
+        ➕ Nueva cita
+      </button>
+    </div>
+
+    <!-- Stats rápidas -->
+    <div class="quick-stats">
+      <div class="quick-stat">
+        <div class="qs-icon total">📅</div>
+        <div><div class="qs-num" id="total-citas">0</div><div class="qs-label">Total citas</div></div>
+      </div>
+      <div class="quick-stat">
+        <div class="qs-icon confirmadas">✅</div>
+        <div><div class="qs-num" id="total-confirmadas">0</div><div class="qs-label">Confirmadas</div></div>
+      </div>
+      <div class="quick-stat">
+        <div class="qs-icon pendientes">⏳</div>
+        <div><div class="qs-num" id="total-pendientes">0</div><div class="qs-label">Pendientes</div></div>
+      </div>
+    </div>
+
+    <!-- Filtros -->
+    <div class="filtros">
+      <input class="filtro-input" id="filtro-medico" placeholder="🔍 Buscar por médico..." style="flex:1; min-width:180px"/>
+      <select class="filtro-select" id="filtro-confirmada">
+        <option value="">Todos los estados</option>
+        <option value="true">✅ Confirmadas</option>
+        <option value="false">⏳ Pendientes</option>
+      </select>
+      <button class="btn-filtrar" onclick="filtrarCitas()">Filtrar</button>
+      <button class="btn-limpiar" onclick="limpiarFiltros()">Limpiar</button>
+    </div>
+
+    <div id="alerta-page" class="alerta"></div>
+
+    <!-- Lista -->
+    <div class="citas-lista" id="citas-lista">
+      <div class="empty-state">
+        <div class="empty-icon">📭</div>
+        <h3>No hay citas aún</h3>
+        <p>Crea tu primera cita haciendo clic en "Nueva cita"</p>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Modal Nueva/Editar Cita -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modal-titulo">Nueva cita</div>
+      <button class="modal-close" onclick="cerrarModal()">✕</button>
+    </div>
+    <div id="alerta-modal" class="alerta"></div>
+    <div class="form-grid">
+      <div class="campo full">
+        <label>Nombre del paciente</label>
+        <input type="text" id="m-paciente" placeholder="Nombre completo del paciente"/>
+      </div>
+      <div class="campo full">
+        <label>Nombre del médico</label>
+        <input type="text" id="m-medico" placeholder="Dr. Nombre Apellido"/>
+      </div>
+      <div class="campo">
+        <label>Fecha</label>
+        <input type="date" id="m-fecha"/>
+      </div>
+      <div class="campo">
+        <label>Hora</label>
+        <input type="time" id="m-hora"/>
+      </div>
+      <div class="campo full">
+        <label>Motivo de la consulta</label>
+        <input type="text" id="m-motivo" placeholder="Ej: Consulta general, Control, Urgencia"/>
+      </div>
+      <div class="campo">
+        <label>Costo (COP)</label>
+        <input type="number" id="m-costo" placeholder="0" min="0"/>
+      </div>
+      <div class="campo">
+        <label>Estado</label>
+        <select id="m-confirmada">
+          <option value="false">⏳ Pendiente</option>
+          <option value="true">✅ Confirmada</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancelar" onclick="cerrarModal()">Cancelar</button>
+      <button class="btn-guardar" onclick="guardarCita()">💾 Guardar cita</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Verificar autenticación
+  const token = localStorage.getItem('token');
+  const usuarioStr = localStorage.getItem('usuario');
+  if (!token || !usuarioStr) { window.location.href = '/'; }
+  const usuario = JSON.parse(usuarioStr);
+
+  // Badge de rol
+  const badge = document.getElementById('badge-rol');
+  badge.textContent = usuario.rol === 'medico' ? '👨‍⚕️ Médico' : '🙋 Paciente';
+  badge.className = `badge badge-${usuario.rol}`;
+  if (usuario.rol === 'medico') document.getElementById('sidebar-medico').style.display = 'block';
+
+  let citaEditandoId = null;
+
+  // ── Cargar citas ─────────────────────────────────────────
+  async function cargarCitas(params = '') {
+    try {
+      const res = await fetch('/citas' + params);
+      const data = await res.json();
+      renderCitas(data.citas);
+      actualizarStats(data.citas);
+    } catch (err) {
+      mostrarAlertaPage('❌ Error al cargar las citas', 'error');
+    }
+  }
+
+  function actualizarStats(citas) {
+    document.getElementById('total-citas').textContent = citas.length;
+    document.getElementById('total-confirmadas').textContent = citas.filter(c => c.confirmada).length;
+    document.getElementById('total-pendientes').textContent = citas.filter(c => !c.confirmada).length;
+  }
+
+  function renderCitas(citas) {
+    const lista = document.getElementById('citas-lista');
+    if (!citas || citas.length === 0) {
+      lista.innerHTML = `<div class="empty-state"><div class="empty-icon">📭</div><h3>No hay citas</h3><p>No se encontraron citas con los filtros seleccionados</p></div>`;
+      return;
+    }
+    lista.innerHTML = citas.map(c => {
+      const fecha = new Date(c.fecha + 'T00:00:00');
+      const dia = fecha.getDate();
+      const mes = fecha.toLocaleDateString('es-CO', { month: 'short' }).toUpperCase();
+      const estado = c.confirmada ? 'confirmada' : 'pendiente';
+      const costo = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(c.costo);
+      return `
+        <div class="cita-card ${estado}">
+          <div class="cita-fecha">
+            <div class="cita-dia">${dia}</div>
+            <div class="cita-mes">${mes}</div>
+          </div>
+          <div class="cita-info">
+            <div class="cita-paciente">👤 ${c.paciente_nombre}</div>
+            <div class="cita-medico">🩺 ${c.medico_nombre}</div>
+            <div class="cita-meta">
+              <span class="cita-tag hora">🕐 ${c.hora}</span>
+              <span class="cita-tag motivo">📋 ${c.motivo}</span>
+              <span class="cita-tag costo">💰 ${costo}</span>
+            </div>
+          </div>
+          <div class="cita-estado">
+            <span class="estado-badge ${estado}">${c.confirmada ? '✅ Confirmada' : '⏳ Pendiente'}</span>
+          </div>
+          <div class="cita-acciones">
+            <button class="btn-accion" onclick="editarCita(${c.id})" title="Editar">✏️</button>
+            <button class="btn-accion eliminar" onclick="eliminarCita(${c.id})" title="Eliminar">🗑️</button>
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  // ── Filtros ───────────────────────────────────────────────
+  function filtrarCitas() {
+    const medico = document.getElementById('filtro-medico').value.trim();
+    const confirmada = document.getElementById('filtro-confirmada').value;
+    let params = [];
+    if (medico) params.push(`medico_nombre=${encodeURIComponent(medico)}`);
+    if (confirmada !== '') params.push(`confirmada=${confirmada}`);
+    cargarCitas(params.length ? '?' + params.join('&') : '');
+  }
+
+  function limpiarFiltros() {
+    document.getElementById('filtro-medico').value = '';
+    document.getElementById('filtro-confirmada').value = '';
+    cargarCitas();
+  }
+
+  // ── Modal ─────────────────────────────────────────────────
+  function abrirModal(cita = null) {
+    citaEditandoId = cita ? cita.id : null;
+    document.getElementById('modal-titulo').textContent = cita ? 'Editar cita' : 'Nueva cita';
+    document.getElementById('m-paciente').value = cita ? cita.paciente_nombre : '';
+    document.getElementById('m-medico').value = cita ? cita.medico_nombre : '';
+    document.getElementById('m-fecha').value = cita ? cita.fecha : '';
+    document.getElementById('m-hora').value = cita ? cita.hora : '';
+    document.getElementById('m-motivo').value = cita ? cita.motivo : '';
+    document.getElementById('m-costo').value = cita ? cita.costo : '';
+    document.getElementById('m-confirmada').value = cita ? String(cita.confirmada) : 'false';
+    document.getElementById('alerta-modal').style.display = 'none';
+    document.getElementById('modal-overlay').classList.add('visible');
+  }
+
+  function cerrarModal() {
+    document.getElementById('modal-overlay').classList.remove('visible');
+    citaEditandoId = null;
+  }
+
+  // ── Guardar cita ──────────────────────────────────────────
+  async function guardarCita() {
+    const body = {
+      paciente_nombre: document.getElementById('m-paciente').value.trim(),
+      medico_nombre: document.getElementById('m-medico').value.trim(),
+      fecha: document.getElementById('m-fecha').value,
+      hora: document.getElementById('m-hora').value,
+      motivo: document.getElementById('m-motivo').value.trim(),
+      costo: parseFloat(document.getElementById('m-costo').value) || 0,
+      confirmada: document.getElementById('m-confirmada').value === 'true',
+    };
+
+    if (!body.paciente_nombre || !body.medico_nombre || !body.fecha || !body.hora || !body.motivo) {
+      mostrarAlertaModal('❌ Completa todos los campos obligatorios', 'error');
+      return;
+    }
+
+    try {
+      const url = citaEditandoId ? `/citas/${citaEditandoId}` : '/citas';
+      const method = citaEditandoId ? 'PUT' : 'POST';
+      const res = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.detail || 'Error al guardar');
+      cerrarModal();
+      mostrarAlertaPage(citaEditandoId ? '✅ Cita actualizada' : '✅ Cita creada exitosamente', 'exito');
+      cargarCitas();
+    } catch (err) {
+      mostrarAlertaModal('❌ ' + err.message, 'error');
+    }
+  }
+
+  // ── Editar ────────────────────────────────────────────────
+  async function editarCita(id) {
+    try {
+      const res = await fetch(`/citas/${id}`);
+      const cita = await res.json();
+      abrirModal(cita);
+    } catch {
+      mostrarAlertaPage('❌ Error al cargar la cita', 'error');
+    }
+  }
+
+  // ── Eliminar ──────────────────────────────────────────────
+  async function eliminarCita(id) {
+    if (!confirm('¿Estás seguro de que deseas eliminar esta cita?')) return;
+    try {
+      const res = await fetch(`/citas/${id}`, { method: 'DELETE' });
+      if (!res.ok) throw new Error('Error al eliminar');
+      mostrarAlertaPage('✅ Cita eliminada exitosamente', 'exito');
+      cargarCitas();
+    } catch {
+      mostrarAlertaPage('❌ Error al eliminar la cita', 'error');
+    }
+  }
+
+  // ── Alertas ───────────────────────────────────────────────
+  function mostrarAlertaPage(msg, tipo) {
+    const el = document.getElementById('alerta-page');
+    el.textContent = msg; el.className = `alerta ${tipo}`; el.style.display = 'block';
+    setTimeout(() => { el.style.display = 'none'; }, 3500);
+  }
+
+  function mostrarAlertaModal(msg, tipo) {
+    const el = document.getElementById('alerta-modal');
+    el.textContent = msg; el.className = `alerta ${tipo}`; el.style.display = 'block';
+  }
+
+  function cerrarSesion() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('usuario');
+    window.location.href = '/';
+  }
+
+  // Cerrar modal al hacer clic fuera
+  document.getElementById('modal-overlay').addEventListener('click', function(e) {
+    if (e.target === this) cerrarModal();
+  });
+
+  // Cargar citas al iniciar
+  cargarCitas();
+</script>
+</body>
+</html>

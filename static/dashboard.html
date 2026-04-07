@@ -4,83 +4,161 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>CitasMédicas — Dashboard</title>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --verde: #0d6e5a; --verde-claro: #12896f;
-      --verde-menta: #e6f4f1; --crema: #faf8f5;
-      --texto: #1a2e28; --gris: #6b7b76;
-      --borde: #d4e4e0; --blanco: #ffffff;
+      --azul-primario:  #1a56db;
+      --azul-oscuro:    #1e3a8a;
+      --azul-medio:     #3b82f6;
+      --azul-claro:     #dbeafe;
+      --azul-muy-claro: #eff6ff;
+      --blanco:         #ffffff;
+      --gris-texto:     #1f2937;
+      --gris-medio:     #6b7280;
+      --gris-borde:     #e5e7eb;
+      --gris-fondo:     #f8fafc;
+      --verde:          #059669;
+      --verde-claro:    #d1fae5;
+      --naranja:        #d97706;
+      --naranja-claro:  #fef3c7;
+      --rojo:           #dc2626;
+      --rojo-claro:     #fee2e2;
     }
-    body { font-family: 'DM Sans', sans-serif; background: var(--crema); min-height: 100vh; }
 
-    /* Navbar */
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--gris-fondo); min-height: 100vh; }
+
+    /* ── Navbar ── */
     .navbar {
-      background: white;
-      border-bottom: 1px solid var(--borde);
-      padding: 0 2rem;
-      height: 64px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      background: var(--blanco);
+      border-bottom: 1px solid var(--gris-borde);
+      padding: 0 2rem; height: 64px;
+      display: flex; align-items: center; justify-content: space-between;
       position: sticky; top: 0; z-index: 100;
+      box-shadow: 0 1px 3px rgba(0,0,0,.06);
     }
-    .nav-logo { display: flex; align-items: center; gap: .6rem; font-weight: 600; color: var(--texto); font-size: 1rem; }
-    .nav-logo-icon { width: 36px; height: 36px; background: var(--verde); border-radius: 8px; display: grid; place-items: center; font-size: 1.1rem; }
-    .nav-usuario { display: flex; align-items: center; gap: 1rem; }
-    .nav-nombre { font-size: .88rem; color: var(--gris); }
-    .nav-nombre strong { color: var(--texto); }
-    .badge-rol { padding: .25rem .7rem; border-radius: 20px; font-size: .75rem; font-weight: 600; }
-    .badge-medico { background: #dbeafe; color: #1d4ed8; }
-    .badge-paciente { background: var(--verde-menta); color: var(--verde); }
-    .btn-logout { padding: .45rem 1rem; border: 1.5px solid var(--borde); border-radius: 8px; background: white; font-family: 'DM Sans', sans-serif; font-size: .82rem; color: var(--gris); cursor: pointer; transition: all .2s; }
-    .btn-logout:hover { border-color: #e74c3c; color: #e74c3c; }
+    .nav-logo { display: flex; align-items: center; gap: .65rem; }
+    .nav-logo-mark { width: 38px; height: 38px; background: var(--azul-primario); border-radius: 10px; display: grid; place-items: center; font-size: .8rem; font-weight: 700; color: white; letter-spacing: .05em; }
+    .nav-logo-name { font-size: 1rem; font-weight: 700; color: var(--gris-texto); }
+    .nav-right { display: flex; align-items: center; gap: 1rem; }
+    .nav-saludo { font-size: .88rem; color: var(--gris-medio); }
+    .nav-saludo strong { color: var(--gris-texto); }
+    .badge {
+      padding: .3rem .8rem; border-radius: 20px;
+      font-size: .75rem; font-weight: 700;
+      letter-spacing: .02em;
+    }
+    .badge-medico { background: var(--azul-claro); color: var(--azul-oscuro); }
+    .badge-paciente { background: var(--verde-claro); color: var(--verde); }
+    .btn-logout {
+      padding: .45rem 1rem; border: 1.5px solid var(--gris-borde);
+      border-radius: 8px; background: var(--blanco);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: .82rem; color: var(--gris-medio);
+      cursor: pointer; transition: all .2s; font-weight: 500;
+    }
+    .btn-logout:hover { border-color: var(--rojo); color: var(--rojo); background: var(--rojo-claro); }
 
-    /* Layout */
-    .layout { display: grid; grid-template-columns: 240px 1fr; min-height: calc(100vh - 64px); }
+    /* ── Layout ── */
+    .layout { display: grid; grid-template-columns: 248px 1fr; min-height: calc(100vh - 64px); }
 
-    /* Sidebar */
-    .sidebar { background: white; border-right: 1px solid var(--borde); padding: 1.5rem 1rem; }
-    .sidebar-section { margin-bottom: 2rem; }
-    .sidebar-title { font-size: .72rem; font-weight: 600; color: var(--gris); text-transform: uppercase; letter-spacing: .08em; margin-bottom: .75rem; padding: 0 .5rem; }
-    .nav-item { display: flex; align-items: center; gap: .75rem; padding: .65rem .75rem; border-radius: 8px; cursor: pointer; font-size: .88rem; color: var(--gris); transition: all .2s; margin-bottom: .2rem; text-decoration: none; }
-    .nav-item:hover { background: var(--verde-menta); color: var(--verde); }
-    .nav-item.activo { background: var(--verde-menta); color: var(--verde); font-weight: 600; }
-    .nav-item span { font-size: 1.1rem; }
+    /* ── Sidebar ── */
+    .sidebar { background: var(--blanco); border-right: 1px solid var(--gris-borde); padding: 1.5rem 1rem; }
+    .sidebar-section { margin-bottom: 1.75rem; }
+    .sidebar-title {
+      font-size: .7rem; font-weight: 700; color: var(--gris-medio);
+      text-transform: uppercase; letter-spacing: .1em;
+      margin-bottom: .6rem; padding: 0 .6rem;
+    }
+    .nav-item {
+      display: flex; align-items: center; gap: .7rem;
+      padding: .6rem .75rem; border-radius: 10px;
+      cursor: pointer; font-size: .875rem; color: var(--gris-medio);
+      transition: all .2s; margin-bottom: .15rem;
+      text-decoration: none; font-weight: 500;
+    }
+    .nav-item:hover { background: var(--azul-muy-claro); color: var(--azul-primario); }
+    .nav-item.activo { background: var(--azul-claro); color: var(--azul-oscuro); font-weight: 700; }
+    .nav-item .icon { font-size: 1.05rem; width: 20px; text-align: center; }
+    .nav-item .dot { width: 6px; height: 6px; background: var(--azul-primario); border-radius: 50%; margin-left: auto; }
 
-    /* Contenido */
-    .contenido { padding: 2rem; }
-    .bienvenida { margin-bottom: 2rem; }
-    .bienvenida h1 { font-family: 'DM Serif Display', serif; font-size: 1.8rem; color: var(--texto); margin-bottom: .3rem; }
-    .bienvenida p { color: var(--gris); font-size: .9rem; }
+    /* ── Contenido principal ── */
+    .contenido { padding: 2rem 2.5rem; }
 
-    /* Tarjetas de stats */
-    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
-    .stat-card { background: white; border: 1px solid var(--borde); border-radius: 12px; padding: 1.25rem; display: flex; align-items: center; gap: 1rem; }
-    .stat-icon { width: 48px; height: 48px; border-radius: 10px; display: grid; place-items: center; font-size: 1.4rem; flex-shrink: 0; }
-    .stat-icon.verde { background: var(--verde-menta); }
-    .stat-icon.azul { background: #dbeafe; }
-    .stat-icon.naranja { background: #fef3c7; }
-    .stat-icon.rojo { background: #fee2e2; }
+    /* Header de bienvenida */
+    .welcome-bar {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      margin-bottom: 2rem;
+    }
+    .welcome-text h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.9rem; color: var(--gris-texto); margin-bottom: .3rem;
+    }
+    .welcome-text p { color: var(--gris-medio); font-size: .9rem; }
+    .welcome-date {
+      background: var(--blanco); border: 1px solid var(--gris-borde);
+      border-radius: 10px; padding: .6rem 1rem;
+      font-size: .82rem; color: var(--gris-medio); font-weight: 500;
+    }
+
+    /* Stats */
+    .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 2rem; }
+    .stat-card {
+      background: var(--blanco); border: 1px solid var(--gris-borde);
+      border-radius: 14px; padding: 1.25rem 1.5rem;
+      display: flex; align-items: center; gap: 1rem;
+      transition: box-shadow .2s, transform .2s;
+    }
+    .stat-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,.08); transform: translateY(-2px); }
+    .stat-icon { width: 50px; height: 50px; border-radius: 12px; display: grid; place-items: center; font-size: 1.4rem; flex-shrink: 0; }
+    .stat-icon.azul { background: var(--azul-claro); }
+    .stat-icon.verde { background: var(--verde-claro); }
+    .stat-icon.naranja { background: var(--naranja-claro); }
+    .stat-icon.rojo { background: var(--rojo-claro); }
     .stat-info { flex: 1; }
-    .stat-num { font-family: 'DM Serif Display', serif; font-size: 1.6rem; color: var(--texto); line-height: 1; }
-    .stat-label { font-size: .8rem; color: var(--gris); margin-top: .2rem; }
+    .stat-num { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--gris-texto); line-height: 1; }
+    .stat-label { font-size: .8rem; color: var(--gris-medio); margin-top: .2rem; font-weight: 500; }
+    .stat-trend { font-size: .72rem; margin-top: .4rem; }
+    .stat-trend.positivo { color: var(--verde); }
+    .stat-trend.neutro { color: var(--gris-medio); }
 
     /* Módulos */
-    .modulos-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; }
-    .modulo-card { background: white; border: 1px solid var(--borde); border-radius: 12px; padding: 1.5rem; cursor: pointer; transition: all .2s; text-decoration: none; display: block; }
-    .modulo-card:hover { border-color: var(--verde); box-shadow: 0 4px 16px rgba(13,110,90,.1); transform: translateY(-2px); }
-    .modulo-icon { font-size: 2rem; margin-bottom: .75rem; }
-    .modulo-titulo { font-size: 1rem; font-weight: 600; color: var(--texto); margin-bottom: .4rem; }
-    .modulo-desc { font-size: .83rem; color: var(--gris); line-height: 1.5; }
-    .modulo-arrow { margin-top: 1rem; font-size: .82rem; color: var(--verde); font-weight: 500; }
-
-    @media (max-width: 768px) {
-      .layout { grid-template-columns: 1fr; }
-      .sidebar { display: none; }
-      .stats-grid { grid-template-columns: 1fr 1fr; }
+    .section-title {
+      font-size: 1rem; font-weight: 700; color: var(--gris-texto);
+      margin-bottom: 1rem; display: flex; align-items: center; gap: .5rem;
     }
+    .section-title::after { content: ''; flex: 1; height: 1px; background: var(--gris-borde); }
+    .modulos-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; }
+    .modulo-card {
+      background: var(--blanco); border: 1.5px solid var(--gris-borde);
+      border-radius: 14px; padding: 1.5rem;
+      cursor: pointer; transition: all .25s;
+      text-decoration: none; display: block;
+      position: relative; overflow: hidden;
+    }
+    .modulo-card::before {
+      content: ''; position: absolute;
+      top: 0; left: 0; right: 0; height: 3px;
+      background: var(--azul-primario);
+      transform: scaleX(0); transition: transform .25s;
+      transform-origin: left;
+    }
+    .modulo-card:hover { border-color: var(--azul-primario); box-shadow: 0 8px 24px rgba(26,86,219,.12); transform: translateY(-3px); }
+    .modulo-card:hover::before { transform: scaleX(1); }
+    .modulo-icon-wrap { width: 48px; height: 48px; background: var(--azul-muy-claro); border-radius: 12px; display: grid; place-items: center; font-size: 1.5rem; margin-bottom: 1rem; }
+    .modulo-titulo { font-size: .95rem; font-weight: 700; color: var(--gris-texto); margin-bottom: .4rem; }
+    .modulo-desc { font-size: .82rem; color: var(--gris-medio); line-height: 1.55; }
+    .modulo-link { margin-top: .9rem; font-size: .8rem; color: var(--azul-primario); font-weight: 700; display: flex; align-items: center; gap: .3rem; }
+    .modulo-link::after { content: '→'; transition: transform .2s; }
+    .modulo-card:hover .modulo-link::after { transform: translateX(4px); }
+
+    /* Actividad reciente */
+    .actividad-box { background: var(--blanco); border: 1px solid var(--gris-borde); border-radius: 14px; padding: 1.5rem; margin-top: 1.5rem; }
+    .actividad-empty { text-align: center; padding: 2rem; color: var(--gris-medio); font-size: .9rem; }
+    .actividad-empty .empty-icon { font-size: 2.5rem; margin-bottom: .75rem; }
+
+    @media (max-width: 1024px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 768px) { .layout { grid-template-columns: 1fr; } .sidebar { display: none; } .contenido { padding: 1.5rem; } .stats-grid { grid-template-columns: 1fr 1fr; } }
   </style>
 </head>
 <body>
@@ -88,12 +166,12 @@
 <!-- Navbar -->
 <nav class="navbar">
   <div class="nav-logo">
-    <div class="nav-logo-icon">🏥</div>
-    CitasMédicas
+    <div class="nav-logo-mark">CM</div>
+    <span class="nav-logo-name">CitasMédicas</span>
   </div>
-  <div class="nav-usuario">
-    <div class="nav-nombre">Hola, <strong id="nav-nombre">...</strong></div>
-    <span class="badge-rol" id="badge-rol"></span>
+  <div class="nav-right">
+    <div class="nav-saludo">Hola, <strong id="nav-nombre">...</strong></div>
+    <span class="badge" id="badge-rol"></span>
     <button class="btn-logout" onclick="cerrarSesion()">Cerrar sesión</button>
   </div>
 </nav>
@@ -104,122 +182,131 @@
   <aside class="sidebar">
     <div class="sidebar-section">
       <div class="sidebar-title">Principal</div>
-      <a class="nav-item activo" href="/dashboard"><span>🏠</span> Inicio</a>
-      <a class="nav-item" href="#"><span>📅</span> Mis citas</a>
-      <a class="nav-item" href="#"><span>👤</span> Mi perfil</a>
+      <a class="nav-item activo" href="/dashboard">
+        <span class="icon">🏠</span> Inicio <span class="dot"></span>
+      </a>
+      <a class="nav-item" href="#"><span class="icon">📅</span> Mis citas</a>
+      <a class="nav-item" href="#"><span class="icon">👤</span> Mi perfil</a>
     </div>
     <div class="sidebar-section" id="sidebar-medico" style="display:none">
       <div class="sidebar-title">Médico</div>
-      <a class="nav-item" href="#"><span>👥</span> Pacientes</a>
-      <a class="nav-item" href="#"><span>📋</span> Historial</a>
-      <a class="nav-item" href="#"><span>⏰</span> Horarios</a>
+      <a class="nav-item" href="#"><span class="icon">👥</span> Pacientes</a>
+      <a class="nav-item" href="#"><span class="icon">📋</span> Historial</a>
+      <a class="nav-item" href="#"><span class="icon">⏰</span> Horarios</a>
     </div>
     <div class="sidebar-section">
-      <div class="sidebar-title">Cuenta</div>
-      <a class="nav-item" href="#" onclick="cerrarSesion()"><span>🚪</span> Salir</a>
+      <div class="sidebar-title">Sistema</div>
+      <a class="nav-item" href="/docs" target="_blank"><span class="icon">📖</span> API Docs</a>
+      <a class="nav-item" href="#" onclick="cerrarSesion()"><span class="icon">🚪</span> Salir</a>
     </div>
   </aside>
 
   <!-- Contenido -->
   <main class="contenido">
-    <div class="bienvenida">
-      <h1>Bienvenido, <span id="nombre-usuario">...</span> 👋</h1>
-      <p id="subtitulo">Aquí tienes un resumen de tu actividad</p>
+    <div class="welcome-bar">
+      <div class="welcome-text">
+        <h1>Bienvenido, <span id="nombre-usuario">...</span> 👋</h1>
+        <p id="subtitulo">Aquí tienes un resumen de tu actividad médica</p>
+      </div>
+      <div class="welcome-date" id="fecha-hoy"></div>
     </div>
 
     <!-- Stats -->
     <div class="stats-grid">
       <div class="stat-card">
-        <div class="stat-icon verde">📅</div>
+        <div class="stat-icon azul">📅</div>
         <div class="stat-info">
           <div class="stat-num">0</div>
           <div class="stat-label">Citas pendientes</div>
+          <div class="stat-trend neutro">Sin citas programadas</div>
         </div>
       </div>
       <div class="stat-card">
-        <div class="stat-icon azul">✅</div>
+        <div class="stat-icon verde">✅</div>
         <div class="stat-info">
           <div class="stat-num">0</div>
           <div class="stat-label">Citas completadas</div>
+          <div class="stat-trend positivo">Al día</div>
         </div>
       </div>
-      <div class="stat-card">
+      <div class="stat-card" id="stat-3">
         <div class="stat-icon naranja">🔔</div>
         <div class="stat-info">
           <div class="stat-num">0</div>
           <div class="stat-label">Notificaciones</div>
-        </div>
-      </div>
-      <div class="stat-card" id="stat-pacientes" style="display:none">
-        <div class="stat-icon rojo">👥</div>
-        <div class="stat-info">
-          <div class="stat-num">0</div>
-          <div class="stat-label">Pacientes</div>
+          <div class="stat-trend neutro">Sin notificaciones</div>
         </div>
       </div>
     </div>
 
     <!-- Módulos -->
+    <div class="section-title">Accesos rápidos</div>
     <div class="modulos-grid" id="modulos-grid"></div>
-  </main>
 
+    <!-- Actividad reciente -->
+    <div class="section-title" style="margin-top: 1.75rem;">Actividad reciente</div>
+    <div class="actividad-box">
+      <div class="actividad-empty">
+        <div class="empty-icon">📭</div>
+        <p>No hay actividad reciente.<br/>Agenda tu primera cita para comenzar.</p>
+      </div>
+    </div>
+  </main>
 </div>
 
 <script>
-  // Verificar si está autenticado
   const token = localStorage.getItem('token');
   const usuarioStr = localStorage.getItem('usuario');
-
-  if (!token || !usuarioStr) {
-    window.location.href = '/';
-  }
+  if (!token || !usuarioStr) { window.location.href = '/'; }
 
   const usuario = JSON.parse(usuarioStr);
 
-  // Mostrar nombre y rol
+  // Nombre y badge
   document.getElementById('nav-nombre').textContent = usuario.nombre;
   document.getElementById('nombre-usuario').textContent = usuario.nombre.split(' ')[0];
 
   const badge = document.getElementById('badge-rol');
-  badge.textContent = usuario.rol === 'medico' ? '👨‍⚕️ Médico' : '🙋 Paciente';
-  badge.className = `badge-rol ${usuario.rol === 'medico' ? 'badge-medico' : 'badge-paciente'}`;
+  if (usuario.rol === 'medico') {
+    badge.textContent = '👨‍⚕️ Médico';
+    badge.className = 'badge badge-medico';
+    document.getElementById('sidebar-medico').style.display = 'block';
+    document.getElementById('subtitulo').textContent = 'Aquí tienes un resumen de tu actividad como médico';
+  } else {
+    badge.textContent = '🙋 Paciente';
+    badge.className = 'badge badge-paciente';
+  }
+
+  // Fecha
+  const fecha = new Date().toLocaleDateString('es-CO', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+  document.getElementById('fecha-hoy').textContent = fecha.charAt(0).toUpperCase() + fecha.slice(1);
 
   // Módulos según rol
   const modulos = {
     paciente: [
-      { icon: '📅', titulo: 'Agendar cita', desc: 'Reserva una nueva cita con tu médico de confianza de forma rápida.', link: '#' },
+      { icon: '📅', titulo: 'Agendar cita', desc: 'Reserva una nueva cita con tu médico de confianza de forma rápida y sencilla.', link: '#' },
       { icon: '📋', titulo: 'Mis citas', desc: 'Consulta, cancela o reagenda tus citas médicas programadas.', link: '#' },
-      { icon: '👤', titulo: 'Mi perfil', desc: 'Actualiza tu información personal y datos de contacto.', link: '#' },
-      { icon: '📄', titulo: 'Historial médico', desc: 'Revisa el historial de tus consultas y diagnósticos anteriores.', link: '#' },
+      { icon: '👤', titulo: 'Mi perfil', desc: 'Actualiza tu información personal, datos de contacto y preferencias.', link: '#' },
+      { icon: '📄', titulo: 'Historial médico', desc: 'Revisa el historial completo de tus consultas y diagnósticos.', link: '#' },
     ],
     medico: [
       { icon: '📅', titulo: 'Agenda del día', desc: 'Revisa las citas programadas para hoy y los próximos días.', link: '#' },
       { icon: '👥', titulo: 'Mis pacientes', desc: 'Gestiona la lista de tus pacientes y su historial clínico.', link: '#' },
       { icon: '⏰', titulo: 'Gestionar horarios', desc: 'Configura tu disponibilidad y bloquea fechas no disponibles.', link: '#' },
-      { icon: '📋', titulo: 'Consultas', desc: 'Registra diagnósticos, recetas y notas de cada consulta.', link: '#' },
+      { icon: '📋', titulo: 'Consultas', desc: 'Registra diagnósticos, recetas y notas de cada consulta médica.', link: '#' },
     ],
   };
 
-  // Mostrar sidebar médico
-  if (usuario.rol === 'medico') {
-    document.getElementById('sidebar-medico').style.display = 'block';
-    document.getElementById('stat-pacientes').style.display = 'flex';
-    document.getElementById('subtitulo').textContent = 'Aquí tienes un resumen de tu actividad médica';
-  }
-
-  // Renderizar módulos
   const grid = document.getElementById('modulos-grid');
   const lista = modulos[usuario.rol] || modulos.paciente;
   grid.innerHTML = lista.map(m => `
     <a class="modulo-card" href="${m.link}">
-      <div class="modulo-icon">${m.icon}</div>
+      <div class="modulo-icon-wrap">${m.icon}</div>
       <div class="modulo-titulo">${m.titulo}</div>
       <div class="modulo-desc">${m.desc}</div>
-      <div class="modulo-arrow">Ir al módulo →</div>
+      <div class="modulo-link">Ir al módulo</div>
     </a>
   `).join('');
 
-  // Cerrar sesión
   function cerrarSesion() {
     localStorage.removeItem('token');
     localStorage.removeItem('usuario');

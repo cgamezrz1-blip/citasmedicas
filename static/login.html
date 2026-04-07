@@ -3,98 +3,317 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>CitasMédicas — Login</title>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <title>CitasMédicas — Iniciar Sesión</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --verde: #0d6e5a; --verde-claro: #12896f;
-      --verde-menta: #e6f4f1; --crema: #faf8f5;
-      --texto: #1a2e28; --gris: #6b7b76;
-      --borde: #d4e4e0; --error: #c0392b;
+      --azul-primario:  #1a56db;
+      --azul-oscuro:    #1e3a8a;
+      --azul-medio:     #3b82f6;
+      --azul-claro:     #dbeafe;
+      --azul-muy-claro: #eff6ff;
+      --blanco:         #ffffff;
+      --gris-texto:     #1f2937;
+      --gris-medio:     #6b7280;
+      --gris-borde:     #e5e7eb;
+      --gris-fondo:     #f8fafc;
+      --verde:          #059669;
+      --error:          #dc2626;
     }
-    body { font-family: 'DM Sans', sans-serif; background: var(--crema); min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; }
-    .panel-izq { background: var(--verde); display: flex; flex-direction: column; justify-content: space-between; padding: 3rem; position: relative; overflow: hidden; }
-    .panel-izq::before { content: ''; position: absolute; width: 420px; height: 420px; border-radius: 50%; border: 80px solid rgba(255,255,255,.06); top: -100px; right: -100px; }
-    .panel-izq::after { content: ''; position: absolute; width: 260px; height: 260px; border-radius: 50%; border: 60px solid rgba(255,255,255,.05); bottom: -60px; left: -60px; }
-    .logo { display: flex; align-items: center; gap: .75rem; color: white; z-index: 1; }
-    .logo-icon { width: 42px; height: 42px; background: rgba(255,255,255,.15); border-radius: 10px; display: grid; place-items: center; font-size: 1.3rem; }
-    .logo-text { font-size: 1.1rem; font-weight: 600; }
-    .hero-text { z-index: 1; }
-    .hero-text h1 { font-family: 'DM Serif Display', serif; font-size: 2.8rem; line-height: 1.15; color: white; margin-bottom: 1.2rem; }
-    .hero-text h1 em { font-style: italic; opacity: .75; }
-    .hero-text p { color: rgba(255,255,255,.7); font-size: .95rem; line-height: 1.7; max-width: 340px; }
-    .stats { display: flex; gap: 2rem; z-index: 1; }
-    .stat { color: white; }
-    .stat-num { font-family: 'DM Serif Display', serif; font-size: 2rem; line-height: 1; }
-    .stat-label { font-size: .78rem; opacity: .6; margin-top: .2rem; }
-    .panel-der { display: flex; align-items: center; justify-content: center; padding: 3rem 4rem; }
-    .form-box { width: 100%; max-width: 400px; animation: fadeUp .5s ease both; }
-    @keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
-    .form-header { margin-bottom: 2.5rem; }
-    .form-header h2 { font-family: 'DM Serif Display', serif; font-size: 2rem; color: var(--texto); margin-bottom: .4rem; }
-    .form-header p { color: var(--gris); font-size: .9rem; }
-    .campo { margin-bottom: 1.25rem; }
-    .campo label { display: block; font-size: .82rem; font-weight: 500; color: var(--texto); margin-bottom: .45rem; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--gris-fondo);
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    /* ── Panel izquierdo ── */
+    .panel-izq {
+      background: var(--azul-oscuro);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 3rem;
+    }
+
+    /* Formas decorativas */
+    .panel-izq::before {
+      content: '';
+      position: absolute;
+      width: 500px; height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(59,130,246,0.25) 0%, transparent 70%);
+      top: -150px; right: -150px;
+    }
+    .panel-izq::after {
+      content: '';
+      position: absolute;
+      width: 300px; height: 300px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(26,86,219,0.3) 0%, transparent 70%);
+      bottom: -80px; left: -80px;
+    }
+
+    .shape-grid {
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(rgba(255,255,255,.04) 1px, transparent 1px);
+      background-size: 28px 28px;
+    }
+
+    .logo {
+      display: flex; align-items: center; gap: .75rem;
+      z-index: 1; position: relative;
+    }
+    .logo-mark {
+      width: 44px; height: 44px;
+      background: var(--azul-primario);
+      border-radius: 12px;
+      display: grid; place-items: center;
+      font-size: .85rem; font-weight: 700;
+      color: white; letter-spacing: .05em;
+    }
+    .logo-name { font-size: 1.1rem; font-weight: 700; color: white; }
+
+    .hero { z-index: 1; position: relative; }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 3rem; line-height: 1.1;
+      color: white; margin-bottom: 1.25rem;
+    }
+    .hero h1 em { font-style: italic; color: var(--azul-claro); }
+    .hero p {
+      color: rgba(255,255,255,.65);
+      font-size: .95rem; line-height: 1.75;
+      max-width: 340px;
+    }
+
+    .features { z-index: 1; position: relative; display: flex; flex-direction: column; gap: .9rem; }
+    .feature {
+      display: flex; align-items: center; gap: .85rem;
+      animation: slideIn .5s ease both;
+    }
+    .feature:nth-child(2) { animation-delay: .1s; }
+    .feature:nth-child(3) { animation-delay: .2s; }
+    .feature:nth-child(4) { animation-delay: .3s; }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(-16px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+    .feature-icon {
+      width: 38px; height: 38px; flex-shrink: 0;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 10px;
+      display: grid; place-items: center;
+      font-size: 1.1rem;
+    }
+    .feature-text { color: rgba(255,255,255,.8); font-size: .88rem; line-height: 1.4; }
+    .feature-text strong { color: white; display: block; margin-bottom: 1px; }
+
+    /* ── Panel derecho ── */
+    .panel-der {
+      display: flex; align-items: center; justify-content: center;
+      padding: 3rem 4rem;
+      background: var(--blanco);
+    }
+
+    .form-box {
+      width: 100%; max-width: 400px;
+      animation: fadeUp .5s ease both;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .form-header { margin-bottom: 2rem; }
+    .form-eyebrow {
+      font-size: .75rem; font-weight: 700;
+      color: var(--azul-primario);
+      text-transform: uppercase; letter-spacing: .1em;
+      margin-bottom: .5rem;
+    }
+    .form-header h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.1rem; color: var(--gris-texto);
+      margin-bottom: .4rem;
+    }
+    .form-header p { color: var(--gris-medio); font-size: .9rem; }
+
+    /* Campos */
+    .campo { margin-bottom: 1.1rem; }
+    .campo label {
+      display: block; font-size: .82rem;
+      font-weight: 600; color: var(--gris-texto);
+      margin-bottom: .45rem;
+    }
     .input-wrap { position: relative; }
-    .input-wrap input { width: 100%; padding: .8rem 1rem .8rem 2.8rem; border: 1.5px solid var(--borde); border-radius: 10px; background: white; font-family: 'DM Sans', sans-serif; font-size: .92rem; color: var(--texto); outline: none; transition: border-color .2s, box-shadow .2s; }
-    .input-wrap input:focus { border-color: var(--verde); box-shadow: 0 0 0 3px rgba(13,110,90,.1); }
-    .input-icon { position: absolute; left: .9rem; top: 50%; transform: translateY(-50%); color: var(--gris); font-size: 1rem; pointer-events: none; }
-    .toggle-pass { position: absolute; right: .9rem; top: 50%; transform: translateY(-50%); cursor: pointer; color: var(--gris); font-size: .9rem; background: none; border: none; padding: 0; }
-    .campo-footer { display: flex; justify-content: space-between; align-items: center; margin-top: .5rem; }
-    .error-msg { font-size: .78rem; color: var(--error); }
-    .link { font-size: .8rem; color: var(--verde); text-decoration: none; font-weight: 500; }
+    .input-wrap input {
+      width: 100%;
+      padding: .82rem 1rem .82rem 2.85rem;
+      border: 1.5px solid var(--gris-borde);
+      border-radius: 10px;
+      background: var(--gris-fondo);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: .92rem; color: var(--gris-texto);
+      outline: none;
+      transition: border-color .2s, box-shadow .2s, background .2s;
+    }
+    .input-wrap input:focus {
+      border-color: var(--azul-primario);
+      background: var(--blanco);
+      box-shadow: 0 0 0 3px rgba(26,86,219,.1);
+    }
+    .input-wrap input.error { border-color: var(--error); }
+    .input-icon {
+      position: absolute; left: .9rem; top: 50%;
+      transform: translateY(-50%);
+      color: var(--gris-medio); font-size: 1rem;
+      pointer-events: none;
+    }
+    .toggle-pass {
+      position: absolute; right: .9rem; top: 50%;
+      transform: translateY(-50%);
+      background: none; border: none;
+      color: var(--gris-medio); cursor: pointer;
+      font-size: .9rem; padding: 0;
+      transition: color .2s;
+    }
+    .toggle-pass:hover { color: var(--azul-primario); }
+
+    .campo-footer {
+      display: flex; justify-content: space-between;
+      align-items: center; margin-top: .4rem;
+    }
+    .error-msg { font-size: .76rem; color: var(--error); }
+    .link {
+      font-size: .8rem; color: var(--azul-primario);
+      text-decoration: none; font-weight: 500;
+    }
     .link:hover { text-decoration: underline; }
-    .btn { width: 100%; padding: .9rem; background: var(--verde); color: white; border: none; border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: .95rem; font-weight: 600; cursor: pointer; margin-top: .5rem; transition: background .2s, transform .15s; display: flex; align-items: center; justify-content: center; gap: .5rem; }
-    .btn:hover { background: var(--verde-claro); transform: translateY(-1px); }
-    .btn:disabled { opacity: .6; cursor: not-allowed; transform: none; }
-    .spinner { width: 16px; height: 16px; border: 2px solid rgba(255,255,255,.3); border-top-color: white; border-radius: 50%; animation: spin .6s linear infinite; display: none; }
+
+    /* Botón */
+    .btn-login {
+      width: 100%; padding: .9rem;
+      background: var(--azul-primario);
+      color: white; border: none;
+      border-radius: 10px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: .95rem; font-weight: 700;
+      cursor: pointer; margin-top: .25rem;
+      transition: background .2s, transform .15s, box-shadow .2s;
+      display: flex; align-items: center; justify-content: center; gap: .5rem;
+      box-shadow: 0 4px 14px rgba(26,86,219,.35);
+    }
+    .btn-login:hover { background: var(--azul-oscuro); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(26,86,219,.4); }
+    .btn-login:active { transform: translateY(0); }
+    .btn-login:disabled { opacity: .6; cursor: not-allowed; transform: none; box-shadow: none; }
+
+    .spinner {
+      width: 16px; height: 16px;
+      border: 2px solid rgba(255,255,255,.3);
+      border-top-color: white; border-radius: 50%;
+      animation: spin .6s linear infinite; display: none;
+    }
     @keyframes spin { to { transform: rotate(360deg); } }
-    .alerta { padding: .8rem 1rem; border-radius: 10px; font-size: .85rem; margin-bottom: 1rem; display: none; }
-    .alerta.error { background: #fdecea; color: var(--error); border: 1px solid #f5c6c2; }
-    .alerta.exito { background: var(--verde-menta); color: var(--verde); border: 1px solid var(--borde); }
-    .registro-link { text-align: center; margin-top: 1.5rem; font-size: .85rem; color: var(--gris); }
-    .registro-link a { color: var(--verde); font-weight: 600; text-decoration: none; }
+
+    /* Alerta */
+    .alerta {
+      padding: .85rem 1rem; border-radius: 10px;
+      font-size: .85rem; margin-bottom: 1.1rem;
+      display: none; border: 1px solid transparent;
+    }
+    .alerta.error { background: #fef2f2; color: var(--error); border-color: #fecaca; }
+    .alerta.exito { background: #f0fdf4; color: var(--verde); border-color: #bbf7d0; }
+
+    .divider {
+      display: flex; align-items: center; gap: 1rem;
+      margin: 1.25rem 0; color: var(--gris-medio); font-size: .8rem;
+    }
+    .divider::before, .divider::after {
+      content: ''; flex: 1; height: 1px; background: var(--gris-borde);
+    }
+
+    .registro-link {
+      text-align: center; margin-top: 1.25rem;
+      font-size: .85rem; color: var(--gris-medio);
+    }
+    .registro-link a { color: var(--azul-primario); font-weight: 600; text-decoration: none; }
     .registro-link a:hover { text-decoration: underline; }
-    @media (max-width: 768px) { body { grid-template-columns: 1fr; } .panel-izq { display: none; } .panel-der { padding: 2rem 1.5rem; } }
+
+    @media (max-width: 768px) {
+      body { grid-template-columns: 1fr; }
+      .panel-izq { display: none; }
+      .panel-der { padding: 2rem 1.5rem; }
+    }
   </style>
 </head>
 <body>
+
+<!-- Panel izquierdo -->
 <div class="panel-izq">
+  <div class="shape-grid"></div>
   <div class="logo">
-    <div class="logo-icon">🏥</div>
-    <span class="logo-text">CitasMédicas</span>
+    <div class="logo-mark">CM</div>
+    <span class="logo-name">CitasMédicas</span>
   </div>
-  <div class="hero-text">
-    <h1>Tu salud,<br/><em>organizada</em><br/>en un clic</h1>
-    <p>Gestiona citas, consulta historiales y coordina con tu equipo médico desde un solo lugar.</p>
+
+  <div class="hero">
+    <h1>Salud que<br/><em>conecta</em><br/>vidas</h1>
+    <p>Gestiona tus citas médicas, consulta tu historial y coordina con tu equipo de salud desde un solo lugar.</p>
   </div>
-  <div class="stats">
-    <div class="stat"><div class="stat-num">2.4K</div><div class="stat-label">Pacientes activos</div></div>
-    <div class="stat"><div class="stat-num">98%</div><div class="stat-label">Satisfacción</div></div>
-    <div class="stat"><div class="stat-num">24/7</div><div class="stat-label">Disponible</div></div>
+
+  <div class="features">
+    <div class="feature">
+      <div class="feature-icon">📅</div>
+      <div class="feature-text"><strong>Agenda inteligente</strong>Reserva y cancela citas en segundos</div>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">🔒</div>
+      <div class="feature-text"><strong>Datos seguros</strong>Tu información protegida con cifrado JWT</div>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">👨‍⚕️</div>
+      <div class="feature-text"><strong>Médicos disponibles</strong>Accede a tu equipo médico 24/7</div>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">📋</div>
+      <div class="feature-text"><strong>Historial completo</strong>Todas tus consultas en un solo lugar</div>
+    </div>
   </div>
 </div>
+
+<!-- Panel derecho -->
 <div class="panel-der">
   <div class="form-box">
     <div class="form-header">
+      <div class="form-eyebrow">Bienvenido de vuelta</div>
       <h2>Iniciar sesión</h2>
       <p>Accede a tu cuenta para gestionar tus citas</p>
     </div>
+
     <div id="alerta" class="alerta"></div>
+
     <div class="campo">
       <label for="email">Correo electrónico</label>
       <div class="input-wrap">
         <span class="input-icon">✉️</span>
-        <input type="email" id="email" placeholder="tu@correo.com"/>
+        <input type="email" id="email" placeholder="tu@correo.com" autocomplete="email"/>
       </div>
       <div class="campo-footer"><span id="error-email" class="error-msg"></span></div>
     </div>
+
     <div class="campo">
       <label for="password">Contraseña</label>
       <div class="input-wrap">
         <span class="input-icon">🔒</span>
-        <input type="password" id="password" placeholder="••••••••"/>
+        <input type="password" id="password" placeholder="Tu contraseña" autocomplete="current-password"/>
         <button class="toggle-pass" onclick="togglePass()" type="button" id="toggle-btn">👁</button>
       </div>
       <div class="campo-footer">
@@ -102,15 +321,20 @@
         <a href="#" class="link">¿Olvidaste tu contraseña?</a>
       </div>
     </div>
-    <button class="btn" id="btn-login" onclick="handleLogin()">
+
+    <button class="btn-login" id="btn-login" onclick="handleLogin()">
       <span id="btn-text">Iniciar sesión</span>
       <div class="spinner" id="spinner"></div>
     </button>
+
+    <div class="divider">o</div>
+
     <div class="registro-link">
-      ¿No tienes cuenta? <a href="/registro">Regístrate aquí</a>
+      ¿No tienes cuenta? <a href="/registro">Regístrate gratis</a>
     </div>
   </div>
 </div>
+
 <script>
   function togglePass() {
     const input = document.getElementById('password');
@@ -118,28 +342,34 @@
     input.type = input.type === 'password' ? 'text' : 'password';
     btn.textContent = input.type === 'password' ? '👁' : '🙈';
   }
+
   function mostrarAlerta(msg, tipo = 'error') {
     const alerta = document.getElementById('alerta');
     alerta.textContent = msg;
     alerta.className = `alerta ${tipo}`;
     alerta.style.display = 'block';
   }
+
   async function handleLogin() {
     const email = document.getElementById('email').value.trim();
     const password = document.getElementById('password').value;
     const btn = document.getElementById('btn-login');
     const spinner = document.getElementById('spinner');
     const btnText = document.getElementById('btn-text');
+
     document.getElementById('alerta').style.display = 'none';
     document.getElementById('error-email').textContent = '';
     document.getElementById('error-pass').textContent = '';
+
     let valido = true;
     if (!email) { document.getElementById('error-email').textContent = 'El correo es requerido'; valido = false; }
     if (!password) { document.getElementById('error-pass').textContent = 'La contraseña es requerida'; valido = false; }
     if (!valido) return;
+
     btn.disabled = true;
     spinner.style.display = 'block';
     btnText.textContent = 'Verificando...';
+
     try {
       const response = await fetch('/auth/login', {
         method: 'POST',
@@ -160,6 +390,7 @@
       btnText.textContent = 'Iniciar sesión';
     }
   }
+
   document.addEventListener('keydown', e => { if (e.key === 'Enter') handleLogin(); });
 </script>
 </body>

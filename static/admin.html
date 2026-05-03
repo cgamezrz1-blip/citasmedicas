@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CitasMédicas — Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--azul:#1a56db;--azul-o:#1e3a8a;--azul-c:#dbeafe;--azul-mc:#eff6ff;--blanco:#fff;--gris-t:#1f2937;--gris-m:#6b7280;--gris-b:#e5e7eb;--gris-f:#f8fafc;--verde:#059669;--verde-c:#d1fae5;--naran:#d97706;--naran-c:#fef3c7;--error:#dc2626;--error-c:#fee2e2;--morado:#7c3aed;--morado-c:#ede9fe}
+    body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--gris-f);min-height:100vh}
+    .navbar{background:var(--blanco);border-bottom:1px solid var(--gris-b);padding:0 2rem;height:64px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+    .nav-logo{display:flex;align-items:center;gap:.65rem;text-decoration:none}
+    .nav-logo-mark{width:38px;height:38px;background:var(--morado);border-radius:10px;display:grid;place-items:center;font-size:.8rem;font-weight:700;color:white}
+    .nav-logo-name{font-size:1rem;font-weight:700;color:var(--gris-t)}
+    .nav-right{display:flex;align-items:center;gap:1rem}
+    .badge{padding:.3rem .8rem;border-radius:20px;font-size:.75rem;font-weight:700;background:var(--morado-c);color:var(--morado)}
+    .btn-logout{padding:.45rem 1rem;border:1.5px solid var(--gris-b);border-radius:8px;background:var(--blanco);font-family:'Plus Jakarta Sans',sans-serif;font-size:.82rem;color:var(--gris-m);cursor:pointer;transition:all .2s;font-weight:500}
+    .btn-logout:hover{border-color:var(--error);color:var(--error);background:var(--error-c)}
+    .contenido{padding:2rem 2.5rem;max-width:1200px;margin:0 auto}
+    .page-header{margin-bottom:2rem}
+    .page-header h1{font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--gris-t)}
+    .page-header p{color:var(--gris-m);font-size:.9rem;margin-top:.25rem}
+    .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin-bottom:2rem}
+    .stat-card{background:var(--blanco);border:1px solid var(--gris-b);border-radius:12px;padding:1.25rem;text-align:center;transition:box-shadow .2s}
+    .stat-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.08)}
+    .stat-num{font-family:'Playfair Display',serif;font-size:2rem;color:var(--gris-t);line-height:1}
+    .stat-label{font-size:.8rem;color:var(--gris-m);margin-top:.3rem;font-weight:500}
+    .stat-card.azul .stat-num{color:var(--azul)}
+    .stat-card.verde .stat-num{color:var(--verde)}
+    .stat-card.naran .stat-num{color:var(--naran)}
+    .stat-card.error .stat-num{color:var(--error)}
+    .stat-card.morado .stat-num{color:var(--morado)}
+    .section-title{font-size:1rem;font-weight:700;color:var(--gris-t);margin-bottom:1rem;display:flex;align-items:center;gap:.5rem}
+    .section-title::after{content:'';flex:1;height:1px;background:var(--gris-b)}
+    .tabla-wrap{background:var(--blanco);border:1px solid var(--gris-b);border-radius:14px;overflow:hidden;margin-bottom:2rem}
+    table{width:100%;border-collapse:collapse}
+    thead{background:var(--azul-o)}
+    thead th{padding:.85rem 1rem;text-align:left;font-size:.82rem;font-weight:700;color:white;letter-spacing:.03em}
+    tbody tr{border-bottom:1px solid var(--gris-b);transition:background .15s}
+    tbody tr:last-child{border-bottom:none}
+    tbody tr:hover{background:var(--azul-mc)}
+    tbody td{padding:.8rem 1rem;font-size:.87rem;color:var(--gris-t)}
+    .rol-badge{padding:.25rem .7rem;border-radius:20px;font-size:.72rem;font-weight:700;display:inline-block}
+    .rol-admin{background:var(--morado-c);color:var(--morado)}
+    .rol-medico{background:var(--azul-c);color:var(--azul-o)}
+    .rol-paciente{background:var(--verde-c);color:var(--verde)}
+    .estado-badge{padding:.2rem .6rem;border-radius:20px;font-size:.72rem;font-weight:700;display:inline-block}
+    .activo{background:var(--verde-c);color:var(--verde)}
+    .inactivo{background:var(--error-c);color:var(--error)}
+    .acciones{display:flex;gap:.4rem}
+    .btn-accion{padding:.35rem .75rem;border-radius:6px;font-size:.78rem;font-weight:600;cursor:pointer;border:1.5px solid;transition:all .15s;font-family:'Plus Jakarta Sans',sans-serif}
+    .btn-toggle{border-color:var(--naran);color:var(--naran);background:var(--naran-c)}
+    .btn-toggle:hover{background:var(--naran);color:white}
+    .btn-del{border-color:var(--error);color:var(--error);background:var(--error-c)}
+    .btn-del:hover{background:var(--error);color:white}
+    .alerta-global{padding:.75rem 1rem;border-radius:10px;font-size:.85rem;margin-bottom:1rem;display:none;border:1px solid transparent}
+    .alerta-global.exito{background:#f0fdf4;color:var(--verde);border-color:#bbf7d0}
+    .alerta-global.error{background:var(--error-c);color:var(--error);border-color:#fecaca}
+    .filtro-wrap{display:flex;gap:.75rem;margin-bottom:1rem;flex-wrap:wrap}
+    .filtro-input{padding:.55rem 1rem;border:1.5px solid var(--gris-b);border-radius:8px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.87rem;color:var(--gris-t);background:var(--blanco);outline:none;transition:border-color .2s}
+    .filtro-input:focus{border-color:var(--azul)}
+    .empty{text-align:center;padding:3rem;color:var(--gris-m)}
+    .spinner-global{text-align:center;padding:2rem;color:var(--gris-m);font-size:.9rem}
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <a class="nav-logo" href="/dashboard">
+    <div class="nav-logo-mark">⚙️</div>
+    <span class="nav-logo-name">CitasMédicas — Admin</span>
+  </a>
+  <div class="nav-right">
+    <span class="badge">👑 Administrador</span>
+    <button class="btn-logout" onclick="cerrarSesion()">Cerrar sesión</button>
+  </div>
+</nav>
+
+<div class="contenido">
+  <div class="page-header">
+    <h1>Panel de Administración</h1>
+    <p>Gestiona usuarios, citas y estadísticas del sistema</p>
+  </div>
+
+  <div id="alerta-global" class="alerta-global"></div>
+
+  <!-- Stats -->
+  <div class="stats-grid" id="stats-grid">
+    <div class="spinner-global">Cargando estadísticas...</div>
+  </div>
+
+  <!-- Usuarios -->
+  <div class="section-title">Gestión de Usuarios</div>
+  <div class="filtro-wrap">
+    <input class="filtro-input" id="buscar-usuario" placeholder="🔍 Buscar por nombre o email..." oninput="filtrarUsuarios()" style="flex:1;min-width:200px"/>
+    <select class="filtro-input" id="filtro-rol" onchange="filtrarUsuarios()">
+      <option value="">Todos los roles</option>
+      <option value="paciente">Paciente</option>
+      <option value="medico">Médico</option>
+      <option value="admin">Admin</option>
+    </select>
+  </div>
+  <div class="tabla-wrap">
+    <table>
+      <thead><tr>
+        <th>ID</th><th>Nombre</th><th>Email</th><th>Rol</th><th>Estado</th><th>Registrado</th><th>Acciones</th>
+      </tr></thead>
+      <tbody id="tabla-usuarios"><tr><td colspan="7" class="spinner-global">Cargando...</td></tr></tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+  const token = localStorage.getItem('token');
+  const usuarioStr = localStorage.getItem('usuario');
+  if (!token || !usuarioStr) { window.location.href = '/'; }
+  const usuario = JSON.parse(usuarioStr);
+  if (usuario.rol !== 'admin') { window.location.href = '/dashboard'; }
+
+  let todosUsuarios = [];
+
+  async function cargarEstadisticas() {
+    try {
+      const res = await fetch('/admin/estadisticas', { headers: { Authorization: `Bearer ${token}` } });
+      const d = await res.json();
+      document.getElementById('stats-grid').innerHTML = `
+        <div class="stat-card azul"><div class="stat-num">${d.total_usuarios}</div><div class="stat-label">Total usuarios</div></div>
+        <div class="stat-card verde"><div class="stat-num">${d.total_pacientes}</div><div class="stat-label">Pacientes</div></div>
+        <div class="stat-card azul"><div class="stat-num">${d.total_medicos}</div><div class="stat-label">Médicos</div></div>
+        <div class="stat-card morado"><div class="stat-num">${d.total_citas}</div><div class="stat-label">Total citas</div></div>
+        <div class="stat-card naran"><div class="stat-num">${d.citas_pendientes}</div><div class="stat-label">Citas pendientes</div></div>
+        <div class="stat-card verde"><div class="stat-num">${d.citas_confirmadas}</div><div class="stat-label">Confirmadas</div></div>
+        <div class="stat-card error"><div class="stat-num">${d.citas_canceladas}</div><div class="stat-label">Canceladas</div></div>
+        <div class="stat-card azul"><div class="stat-num">${d.especialidades}</div><div class="stat-label">Especialidades</div></div>
+      `;
+    } catch { document.getElementById('stats-grid').innerHTML = '<div class="empty">Error al cargar estadísticas</div>'; }
+  }
+
+  async function cargarUsuarios() {
+    try {
+      const res = await fetch('/admin/usuarios', { headers: { Authorization: `Bearer ${token}` } });
+      todosUsuarios = await res.json();
+      renderUsuarios(todosUsuarios);
+    } catch { document.getElementById('tabla-usuarios').innerHTML = '<tr><td colspan="7" class="empty">Error al cargar usuarios</td></tr>'; }
+  }
+
+  function renderUsuarios(lista) {
+    if (!lista.length) { document.getElementById('tabla-usuarios').innerHTML = '<tr><td colspan="7" class="empty">No hay usuarios</td></tr>'; return; }
+    document.getElementById('tabla-usuarios').innerHTML = lista.map(u => `
+      <tr>
+        <td>${u.id}</td>
+        <td><strong>${u.nombre}</strong></td>
+        <td>${u.email}</td>
+        <td><span class="rol-badge rol-${u.rol}">${u.rol}</span></td>
+        <td><span class="estado-badge ${u.activo ? 'activo' : 'inactivo'}">${u.activo ? 'Activo' : 'Inactivo'}</span></td>
+        <td>${u.creado_en}</td>
+        <td>
+          <div class="acciones">
+            <button class="btn-accion btn-toggle" onclick="toggleUsuario(${u.id})">${u.activo ? 'Desactivar' : 'Activar'}</button>
+            ${u.id !== usuario.id ? `<button class="btn-accion btn-del" onclick="eliminarUsuario(${u.id}, '${u.nombre}')">Eliminar</button>` : ''}
+          </div>
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  function filtrarUsuarios() {
+    const buscar = document.getElementById('buscar-usuario').value.toLowerCase();
+    const rol = document.getElementById('filtro-rol').value;
+    const filtrado = todosUsuarios.filter(u => {
+      const matchBuscar = u.nombre.toLowerCase().includes(buscar) || u.email.toLowerCase().includes(buscar);
+      const matchRol = !rol || u.rol === rol;
+      return matchBuscar && matchRol;
+    });
+    renderUsuarios(filtrado);
+  }
+
+  async function toggleUsuario(id) {
+    try {
+      await fetch(`/admin/usuarios/${id}/activar`, { method: 'PUT', headers: { Authorization: `Bearer ${token}` } });
+      mostrarAlerta('✅ Estado del usuario actualizado', 'exito');
+      cargarUsuarios();
+    } catch { mostrarAlerta('❌ Error al actualizar', 'error'); }
+  }
+
+  async function eliminarUsuario(id, nombre) {
+    if (!confirm(`¿Eliminar al usuario "${nombre}"? Esta acción no se puede deshacer.`)) return;
+    try {
+      const res = await fetch(`/admin/usuarios/${id}`, { method: 'DELETE', headers: { Authorization: `Bearer ${token}` } });
+      const d = await res.json();
+      if (!res.ok) throw new Error(d.detail);
+      mostrarAlerta('✅ Usuario eliminado', 'exito');
+      cargarUsuarios();
+    } catch (err) { mostrarAlerta('❌ ' + err.message, 'error'); }
+  }
+
+  function mostrarAlerta(msg, tipo) {
+    const el = document.getElementById('alerta-global');
+    el.textContent = msg; el.className = `alerta-global ${tipo}`; el.style.display = 'block';
+    setTimeout(() => { el.style.display = 'none'; }, 3500);
+  }
+
+  function cerrarSesion() { localStorage.clear(); window.location.href = '/'; }
+
+  cargarEstadisticas();
+  cargarUsuarios();
+</script>
+</body>
+</html>

@@ -162,6 +162,14 @@
       </button>
     </div>
 
+
+    <div id="campo-especialidad" style="display:none;margin-bottom:1.25rem">
+      <label style="display:block;font-size:.82rem;font-weight:600;color:#1f2937;margin-bottom:.5rem">Especialidad medica</label>
+      <select id="especialidad-id" style="width:100%;padding:.82rem 1rem;border:1.5px solid #1a56db;border-radius:10px;background:#eff6ff;font-size:.92rem;color:#1f2937;outline:none">
+        <option value="">Selecciona tu especialidad...</option>
+      </select>
+      <span style="font-size:.75rem;color:#059669;margin-top:.4rem;display:block">Los pacientes podran verte segun tu especialidad</span>
+    </div>
     <div class="campo">
       <label for="nombre">Nombre completo</label>
       <div class="input-wrap">
@@ -215,10 +223,28 @@
 <script>
   let rolSeleccionado = 'paciente';
 
+  // Cargar especialidades al iniciar
+  async function cargarEspecialidades() {
+    try {
+      const res = await fetch('/especialidades');
+      const lista = await res.json();
+      const select = document.getElementById('especialidad-id');
+      lista.forEach(e => {
+        const opt = document.createElement('option');
+        opt.value = e.id;
+        opt.textContent = e.nombre;
+        select.appendChild(opt);
+      });
+    } catch { console.log('Error cargando especialidades'); }
+  }
+  cargarEspecialidades();
+
   function seleccionarRol(rol, el) {
     rolSeleccionado = rol;
     document.querySelectorAll('.chip').forEach(c => c.classList.remove('activo'));
     el.classList.add('activo');
+    // Mostrar u ocultar especialidad
+    document.getElementById('campo-especialidad').style.display = rol === 'medico' ? 'block' : 'none';
   }
 
   function togglePass() {
@@ -289,7 +315,7 @@
       const response = await fetch('/auth/registro', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ nombre, email, password, rol: rolSeleccionado }),
+        body: JSON.stringify({ nombre, email, password, rol: rolSeleccionado, especialidad_id: rolSeleccionado === 'medico' ? (parseInt(document.getElementById('especialidad-id').value) || null) : null }),
       });
       const data = await response.json();
       if (!response.ok) throw new Error(data.detail || 'Error al registrar');

@@ -4,418 +4,765 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>CitasMédicas — Dashboard</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     :root{--azul:#1a56db;--azul-o:#1e3a8a;--azul-c:#dbeafe;--azul-mc:#eff6ff;--blanco:#fff;--gris-t:#1f2937;--gris-m:#6b7280;--gris-b:#e5e7eb;--gris-f:#f8fafc;--verde:#059669;--verde-c:#d1fae5;--naran:#d97706;--naran-c:#fef3c7;--error:#dc2626;--error-c:#fee2e2;--morado:#7c3aed;--morado-c:#ede9fe}
     body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--gris-f);min-height:100vh}
-    .navbar{background:var(--blanco);border-bottom:1px solid var(--gris-b);padding:0 2rem;height:64px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 1px 3px rgba(0,0,0,.06)}
-    .nav-logo{display:flex;align-items:center;gap:.65rem}
-    .nav-logo-mark{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;font-size:.8rem;font-weight:700;color:white}
-    .nav-logo-mark.azul{background:var(--azul)}
-    .nav-logo-mark.morado{background:var(--morado)}
-    .nav-logo-name{font-size:1rem;font-weight:700;color:var(--gris-t)}
-    .nav-right{display:flex;align-items:center;gap:1rem}
-    .nav-saludo{font-size:.88rem;color:var(--gris-m)}
-    .nav-saludo strong{color:var(--gris-t)}
-    .badge{padding:.3rem .8rem;border-radius:20px;font-size:.75rem;font-weight:700}
-    .badge-medico{background:var(--azul-c);color:var(--azul-o)}
-    .badge-paciente{background:var(--verde-c);color:var(--verde)}
-    .badge-admin{background:var(--morado-c);color:var(--morado)}
-    .btn-logout{padding:.45rem 1rem;border:1.5px solid var(--gris-b);border-radius:8px;background:var(--blanco);font-family:'Plus Jakarta Sans',sans-serif;font-size:.82rem;color:var(--gris-m);cursor:pointer;transition:all .2s;font-weight:500}
-    .btn-logout:hover{border-color:var(--error);color:var(--error);background:var(--error-c)}
-    .layout{display:grid;grid-template-columns:248px 1fr;min-height:calc(100vh - 64px)}
-    .sidebar{background:var(--blanco);border-right:1px solid var(--gris-b);padding:1.5rem 1rem}
-    .sidebar-section{margin-bottom:1.75rem}
-    .sidebar-title{font-size:.7rem;font-weight:700;color:var(--gris-m);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.6rem;padding:0 .6rem}
-    .nav-item{display:flex;align-items:center;gap:.7rem;padding:.6rem .75rem;border-radius:10px;cursor:pointer;font-size:.875rem;color:var(--gris-m);transition:all .2s;margin-bottom:.15rem;text-decoration:none;font-weight:500}
-    .nav-item:hover{background:var(--azul-mc);color:var(--azul)}
-    .nav-item.activo{background:var(--azul-c);color:var(--azul-o);font-weight:700}
-    .nav-item.admin-item:hover{background:var(--morado-c);color:var(--morado)}
-    .nav-item .icon{font-size:1.05rem;width:20px;text-align:center}
-    .nav-item .dot{width:6px;height:6px;background:var(--azul);border-radius:50%;margin-left:auto}
-    .contenido{padding:2rem 2.5rem}
-    .welcome-bar{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:2rem}
-    .welcome-text h1{font-family:'Playfair Display',serif;font-size:1.9rem;color:var(--gris-t);margin-bottom:.3rem}
-    .welcome-text p{color:var(--gris-m);font-size:.9rem}
-    .welcome-date{background:var(--blanco);border:1px solid var(--gris-b);border-radius:10px;padding:.6rem 1rem;font-size:.82rem;color:var(--gris-m);font-weight:500}
-    .stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:2rem}
-    .stat-card{background:var(--blanco);border:1px solid var(--gris-b);border-radius:14px;padding:1.25rem 1.5rem;display:flex;align-items:center;gap:1rem;transition:box-shadow .2s,transform .2s}
-    .stat-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.08);transform:translateY(-2px)}
-    .stat-icon{width:50px;height:50px;border-radius:12px;display:grid;place-items:center;font-size:1.4rem;flex-shrink:0}
-    .stat-icon.azul{background:var(--azul-c)}.stat-icon.verde{background:var(--verde-c)}.stat-icon.naran{background:var(--naran-c)}.stat-icon.morado{background:var(--morado-c)}
-    .stat-num{font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--gris-t);line-height:1}
-    .stat-label{font-size:.8rem;color:var(--gris-m);margin-top:.2rem;font-weight:500}
-    .stat-trend{font-size:.72rem;margin-top:.4rem}
-    .stat-trend.positivo{color:var(--verde)}.stat-trend.neutro{color:var(--gris-m)}
-    .section-title{font-size:1rem;font-weight:700;color:var(--gris-t);margin-bottom:1rem;display:flex;align-items:center;gap:.5rem}
+    /* Navbar */
+    .navbar{background:var(--blanco);border-bottom:1px solid var(--gris-b);padding:0 1.5rem;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+    .nav-logo{display:flex;align-items:center;gap:.6rem;text-decoration:none}
+    .nav-mark{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;font-size:.8rem;font-weight:700;color:white}
+    .nav-name{font-size:.95rem;font-weight:700;color:var(--gris-t)}
+    .nav-r{display:flex;align-items:center;gap:.75rem}
+    .badge{padding:.25rem .75rem;border-radius:20px;font-size:.72rem;font-weight:700}
+    .b-p{background:var(--verde-c);color:var(--verde)}.b-m{background:var(--azul-c);color:var(--azul-o)}.b-a{background:var(--morado-c);color:var(--morado)}
+    /* Notif bell */
+    .notif-btn{position:relative;width:36px;height:36px;border:1.5px solid var(--gris-b);border-radius:10px;background:var(--blanco);cursor:pointer;display:grid;place-items:center;font-size:1rem;transition:all .2s}
+    .notif-btn:hover{border-color:var(--azul);background:var(--azul-mc)}
+    .notif-badge{position:absolute;top:-4px;right:-4px;background:var(--error);color:white;border-radius:50%;width:17px;height:17px;font-size:.6rem;font-weight:700;display:none;place-items:center}
+    .notif-badge.on{display:grid}
+    .btn-out{padding:.38rem .9rem;border:1.5px solid var(--gris-b);border-radius:8px;background:var(--blanco);font-family:'Plus Jakarta Sans',sans-serif;font-size:.8rem;color:var(--gris-m);cursor:pointer;transition:all .2s}
+    .btn-out:hover{border-color:var(--error);color:var(--error);background:var(--error-c)}
+    /* Layout */
+    .layout{display:grid;grid-template-columns:260px 1fr;min-height:calc(100vh - 60px)}
+    .sidebar{background:var(--blanco);border-right:1px solid var(--gris-b);padding:1.25rem .85rem;overflow-y:auto;display:flex;flex-direction:column}
+    .sb-sec{margin-bottom:1.5rem}
+    .sb-title{font-size:.67rem;font-weight:700;color:var(--gris-m);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.45rem;padding:0 .5rem}
+    .sb-item{display:flex;align-items:center;gap:.65rem;padding:.52rem .7rem;border-radius:10px;font-size:.84rem;color:var(--gris-m);transition:all .2s;margin-bottom:.08rem;text-decoration:none;font-weight:500;cursor:pointer;border:none;background:none;width:100%;text-align:left;font-family:'Plus Jakarta Sans',sans-serif}
+    .sb-item:hover{background:var(--azul-mc);color:var(--azul)}.sb-item.activo{background:var(--azul-c);color:var(--azul-o);font-weight:700}
+    /* Contenido */
+    .contenido{padding:1.75rem 2rem;overflow-y:auto}
+    .welcome{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem}
+    .welcome h1{font-family:'Playfair Display',serif;font-size:1.75rem;color:var(--gris-t)}
+    .welcome p{color:var(--gris-m);font-size:.87rem;margin-top:.2rem}
+    .date-badge{background:var(--blanco);border:1px solid var(--gris-b);border-radius:10px;padding:.5rem 1rem;font-size:.8rem;color:var(--gris-m);font-weight:500;white-space:nowrap}
+    /* Stats */
+    .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:.9rem;margin-bottom:1.5rem}
+    .stat{background:var(--blanco);border:1px solid var(--gris-b);border-radius:14px;padding:1.1rem 1.3rem;display:flex;align-items:center;gap:.9rem;transition:all .2s}
+    .stat:hover{box-shadow:0 4px 16px rgba(0,0,0,.08);transform:translateY(-2px)}
+    .stat-icon{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;font-size:1.3rem;flex-shrink:0}
+    .si-azul{background:var(--azul-c)}.si-verde{background:var(--verde-c)}.si-naran{background:var(--naran-c)}.si-morado{background:var(--morado-c)}
+    .stat-num{font-family:'Playfair Display',serif;font-size:1.7rem;color:var(--gris-t);line-height:1}
+    .stat-label{font-size:.78rem;color:var(--gris-m);font-weight:500;margin-top:.15rem}
+    /* Proxima cita */
+    .proxima-card{background:linear-gradient(135deg,var(--azul-o) 0%,var(--azul) 100%);border-radius:14px;padding:1.25rem 1.5rem;margin-bottom:1.5rem;color:white;display:none}
+    .proxima-card.visible{display:block}
+    .proxima-title{font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;opacity:.75;margin-bottom:.5rem}
+    .proxima-info{display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap}
+    .proxima-fecha{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700}
+    .proxima-det{font-size:.87rem;opacity:.9}
+    .proxima-det span{display:block;margin-top:.2rem}
+    .proxima-badge{padding:.3rem .85rem;border-radius:20px;font-size:.74rem;font-weight:700;background:rgba(255,255,255,.2);margin-left:auto}
+    /* Sección modulos */
+    .section-title{font-size:.9rem;font-weight:700;color:var(--gris-t);margin-bottom:.9rem;display:flex;align-items:center;gap:.5rem}
     .section-title::after{content:'';flex:1;height:1px;background:var(--gris-b)}
-    .modulos-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem}
-    .modulo-card{background:var(--blanco);border:1.5px solid var(--gris-b);border-radius:14px;padding:1.5rem;cursor:pointer;transition:all .25s;text-decoration:none;display:block;position:relative;overflow:hidden}
-    .modulo-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--azul);transform:scaleX(0);transition:transform .25s;transform-origin:left}
-    .modulo-card:hover{border-color:var(--azul);box-shadow:0 8px 24px rgba(26,86,219,.12);transform:translateY(-3px)}
-    .modulo-card:hover::before{transform:scaleX(1)}
-    .modulo-card.admin-card::before{background:var(--morado)}
-    .modulo-card.admin-card:hover{border-color:var(--morado);box-shadow:0 8px 24px rgba(124,58,237,.12)}
-    .modulo-icon-wrap{width:48px;height:48px;background:var(--azul-mc);border-radius:12px;display:grid;place-items:center;font-size:1.5rem;margin-bottom:1rem}
-    .modulo-icon-wrap.morado{background:var(--morado-c)}
-    .modulo-titulo{font-size:.95rem;font-weight:700;color:var(--gris-t);margin-bottom:.4rem}
-    .modulo-desc{font-size:.82rem;color:var(--gris-m);line-height:1.55}
-    .modulo-link{margin-top:.9rem;font-size:.8rem;color:var(--azul);font-weight:700;display:flex;align-items:center;gap:.3rem}
-    .modulo-link.morado{color:var(--morado)}
-    .modulo-link::after{content:'→';transition:transform .2s}
-    .modulo-card:hover .modulo-link::after{transform:translateX(4px)}
-    .actividad-box{background:var(--blanco);border:1px solid var(--gris-b);border-radius:14px;padding:1.5rem;margin-top:1.5rem}
-    .actividad-empty{text-align:center;padding:2rem;color:var(--gris-m);font-size:.9rem}
-    .actividad-empty .empty-icon{font-size:2.5rem;margin-bottom:.75rem}
+    .modulos{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.9rem;margin-bottom:1.5rem}
+    .modulo{background:var(--blanco);border:1.5px solid var(--gris-b);border-radius:14px;padding:1.25rem;cursor:pointer;transition:all .25s;text-decoration:none;display:block;position:relative;overflow:hidden}
+    .modulo::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--azul);transform:scaleX(0);transition:transform .25s;transform-origin:left}
+    .modulo:hover{border-color:var(--azul);box-shadow:0 6px 20px rgba(26,86,219,.12);transform:translateY(-2px)}
+    .modulo:hover::before{transform:scaleX(1)}
+    .modulo.admin::before{background:var(--morado)}.modulo.admin:hover{border-color:var(--morado);box-shadow:0 6px 20px rgba(124,58,237,.12)}
+    .mod-icon{width:44px;height:44px;border-radius:11px;display:grid;place-items:center;font-size:1.3rem;margin-bottom:.85rem}
+    .mi-azul{background:var(--azul-mc)}.mi-morado{background:var(--morado-c)}
+    .mod-title{font-size:.9rem;font-weight:700;color:var(--gris-t);margin-bottom:.3rem}
+    .mod-desc{font-size:.8rem;color:var(--gris-m);line-height:1.5}
+    .mod-link{margin-top:.75rem;font-size:.78rem;font-weight:700;display:flex;align-items:center;gap:.3rem;color:var(--azul)}
+    .modulo.admin .mod-link{color:var(--morado)}
+    /* Notificaciones panel */
+    .notif-panel{background:var(--blanco);border:1px solid var(--gris-b);border-radius:14px;overflow:hidden}
+    .notif-header{padding:.9rem 1.25rem;border-bottom:1px solid var(--gris-b);display:flex;justify-content:space-between;align-items:center}
+    .notif-header h3{font-size:.9rem;font-weight:700;color:var(--gris-t)}
+    .btn-leer-todas{font-size:.78rem;color:var(--azul);background:none;border:none;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;font-weight:600}
+    .notif-item{padding:.85rem 1.25rem;border-bottom:1px solid var(--gris-b);display:flex;align-items:flex-start;gap:.75rem;transition:background .15s}
+    .notif-item:last-child{border-bottom:none}
+    .notif-item:hover{background:var(--azul-mc)}
+    .notif-item.no-leida{background:var(--azul-mc)}
+    .notif-dot{width:8px;height:8px;border-radius:50%;background:var(--azul);flex-shrink:0;margin-top:.35rem}
+    .notif-dot.leida{background:var(--gris-b)}
+    .notif-msg{font-size:.84rem;color:var(--gris-t);line-height:1.45}
+    .notif-time{font-size:.73rem;color:var(--gris-m);margin-top:.2rem}
+    .notif-empty{padding:2.5rem;text-align:center;color:var(--gris-m);font-size:.87rem}
     /* Modal perfil */
-    .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:none;place-items:center;backdrop-filter:blur(2px)}
-    .modal-overlay.visible{display:grid}
-    .modal{background:var(--blanco);border-radius:16px;padding:2rem;width:100%;max-width:460px;margin:1rem;box-shadow:0 20px 60px rgba(0,0,0,.2);animation:modalIn .25s ease}
-    @keyframes modalIn{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
-    .modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem}
-    .modal-title{font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--gris-t)}
-    .modal-close{width:32px;height:32px;border:none;background:var(--gris-f);border-radius:8px;cursor:pointer;font-size:1rem;display:grid;place-items:center}
-    .modal-close:hover{background:var(--error-c)}
-    .tabs{display:flex;gap:.5rem;margin-bottom:1.5rem;border-bottom:1px solid var(--gris-b);padding-bottom:.75rem}
-    .tab{padding:.45rem 1rem;border-radius:8px;font-size:.85rem;font-weight:500;cursor:pointer;border:none;background:none;color:var(--gris-m);font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s}
-    .tab.activo{background:var(--azul-c);color:var(--azul-o);font-weight:700}
-    .tab-content{display:none}
-    .tab-content.visible{display:block}
-    .campo{margin-bottom:1rem}
-    .campo label{display:block;font-size:.82rem;font-weight:600;color:var(--gris-t);margin-bottom:.4rem}
-    .campo input{width:100%;padding:.75rem 1rem;border:1.5px solid var(--gris-b);border-radius:10px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.9rem;color:var(--gris-t);background:var(--gris-f);outline:none;transition:border-color .2s}
+    .overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:none;place-items:center;backdrop-filter:blur(2px)}
+    .overlay.on{display:grid}
+    .modal{background:var(--blanco);border-radius:16px;padding:1.75rem;width:100%;max-width:440px;margin:1rem;box-shadow:0 20px 60px rgba(0,0,0,.2);max-height:90vh;overflow-y:auto;animation:mi .25s ease}
+    @keyframes mi{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
+    .mh{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.25rem}
+    .mh h2{font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--gris-t)}
+    .mx{width:30px;height:30px;border:none;background:var(--gris-f);border-radius:8px;cursor:pointer;font-size:.9rem;display:grid;place-items:center}
+    .mx:hover{background:var(--error-c)}
+    .avatar-wrap{text-align:center;margin-bottom:1.25rem}
+    .avatar{width:72px;height:72px;border-radius:50%;display:grid;place-items:center;font-family:'Playfair Display',serif;font-size:1.7rem;font-weight:700;color:white;margin:0 auto .75rem;cursor:pointer;transition:opacity .2s}
+    .avatar:hover{opacity:.85}
+    .avatar-hint{font-size:.75rem;color:var(--gris-m)}
+    .color-picks{display:flex;gap:.5rem;justify-content:center;margin-top:.5rem;flex-wrap:wrap}
+    .cp{width:24px;height:24px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:all .2s}
+    .cp:hover,.cp.sel{border-color:var(--gris-t);transform:scale(1.2)}
+    .tabs{display:flex;gap:.4rem;margin-bottom:1.25rem;border-bottom:1px solid var(--gris-b);padding-bottom:.65rem}
+    .tab{padding:.4rem .9rem;border-radius:8px;font-size:.83rem;font-weight:500;cursor:pointer;border:none;background:none;color:var(--gris-m);font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s}
+    .tab.on{background:var(--azul-c);color:var(--azul-o);font-weight:700}
+    .tc{display:none}.tc.on{display:block}
+    .campo{margin-bottom:.9rem}
+    .campo label{display:block;font-size:.8rem;font-weight:600;color:var(--gris-t);margin-bottom:.35rem}
+    .campo input{width:100%;padding:.72rem .9rem;border:1.5px solid var(--gris-b);border-radius:9px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.88rem;color:var(--gris-t);background:var(--gris-f);outline:none;transition:border-color .2s}
     .campo input:focus{border-color:var(--azul);background:var(--blanco)}
-    .campo input:disabled{opacity:.6;cursor:not-allowed}
-    .perfil-avatar{width:72px;height:72px;background:var(--azul);border-radius:50%;display:grid;place-items:center;font-size:1.8rem;font-weight:700;color:white;margin:0 auto 1.25rem;font-family:'Playfair Display',serif}
-    .perfil-rol-badge{text-align:center;margin-bottom:1.25rem}
-    .btn-guardar{width:100%;padding:.85rem;background:var(--azul);color:white;border:none;border-radius:10px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.9rem;font-weight:700;cursor:pointer;transition:all .2s;box-shadow:0 4px 12px rgba(26,86,219,.3)}
-    .btn-guardar:hover{background:var(--azul-o)}
-    .btn-guardar:disabled{opacity:.6;cursor:not-allowed}
-    .alerta-modal{padding:.75rem 1rem;border-radius:8px;font-size:.85rem;margin-bottom:1rem;display:none;border:1px solid transparent}
-    .alerta-modal.error{background:var(--error-c);color:var(--error);border-color:#fecaca}
-    .alerta-modal.exito{background:#f0fdf4;color:var(--verde);border-color:#bbf7d0}
-    @media(max-width:1024px){.stats-grid{grid-template-columns:repeat(2,1fr)}}
-    @media(max-width:768px){.layout{grid-template-columns:1fr}.sidebar{display:none}.contenido{padding:1.5rem}.stats-grid{grid-template-columns:1fr 1fr}}
+    .campo input:disabled{opacity:.65;cursor:not-allowed}
+    .campo .info-val{padding:.72rem .9rem;background:var(--gris-f);border:1.5px solid var(--gris-b);border-radius:9px;font-size:.88rem;color:var(--gris-t)}
+    .btn-save{width:100%;padding:.82rem;background:var(--azul);color:white;border:none;border-radius:10px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.9rem;font-weight:700;cursor:pointer;transition:all .2s;box-shadow:0 4px 12px rgba(26,86,219,.3)}
+    .btn-save:hover{background:var(--azul-o)}
+    .alerta{padding:.75rem 1rem;border-radius:8px;font-size:.83rem;margin-bottom:.8rem;display:none;border:1px solid transparent}
+    .alerta.e{background:var(--error-c);color:var(--error);border-color:#fecaca}
+    .alerta.s{background:#f0fdf4;color:var(--verde);border-color:#bbf7d0}
+    /* Dark mode */
+    body.dark{--blanco:#1e2433;--gris-f:#151b27;--gris-t:#f1f5f9;--gris-m:#94a3b8;--gris-b:#2d3748;--gris-mc:#1a2235;background:#151b27}
+    body.dark .navbar{background:#1a2235;border-color:#2d3748}
+    body.dark .sidebar{background:#1a2235;border-color:#2d3748}
+    body.dark .stat{background:#1a2235;border-color:#2d3748}
+    body.dark .modulo{background:#1a2235;border-color:#2d3748}
+    body.dark .modulo:hover{border-color:var(--azul)}
+    body.dark .notif-panel{background:#1a2235;border-color:#2d3748}
+    body.dark .notif-header{border-color:#2d3748}
+    body.dark .notif-item{border-color:#2d3748}
+    body.dark .notif-item:hover{background:#253047}
+    body.dark .notif-item.no-leida{background:#1e3a5f}
+    body.dark .notif-dropdown{background:#1a2235;border-color:#2d3748}
+    body.dark .nd-header{border-color:#2d3748}
+    body.dark .nd-item{border-color:#2d3748}
+    body.dark .nd-item:hover,.body.dark .nd-item.nueva{background:#1e3a5f}
+    body.dark .nd-footer{border-color:#2d3748}
+    body.dark .welcome h1{color:#f1f5f9}
+    body.dark .date-badge{background:#1a2235;border-color:#2d3748;color:#94a3b8}
+    body.dark .section-title{color:#f1f5f9}
+    body.dark .section-title::after{background:#2d3748}
+    body.dark .sb-item{color:#94a3b8}
+    body.dark .sb-item:hover{background:#253047;color:#60a5fa}
+    body.dark .sb-item.activo{background:#1e3a5f;color:#93c5fd}
+    body.dark .sb-title{color:#475569}
+    body.dark .proxima-card{background:linear-gradient(135deg,#1e3a8a 0%,#1a56db 100%)}
+    body.dark .modal{background:#1a2235}
+    body.dark .campo input{background:#151b27;border-color:#2d3748;color:#f1f5f9}
+    body.dark .campo input:focus{background:#1a2235}
+    body.dark .campo input:disabled{background:#151b27}
+    body.dark .campo .info-val{background:#151b27;border-color:#2d3748;color:#94a3b8}
+    body.dark .tabs{border-color:#2d3748}
+    body.dark .tab{color:#94a3b8}
+    body.dark .tab.on{background:#1e3a5f;color:#93c5fd}
+    body.dark .mh h2{color:#f1f5f9}
+    body.dark .nav-name{color:#f1f5f9}
+    body.dark .mod-title{color:#f1f5f9}
+    body.dark .mod-desc{color:#94a3b8}
+    body.dark .stat-label{color:#94a3b8}
+    body.dark .stat-num{color:#f1f5f9}
+    body.dark .buscador-medicos-section .medicos-card-inner{background:#1a2235}
+    .btn-dark{width:36px;height:36px;border:1.5px solid var(--gris-b);border-radius:10px;background:var(--blanco);cursor:pointer;display:grid;place-items:center;font-size:1rem;transition:all .2s}
+    .btn-dark:hover{border-color:var(--azul);background:var(--azul-mc)}
+    /* Sidebar user card */
+    .sb-user-card{margin-top:auto;padding:.85rem .7rem;border-top:1px solid var(--gris-b);display:flex;align-items:center;gap:.65rem}
+    .sb-avatar{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-size:.85rem;font-weight:700;color:white;flex-shrink:0;font-family:'Playfair Display',serif}
+    .sb-user-info{min-width:0}
+    .sb-user-name{font-size:.82rem;font-weight:700;color:var(--gris-t);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .sb-user-role{font-size:.72rem;color:var(--gris-m);margin-top:.05rem}
+    body.dark .sb-user-card{border-color:#2d3748}
+    body.dark .sb-user-name{color:#f1f5f9}
+    /* Sidebar citas */
+    .sb-cita-mini{background:var(--azul-mc);border:1px solid var(--azul-c);border-radius:9px;padding:.6rem .75rem;margin-bottom:.45rem;cursor:pointer;transition:all .2s;text-decoration:none;display:block}
+    .sb-cita-mini:hover{border-color:var(--azul);background:var(--azul-c)}
+    .sb-cita-mini-fecha{font-size:.72rem;font-weight:700;color:var(--azul);margin-bottom:.15rem}
+    .sb-cita-mini-med{font-size:.8rem;font-weight:600;color:var(--gris-t);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .sb-cita-mini-hora{font-size:.72rem;color:var(--gris-m);margin-top:.1rem}
+    .sb-cita-mini-estado{font-size:.66rem;font-weight:700;padding:.12rem .45rem;border-radius:20px;display:inline-block;margin-top:.2rem}
+    .sb-cita-mini-estado.conf{background:var(--verde-c);color:var(--verde)}
+    .sb-cita-mini-estado.pend{background:var(--naran-c);color:var(--naran)}
+    body.dark .sb-cita-mini{background:#1e3a5f;border-color:#2d4a7a}
+    body.dark .sb-cita-mini:hover{background:#253047;border-color:var(--azul)}
+    body.dark .sb-cita-mini-med{color:#f1f5f9}
+    body.dark .sb-cita-mini-hora{color:#94a3b8}
+    /* Notif dropdown */
+    .notif-dropdown{position:fixed;top:68px;right:1.5rem;width:340px;background:var(--blanco);border:1.5px solid var(--gris-b);border-radius:14px;box-shadow:0 8px 30px rgba(0,0,0,.15);z-index:300;display:none;max-height:420px;overflow:hidden;flex-direction:column;animation:mi .2s ease}
+    .notif-dropdown.on{display:flex}
+    .nd-header{padding:.9rem 1.1rem;border-bottom:1px solid var(--gris-b);display:flex;justify-content:space-between;align-items:center;flex-shrink:0}
+    .nd-header h3{font-size:.9rem;font-weight:700;color:var(--gris-t)}
+    .nd-body{overflow-y:auto;flex:1}
+    .nd-item{padding:.8rem 1.1rem;border-bottom:1px solid var(--gris-b);display:flex;align-items:flex-start;gap:.65rem;cursor:pointer;transition:background .15s}
+    .nd-item:last-child{border-bottom:none}
+    .nd-item:hover{background:var(--azul-mc)}
+    .nd-item.nueva{background:var(--azul-mc)}
+    .nd-dot{width:8px;height:8px;border-radius:50%;background:var(--azul);flex-shrink:0;margin-top:.3rem}
+    .nd-dot.leida{background:transparent;border:1.5px solid var(--gris-b)}
+    .nd-msg{font-size:.83rem;color:var(--gris-t);line-height:1.45}
+    .nd-time{font-size:.71rem;color:var(--gris-m);margin-top:.2rem}
+    .nd-empty{padding:2rem;text-align:center;color:var(--gris-m);font-size:.85rem}
+    .nd-footer{padding:.65rem 1.1rem;border-top:1px solid var(--gris-b);flex-shrink:0}
+    /* Responsive */
+    @media(max-width:1024px){.stats{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:900px){.layout{grid-template-columns:1fr}.sidebar{display:none}.contenido{padding:1.25rem}.stats{grid-template-columns:1fr 1fr}}
+    @media(max-width:480px){.stats{grid-template-columns:1fr}.modulos{grid-template-columns:1fr}.proxima-info{flex-direction:column;gap:.5rem}}
   </style>
 </head>
 <body>
-
 <nav class="navbar">
-  <div class="nav-logo">
-    <div class="nav-logo-mark" id="nav-mark">CM</div>
-    <span class="nav-logo-name">CitasMédicas</span>
-  </div>
-  <div class="nav-right">
-    <div class="nav-saludo">Hola, <strong id="nav-nombre">...</strong></div>
-    <span class="badge" id="badge-rol"></span>
-    <button class="btn-logout" onclick="cerrarSesion()">Cerrar sesión</button>
+  <a class="nav-logo" href="/dashboard">
+    <div class="nav-mark" id="nav-mark">CM</div>
+    <span class="nav-name">CitasMédicas</span>
+  </a>
+  <div class="nav-r">
+    <div class="nav-r" style="gap:.5rem">
+      <span id="nav-saludo" style="font-size:.85rem;color:var(--gris-m)">Hola, <strong id="nav-nombre">...</strong></span>
+      <span class="badge" id="nav-badge"></span>
+    </div>
+    <button class="notif-btn" onclick="toggleNotifPanel()" title="Notificaciones">
+      🔔<span class="notif-badge" id="notif-count">0</span>
+    </button>
+    <button class="btn-dark" onclick="toggleDark()" id="btn-dark" title="Modo oscuro">🌙</button>
+    <button class="btn-out" onclick="cerrarSesion()">Salir</button>
   </div>
 </nav>
 
+<!-- Notif dropdown -->
+<div class="notif-dropdown" id="notif-dropdown">
+  <div class="nd-header">
+    <h3>🔔 Notificaciones</h3>
+    <button class="btn-leer-todas" onclick="leerTodas()">Marcar leídas</button>
+  </div>
+  <div class="nd-body" id="nd-body"><div class="nd-empty">Cargando...</div></div>
+  <div class="nd-footer">
+    <button class="btn-leer-todas" onclick="leerTodas()" style="width:100%;text-align:center">✓ Marcar todas como leídas</button>
+  </div>
+</div>
+
 <div class="layout">
   <aside class="sidebar">
-    <div class="sidebar-section">
-      <div class="sidebar-title">Principal</div>
-      <a class="nav-item activo" href="/dashboard"><span class="icon">🏠</span> Inicio <span class="dot"></span></a>
-      <a class="nav-item" href="/mis-citas"><span class="icon">📅</span> Mis citas</a>
-      <a class="nav-item" href="#" onclick="abrirPerfil()"><span class="icon">👤</span> Mi perfil</a>
+    <div class="sb-sec">
+      <div class="sb-title">Principal</div>
+      <a class="sb-item activo" href="/dashboard">🏠 Inicio</a>
+      <a class="sb-item" href="/mis-citas">📅 Mis citas</a>
+      <button class="sb-item" onclick="abrirPerfil()">👤 Mi perfil</button>
     </div>
-    <div class="sidebar-section" id="sidebar-medico" style="display:none">
-      <div class="sidebar-title">Médico</div>
-      <a class="nav-item" href="#"><span class="icon">👥</span> Pacientes</a>
-      <a class="nav-item" href="#"><span class="icon">📋</span> Historial</a>
-      <a class="nav-item" href="#"><span class="icon">⏰</span> Horarios</a>
+
+    <div class="sb-sec" id="sb-admin" style="display:none">
+      <div class="sb-title">Administración</div>
+      <a class="sb-item" href="/admin">⚙️ Panel Admin</a>
     </div>
-    <div class="sidebar-section" id="sidebar-admin" style="display:none">
-      <div class="sidebar-title">Administración</div>
-      <a class="nav-item admin-item" href="/admin"><span class="icon">⚙️</span> Panel Admin</a>
-      <a class="nav-item admin-item" href="/admin"><span class="icon">👥</span> Usuarios</a>
-      <a class="nav-item admin-item" href="/admin"><span class="icon">📊</span> Estadísticas</a>
+
+    <div class="sb-sec">
+      <div class="sb-title">Cuenta</div>
+      <button class="sb-item" onclick="cerrarSesion()">🚪 Cerrar sesión</button>
     </div>
-    <div class="sidebar-section">
-      <div class="sidebar-title">Sistema</div>
-      <a class="nav-item" href="/docs" target="_blank"><span class="icon">📖</span> API Docs</a>
-      <a class="nav-item" href="#" onclick="cerrarSesion()"><span class="icon">🚪</span> Salir</a>
+
+    <!-- Widget dinámico -->
+    <div id="sb-widget" style="margin:.75rem .5rem;border-radius:12px;padding:1rem;background:#1e3a8a;position:relative;overflow:hidden">
+      <div style="position:absolute;width:70px;height:70px;border-radius:50%;background:rgba(255,255,255,.08);top:-15px;right:-15px"></div>
+      <div style="position:absolute;width:45px;height:45px;border-radius:50%;background:rgba(255,255,255,.05);bottom:-8px;left:-8px"></div>
+      <div style="position:relative;z-index:1">
+        <span id="w-icon" style="font-size:1.5rem;display:block;margin-bottom:.5rem">⭐</span>
+        <div id="w-msg" style="font-size:.78rem;font-weight:700;color:white;line-height:1.45;margin-bottom:.4rem">Iniciando...</div>
+        <div id="w-sub" style="font-size:.7rem;color:rgba(255,255,255,.65);line-height:1.4"></div>
+        <div style="display:flex;align-items:center;gap:.4rem;margin-top:.65rem;padding-top:.65rem;border-top:1px solid rgba(255,255,255,.15)">
+          <div style="width:6px;height:6px;border-radius:50%;background:#4ade80;flex-shrink:0;animation:pulse 2s infinite"></div>
+          <span id="w-hora" style="font-size:.7rem;color:rgba(255,255,255,.75)">--:--</span>
+          <span style="font-size:.7rem;color:rgba(255,255,255,.55)">• Sistema activo</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="sb-user-card" id="sb-user-card">
+      <div class="sb-avatar" id="sb-avatar">A</div>
+      <div class="sb-user-info">
+        <div class="sb-user-name" id="sb-user-name">...</div>
+        <div class="sb-user-role" id="sb-user-role">...</div>
+      </div>
     </div>
   </aside>
 
   <main class="contenido">
-    <div class="welcome-bar">
-      <div class="welcome-text">
-        <h1>Bienvenido, <span id="nombre-usuario">...</span> 👋</h1>
+    <div class="welcome">
+      <div>
+        <h1>Bienvenido, <span id="nombre-bienvenida">...</span> 👋</h1>
         <p id="subtitulo">Aquí tienes un resumen de tu actividad</p>
       </div>
-      <div class="welcome-date" id="fecha-hoy"></div>
+      <div class="date-badge" id="fecha-hoy"></div>
     </div>
 
-    <div class="stats-grid" id="stats-grid">
-      <div class="stat-card">
-        <div class="stat-icon azul">📅</div>
-        <div class="stat-info">
-          <div class="stat-num" id="stat-1">0</div>
-          <div class="stat-label" id="stat-1-label">Citas pendientes</div>
-          <div class="stat-trend neutro">Sin citas programadas</div>
+    <!-- Próxima cita -->
+    <div class="proxima-card" id="proxima-card">
+      <div class="proxima-title">📅 Próxima cita</div>
+      <div class="proxima-info">
+        <div>
+          <div class="proxima-fecha" id="prox-fecha">—</div>
+          <div class="proxima-det">
+            <span id="prox-medico">—</span>
+            <span id="prox-hora">—</span>
+          </div>
         </div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon verde">✅</div>
-        <div class="stat-info">
-          <div class="stat-num" id="stat-2">0</div>
-          <div class="stat-label" id="stat-2-label">Citas completadas</div>
-          <div class="stat-trend positivo">Al día</div>
-        </div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon naran">🔔</div>
-        <div class="stat-info">
-          <div class="stat-num" id="stat-3">0</div>
-          <div class="stat-label" id="stat-3-label">Notificaciones</div>
-          <div class="stat-trend neutro">Sin notificaciones</div>
-        </div>
+        <span class="proxima-badge" id="prox-estado">—</span>
       </div>
     </div>
 
+    <!-- Stats -->
+    <div class="stats" id="stats">
+      <div class="stat"><div class="stat-icon si-azul">📅</div><div><div class="stat-num" id="s1">0</div><div class="stat-label" id="s1l">Citas pendientes</div></div></div>
+      <div class="stat"><div class="stat-icon si-verde">✅</div><div><div class="stat-num" id="s2">0</div><div class="stat-label" id="s2l">Confirmadas</div></div></div>
+      <div class="stat"><div class="stat-icon si-naran">🔔</div><div><div class="stat-num" id="s3">0</div><div class="stat-label" id="s3l">Notificaciones</div></div></div>
+    </div>
+
+    <!-- Modulos -->
     <div class="section-title">Accesos rápidos</div>
-    <div class="modulos-grid" id="modulos-grid"></div>
+    <div class="modulos" id="modulos"></div>
 
-    <div class="section-title" style="margin-top:1.75rem">Actividad reciente</div>
-    <div class="actividad-box">
-      <div class="actividad-empty">
-        <div class="empty-icon">📭</div>
-        <p>No hay actividad reciente.<br/>Agenda tu primera cita para comenzar.</p>
+    <!-- Buscador rápido de médicos (solo paciente) -->
+    <div id="buscador-medicos-section" style="display:none;margin-bottom:1.5rem">
+      <div class="section-title">Buscar médico</div>
+      <div style="background:var(--blanco);border:1px solid var(--gris-b);border-radius:14px;padding:1.25rem">
+        <div style="display:flex;gap:.75rem;flex-wrap:wrap;margin-bottom:1rem">
+          <select id="filtro-esp-dash" onchange="buscarMedicos()" style="padding:.6rem 1rem;border:1.5px solid var(--gris-b);border-radius:8px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.87rem;color:var(--gris-t);background:var(--blanco);outline:none;flex:1;min-width:160px">
+            <option value="">Todas las especialidades</option>
+          </select>
+          <a href="/mis-citas" style="display:inline-flex;align-items:center;gap:.4rem;padding:.6rem 1.2rem;background:var(--azul);color:white;border-radius:8px;font-size:.85rem;font-weight:700;text-decoration:none">
+            📅 Agendar cita
+          </a>
+        </div>
+        <div id="medicos-lista-dash" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.65rem"></div>
       </div>
+    </div>
+
+    <!-- Notificaciones -->
+    <div class="section-title" style="margin-top:1.25rem">Notificaciones recientes</div>
+    <div class="notif-panel" id="notif-panel">
+      <div class="notif-header">
+        <h3>Actividad reciente</h3>
+        <button class="btn-leer-todas" onclick="leerTodas()">Marcar todas como leídas</button>
+      </div>
+      <div id="notif-lista"><div class="notif-empty">Cargando...</div></div>
     </div>
   </main>
 </div>
 
-<!-- Modal Mi Perfil -->
-<div class="modal-overlay" id="modal-perfil">
+<!-- Modal Perfil -->
+<div class="overlay" id="overlay-perfil">
   <div class="modal">
-    <div class="modal-header">
-      <div class="modal-title">Mi Perfil</div>
-      <button class="modal-close" onclick="cerrarPerfil()">✕</button>
+    <div class="mh"><h2>Mi Perfil</h2><button class="mx" onclick="cerrarPerfil()">✕</button></div>
+    <div id="alerta-perfil" class="alerta"></div>
+    <div class="avatar-wrap">
+      <div class="avatar" id="avatar-grande" title="Cambia el color">A</div>
+      <div class="avatar-hint">Haz clic para cambiar el color</div>
+      <div class="color-picks" id="color-picks"></div>
     </div>
-    <div id="alerta-perfil" class="alerta-modal"></div>
-    <div class="perfil-avatar" id="perfil-avatar">A</div>
-    <div class="perfil-rol-badge"><span class="badge" id="perfil-badge-rol"></span></div>
-
     <div class="tabs">
-      <button class="tab activo" onclick="cambiarTab('info')">Información</button>
-      <button class="tab" onclick="cambiarTab('password')">Cambiar contraseña</button>
+      <button class="tab on" onclick="cambiarTab('info',this)">Información</button>
+      <button class="tab" onclick="cambiarTab('pass',this)">Contraseña</button>
     </div>
-
-    <!-- Tab info -->
-    <div class="tab-content visible" id="tab-info">
-      <div class="campo">
-        <label>Nombre completo</label>
-        <input type="text" id="p-nombre" placeholder="Tu nombre completo"/>
-      </div>
-      <div class="campo">
-        <label>Correo electrónico</label>
-        <input type="email" id="p-email" disabled/>
-      </div>
-      <div class="campo">
-        <label>Teléfono</label>
-        <input type="tel" id="p-telefono" placeholder="Tu número de teléfono"/>
-      </div>
-      <div class="campo">
-        <label>Fecha de nacimiento</label>
-        <input type="date" id="p-nacimiento"/>
-      </div>
-      <button class="btn-guardar" onclick="guardarPerfil()">💾 Guardar cambios</button>
+    <div class="tc on" id="tc-info">
+      <div class="campo"><label>Nombre completo</label><input type="text" id="p-nombre"/></div>
+      <div class="campo"><label>Correo electrónico</label><input type="email" id="p-email" disabled/></div>
+      <div class="campo"><label>Teléfono</label><input type="tel" id="p-telefono" placeholder="Tu número"/></div>
+      <div class="campo"><label>Fecha de nacimiento</label><div class="info-val" id="p-nacimiento">—</div></div>
+      <button class="btn-save" onclick="guardarPerfil()">💾 Guardar cambios</button>
     </div>
-
-    <!-- Tab password -->
-    <div class="tab-content" id="tab-password">
-      <div class="campo">
-        <label>Contraseña actual</label>
-        <input type="password" id="p-pass-actual" placeholder="Tu contraseña actual"/>
-      </div>
-      <div class="campo">
-        <label>Nueva contraseña</label>
-        <input type="password" id="p-pass-nueva" placeholder="Mínimo 6 caracteres"/>
-      </div>
-      <div class="campo">
-        <label>Confirmar nueva contraseña</label>
-        <input type="password" id="p-pass-confirmar" placeholder="Repite la nueva contraseña"/>
-      </div>
-      <button class="btn-guardar" onclick="cambiarPassword()">🔒 Cambiar contraseña</button>
+    <div class="tc" id="tc-pass">
+      <div class="campo"><label>Contraseña actual</label><input type="password" id="p-actual" placeholder="Tu contraseña actual"/></div>
+      <div class="campo"><label>Nueva contraseña</label><input type="password" id="p-nueva" placeholder="Mínimo 6 caracteres"/></div>
+      <div class="campo"><label>Confirmar</label><input type="password" id="p-conf" placeholder="Repite la nueva"/></div>
+      <button class="btn-save" onclick="cambiarPassword()">🔒 Cambiar contraseña</button>
     </div>
   </div>
 </div>
 
 <script>
-  const token = localStorage.getItem('token');
-  const usuarioStr = localStorage.getItem('usuario');
-  if (!token || !usuarioStr) { window.location.href = '/'; }
-  const usuario = JSON.parse(usuarioStr);
+const token = localStorage.getItem('token');
+const uStr  = localStorage.getItem('usuario');
+if (!token || !uStr) { window.location.href = '/'; }
+let usuario = JSON.parse(uStr);
+let colorActual = usuario.color_avatar || '#1a56db';
 
-  // ── Navbar ───────────────────────────────────────────────
-  document.getElementById('nav-nombre').textContent = usuario.nombre;
-  document.getElementById('nombre-usuario').textContent = usuario.nombre.split(' ')[0];
+const COLORES = ['#1a56db','#059669','#7c3aed','#d97706','#dc2626','#0891b2','#db2777','#65a30d'];
+const MODULOS = {
+  paciente: [
+    {icon:'📅',t:'Mis citas',d:'Agenda y gestiona tus citas médicas',href:'/mis-citas'},
+    {icon:'👤',t:'Mi perfil',d:'Actualiza tu información personal',fn:'abrirPerfil()'},
+  ],
+  medico: [
+    {icon:'📅',t:'Mis citas',d:'Ve las citas de tus pacientes',href:'/mis-citas'},
+    {icon:'👤',t:'Mi perfil',d:'Actualiza tu información',fn:'abrirPerfil()'},
+  ],
+  admin: [
+    {icon:'⚙️',t:'Panel Admin',d:'Gestiona usuarios, médicos y estadísticas del sistema',href:'/admin',admin:true},
+    {icon:'📅',t:'Todas las citas',d:'Administra todas las citas del sistema',href:'/mis-citas',admin:true},
+  ],
+};
 
-  const badge = document.getElementById('badge-rol');
-  const mark = document.getElementById('nav-mark');
-
+async function cargarSidebarCitas() {
   if (usuario.rol === 'admin') {
-    badge.textContent = '👑 Admin'; badge.className = 'badge badge-admin';
-    mark.className = 'nav-logo-mark morado';
-    document.getElementById('sidebar-admin').style.display = 'block';
-    document.getElementById('subtitulo').textContent = 'Panel de administración del sistema';
-  } else if (usuario.rol === 'medico') {
-    badge.textContent = '👨‍⚕️ Médico'; badge.className = 'badge badge-medico';
-    document.getElementById('sidebar-medico').style.display = 'block';
-    document.getElementById('subtitulo').textContent = 'Aquí tienes un resumen de tu actividad médica';
-  } else {
-    badge.textContent = '🙋 Paciente'; badge.className = 'badge badge-paciente';
+    document.getElementById('sb-proximas-sec').style.display = 'none';
+    return;
   }
-
-  // Fecha
-  const fecha = new Date().toLocaleDateString('es-CO', {weekday:'long',year:'numeric',month:'long',day:'numeric'});
-  document.getElementById('fecha-hoy').textContent = fecha.charAt(0).toUpperCase() + fecha.slice(1);
-
-  // ── Estadísticas según rol ────────────────────────────────
-  async function cargarStats() {
-    if (usuario.rol === 'admin') {
-      try {
-        const res = await fetch('/admin/estadisticas', { headers: { Authorization: `Bearer ${token}` } });
-        const d = await res.json();
-        document.getElementById('stat-1').textContent = d.total_usuarios;
-        document.getElementById('stat-1-label').textContent = 'Total usuarios';
-        document.getElementById('stat-2').textContent = d.total_citas;
-        document.getElementById('stat-2-label').textContent = 'Total citas';
-        document.getElementById('stat-3').textContent = d.citas_pendientes;
-        document.getElementById('stat-3-label').textContent = 'Citas pendientes';
-        // Cambiar icono a morado para admin
-        document.querySelectorAll('.stat-icon').forEach((el, i) => {
-          el.className = 'stat-icon morado';
-        });
-      } catch {}
+  try {
+    const res = await fetch('/citas?tipo=proximas', {headers:{Authorization:`Bearer ${token}`}});
+    const data = await res.json();
+    const lista = data.citas.filter(c => c.estado !== 'cancelada').slice(0, 3);
+    const cont = document.getElementById('sb-proximas-lista');
+    if (!lista.length) {
+      cont.innerHTML = '<div style="font-size:.78rem;color:var(--gris-m);padding:.3rem .5rem;line-height:1.5">Sin citas próximas.<br/><a href="/mis-citas" style="color:var(--azul);font-weight:600;font-size:.75rem">Agendar una →</a></div>';
+      return;
     }
+    const dias = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+    const meses = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+    cont.innerHTML = lista.map(c => {
+      const f = new Date(c.fecha + 'T00:00:00');
+      const fechaStr = `${dias[f.getDay()]} ${f.getDate()} ${meses[f.getMonth()]}`;
+      const estado = c.estado === 'confirmada' ? 'conf' : 'pend';
+      const estadoLabel = c.estado === 'confirmada' ? '✅ Confirmada' : '⏳ Pendiente';
+      return `<a href="/mis-citas" class="sb-cita-mini">
+        <div class="sb-cita-mini-fecha">${fechaStr}</div>
+        <div class="sb-cita-mini-med">🩺 ${c.medico_nombre}</div>
+        <div class="sb-cita-mini-hora">🕐 ${c.hora}  •  ${c.motivo}</div>
+        <span class="sb-cita-mini-estado ${estado}">${estadoLabel}</span>
+      </a>`;
+    }).join('');
+  } catch {
+    document.getElementById('sb-proximas-lista').innerHTML =
+      '<div style="font-size:.78rem;color:var(--gris-m);padding:.3rem .5rem">No disponible</div>';
   }
-  cargarStats();
+}
 
-  // ── Módulos según rol ─────────────────────────────────────
-  const modulos = {
-    paciente: [
-      {icon:'📅',titulo:'Agendar cita',desc:'Reserva una nueva cita con tu médico.',link:'/mis-citas'},
-      {icon:'📋',titulo:'Mis citas',desc:'Consulta, cancela o reagenda tus citas.',link:'/mis-citas'},
-      {icon:'👤',titulo:'Mi perfil',desc:'Actualiza tu información personal.',link:'#',onclick:'abrirPerfil()'},
-      {icon:'📄',titulo:'Historial médico',desc:'Revisa el historial de tus consultas.',link:'#'},
-    ],
-    medico: [
-      {icon:'📅',titulo:'Agenda del día',desc:'Revisa las citas programadas para hoy.',link:'/mis-citas'},
-      {icon:'👥',titulo:'Mis pacientes',desc:'Gestiona la lista de tus pacientes.',link:'#'},
-      {icon:'⏰',titulo:'Gestionar horarios',desc:'Configura tu disponibilidad.',link:'#'},
-      {icon:'📋',titulo:'Consultas',desc:'Registra diagnósticos y recetas.',link:'#'},
-    ],
-    admin: [
-      {icon:'⚙️',titulo:'Panel Admin',desc:'Gestiona todos los usuarios del sistema.',link:'/admin',admin:true},
-      {icon:'👥',titulo:'Gestionar usuarios',desc:'Activa, desactiva o elimina usuarios.',link:'/admin',admin:true},
-      {icon:'📊',titulo:'Estadísticas',desc:'Ve métricas completas del sistema.',link:'/admin',admin:true},
-      {icon:'📅',titulo:'Todas las citas',desc:'Administra todas las citas del sistema.',link:'/mis-citas',admin:true},
-    ],
-  };
+async function cargarEspecialidadesDash() {
+  try {
+    const res = await fetch('/especialidades');
+    const lista = await res.json();
+    const sel = document.getElementById('filtro-esp-dash');
+    lista.forEach(e => {
+      const o = document.createElement('option');
+      o.value = e.id; o.textContent = e.nombre;
+      sel.appendChild(o);
+    });
+  } catch {}
+}
 
-  const grid = document.getElementById('modulos-grid');
-  const lista = modulos[usuario.rol] || modulos.paciente;
-  grid.innerHTML = lista.map(m => `
-    <a class="modulo-card ${m.admin ? 'admin-card' : ''}" href="${m.link}" ${m.onclick ? `onclick="${m.onclick}"` : ''}>
-      <div class="modulo-icon-wrap ${m.admin ? 'morado' : ''}">${m.icon}</div>
-      <div class="modulo-titulo">${m.titulo}</div>
-      <div class="modulo-desc">${m.desc}</div>
-      <div class="modulo-link ${m.admin ? 'morado' : ''}">Ir al módulo</div>
-    </a>
-  `).join('');
+async function buscarMedicos() {
+  const espId = document.getElementById('filtro-esp-dash').value;
+  const url = espId ? `/medicos?especialidad_id=${espId}` : '/medicos';
+  try {
+    const res = await fetch(url);
+    const lista = await res.json();
+    const TARIFAS = {'Medicina General':35000,'Pediatria':55000,'Cardiologia':120000,'Dermatologia':90000,'Ginecologia':100000,'Ortopedia':110000};
+    const cont = document.getElementById('medicos-lista-dash');
+    if (!lista.length) { cont.innerHTML='<div style="color:var(--gris-m);font-size:.85rem;padding:.5rem">No hay médicos disponibles en esta especialidad</div>'; return; }
+    cont.innerHTML = lista.map(m => `
+      <div style="border:1.5px solid var(--gris-b);border-radius:10px;padding:.8rem;background:var(--gris-f);transition:all .2s" onmouseover="this.style.borderColor='var(--azul)'" onmouseout="this.style.borderColor='var(--gris-b)'">
+        <div style="font-size:.88rem;font-weight:700;color:var(--gris-t);margin-bottom:.2rem">👨‍⚕️ ${m.nombre}</div>
+        <div style="font-size:.78rem;color:var(--gris-m);margin-bottom:.3rem">${m.especialidad}</div>
+        <div style="font-size:.78rem;color:var(--verde);font-weight:600;margin-bottom:.5rem">💰 $${new Intl.NumberFormat('es-CO').format(TARIFAS[m.especialidad]||35000)}</div>
+        <a href="/mis-citas" style="font-size:.76rem;color:var(--azul);font-weight:700;text-decoration:none">Agendar cita →</a>
+      </div>`).join('');
+  } catch {}
+}
 
-  // ── Modal Perfil ──────────────────────────────────────────
-  function abrirPerfil() {
-    // Cargar datos actuales
-    document.getElementById('p-nombre').value = usuario.nombre || '';
-    document.getElementById('p-email').value = usuario.email || '';
-    document.getElementById('p-telefono').value = '';
-    document.getElementById('p-nacimiento').value = '';
-    // Avatar con inicial
-    document.getElementById('perfil-avatar').textContent = usuario.nombre.charAt(0).toUpperCase();
-    // Badge
-    const pb = document.getElementById('perfil-badge-rol');
-    const roles = { admin: '👑 Admin', medico: '👨‍⚕️ Médico', paciente: '🙋 Paciente' };
-    const clases = { admin: 'badge badge-admin', medico: 'badge badge-medico', paciente: 'badge badge-paciente' };
-    pb.textContent = roles[usuario.rol]; pb.className = clases[usuario.rol];
-    document.getElementById('alerta-perfil').style.display = 'none';
-    document.getElementById('modal-perfil').classList.add('visible');
-    // Limpiar campos password
-    ['p-pass-actual','p-pass-nueva','p-pass-confirmar'].forEach(id => document.getElementById(id).value = '');
+function initUI() {
+  const roles = {paciente:'🙋 Paciente',medico:'👨‍⚕️ Médico',admin:'👑 Admin'};
+  const clases = {paciente:'badge b-p',medico:'badge b-m',admin:'badge b-a'};
+  const colNav = {paciente:'#1a56db',medico:'#1a56db',admin:'#7c3aed'};
+  document.getElementById('nav-nombre').textContent = usuario.nombre;
+  document.getElementById('nav-badge').textContent = roles[usuario.rol];
+  document.getElementById('nav-badge').className = clases[usuario.rol];
+  document.getElementById('nav-mark').style.background = colNav[usuario.rol];
+  document.getElementById('nombre-bienvenida').textContent = usuario.nombre.split(' ')[0];
+  const subs = {paciente:'Aquí tienes un resumen de tu actividad médica',medico:'Bienvenido, aquí están tus próximas citas',admin:'Panel de administración del sistema'};
+  document.getElementById('subtitulo').textContent = subs[usuario.rol];
+  const f = new Date().toLocaleDateString('es-CO',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  document.getElementById('fecha-hoy').textContent = f.charAt(0).toUpperCase()+f.slice(1);
+  if (usuario.rol === 'admin') document.getElementById('sb-admin').style.display = 'block';
+  if (usuario.rol === 'paciente') {
+    document.getElementById('buscador-medicos-section').style.display = 'block';
+    cargarEspecialidadesDash();
+    buscarMedicos();
+  }
+  // Modulos
+  const lista = MODULOS[usuario.rol] || MODULOS.paciente;
+  document.getElementById('modulos').innerHTML = lista.map(m =>
+    `<${m.href?'a':'button'} class="modulo${m.admin?' admin':''}" ${m.href?`href="${m.href}"`:`onclick="${m.fn}"`} ${m.href?'':''}>
+      <div class="mod-icon ${m.admin?'mi-morado':'mi-azul'}">${m.icon}</div>
+      <div class="mod-title">${m.t}</div>
+      <div class="mod-desc">${m.d}</div>
+      <div class="mod-link">Ir al módulo →</div>
+    </${m.href?'a':'button'}>`).join('');
+}
+
+async function cargarStats() {
+  try {
+    if (usuario.rol === 'admin') {
+      const res = await fetch('/admin/estadisticas',{headers:{Authorization:`Bearer ${token}`}});
+      const d = await res.json();
+      document.getElementById('s1').textContent = d.total_usuarios;
+      document.getElementById('s1l').textContent = 'Total usuarios';
+      document.getElementById('s2').textContent = d.total_citas;
+      document.getElementById('s2l').textContent = 'Total citas';
+      document.getElementById('s3').textContent = d.medicos_pendientes;
+      document.getElementById('s3l').textContent = 'Médicos pendientes';
+    } else {
+      const res = await fetch('/citas',{headers:{Authorization:`Bearer ${token}`}});
+      const d = await res.json();
+      const pend = d.citas.filter(c=>c.estado==='pendiente').length;
+      const conf = d.citas.filter(c=>c.estado==='confirmada').length;
+      document.getElementById('s1').textContent = pend;
+      document.getElementById('s2').textContent = conf;
+    }
+  } catch {}
+}
+
+async function cargarProximaCita() {
+  try {
+    const res = await fetch('/citas/proxima',{headers:{Authorization:`Bearer ${token}`}});
+    const d = await res.json();
+    if (d.proxima) {
+      const c = d.proxima;
+      const f = new Date(c.fecha+'T00:00:00');
+      const fStr = f.toLocaleDateString('es-CO',{weekday:'long',day:'numeric',month:'long'});
+      document.getElementById('prox-fecha').textContent = fStr.charAt(0).toUpperCase()+fStr.slice(1);
+      document.getElementById('prox-medico').textContent = usuario.rol==='paciente' ? `🩺 ${c.medico_nombre}` : `👤 ${c.paciente_nombre}`;
+      document.getElementById('prox-hora').textContent = `🕐 ${c.hora}  •  ${c.motivo}`;
+      document.getElementById('prox-estado').textContent = c.estado==='confirmada'?'✅ Confirmada':'⏳ Pendiente';
+      document.getElementById('proxima-card').classList.add('visible');
+    }
+  } catch {}
+}
+
+async function cargarNotificaciones() {
+  try {
+    const res = await fetch('/notificaciones',{headers:{Authorization:`Bearer ${token}`}});
+    const lista = await res.json();
+    const noLeidas = lista.filter(n=>!n.leida).length;
+    const badge = document.getElementById('notif-count');
+    badge.textContent = noLeidas;
+    badge.className = `notif-badge${noLeidas>0?' on':''}`;
+    document.getElementById('s3').textContent = noLeidas;
+    if (!lista.length) {
+      document.getElementById('notif-lista').innerHTML = '<div class="notif-empty">📭 Sin notificaciones</div>';
+      return;
+    }
+    const iconos = {confirmacion:'📅',confirmada:'✅',cancelada:'❌',aprobacion:'🎉',recordatorio:'🔔'};
+    document.getElementById('notif-lista').innerHTML = lista.map(n => `
+      <div class="notif-item${n.leida?'':' no-leida'}" onclick="leerNotif(${n.id},this)">
+        <div class="notif-dot${n.leida?' leida':''}"></div>
+        <div>
+          <div class="notif-msg">${iconos[n.tipo]||'📌'} ${n.mensaje}</div>
+          <div class="notif-time">${n.creado_en}</div>
+        </div>
+      </div>`).join('');
+  } catch {}
+}
+
+function toggleNotifPanel() {
+  const dd = document.getElementById('notif-dropdown');
+  dd.classList.toggle('on');
+  if (dd.classList.contains('on')) cargarNotifDropdown();
+}
+
+async function cargarNotifDropdown() {
+  try {
+    const res = await fetch('/notificaciones', {headers:{Authorization:`Bearer ${token}`}});
+    const lista = await res.json();
+    const iconos = {confirmacion:'📅',confirmada:'✅',cancelada:'❌',aprobacion:'🎉',recordatorio:'🔔'};
+    const body = document.getElementById('nd-body');
+    if (!lista.length) { body.innerHTML='<div class="nd-empty">📭 Sin notificaciones</div>'; return; }
+    body.innerHTML = lista.map(n => `
+      <div class="nd-item${n.leida?'':' nueva'}" onclick="leerNotifDrop(${n.id},this)">
+        <div class="nd-dot${n.leida?' leida':''}"></div>
+        <div>
+          <div class="nd-msg">${iconos[n.tipo]||'📌'} ${n.mensaje}</div>
+          <div class="nd-time">${n.creado_en}</div>
+        </div>
+      </div>`).join('');
+  } catch {}
+}
+
+async function leerNotifDrop(id, el) {
+  el.classList.remove('nueva');
+  el.querySelector('.nd-dot').classList.add('leida');
+  await fetch(`/notificaciones/${id}/leer`,{method:'PUT',headers:{Authorization:`Bearer ${token}`}});
+  const badge = document.getElementById('notif-count');
+  const cnt = Math.max(0, parseInt(badge.textContent)-1);
+  badge.textContent = cnt;
+  badge.className = `notif-badge${cnt>0?' on':''}`;
+  document.getElementById('s3').textContent = cnt;
+}
+
+async function leerNotif(id, el) {
+  el.classList.remove('no-leida');
+  el.querySelector('.notif-dot').classList.add('leida');
+  await fetch(`/notificaciones/${id}/leer`,{method:'PUT',headers:{Authorization:`Bearer ${token}`}});
+  const badge = document.getElementById('notif-count');
+  const cnt = Math.max(0, parseInt(badge.textContent)-1);
+  badge.textContent = cnt;
+  badge.className = `notif-badge${cnt>0?' on':''}`;
+}
+
+async function leerTodas() {
+  await fetch('/notificaciones/leer-todas',{method:'PUT',headers:{Authorization:`Bearer ${token}`}});
+  cargarNotificaciones();
+}
+
+// ── Perfil ─────────────────────────────────────────────────────
+function initColorPicks() {
+  document.getElementById('color-picks').innerHTML = COLORES.map(c =>
+    `<div class="cp${c===colorActual?' sel':''}" style="background:${c}" onclick="selColor('${c}',this)" title="${c}"></div>`
+  ).join('');
+}
+
+function selColor(c, el) {
+  colorActual = c;
+  document.querySelectorAll('.cp').forEach(x=>x.classList.remove('sel'));
+  el.classList.add('sel');
+  document.getElementById('avatar-grande').style.background = c;
+}
+
+function abrirPerfil() {
+  document.getElementById('p-nombre').value = usuario.nombre;
+  document.getElementById('p-email').value = usuario.email;
+  document.getElementById('p-telefono').value = usuario.telefono || '';
+  const nac = usuario.fecha_nacimiento;
+  if (nac) {
+    const f = new Date(nac+'T00:00:00');
+    document.getElementById('p-nacimiento').textContent = f.toLocaleDateString('es-CO',{day:'numeric',month:'long',year:'numeric'});
+  } else {
+    document.getElementById('p-nacimiento').textContent = 'No registrada';
+  }
+  const av = document.getElementById('avatar-grande');
+  av.textContent = usuario.nombre.charAt(0).toUpperCase();
+  av.style.background = colorActual;
+  av.onclick = () => document.getElementById('color-picks').style.display =
+    document.getElementById('color-picks').style.display === 'none' ? 'flex' : 'none';
+  initColorPicks();
+  document.getElementById('alerta-perfil').style.display = 'none';
+  ['p-actual','p-nueva','p-conf'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('overlay-perfil').classList.add('on');
+}
+
+function cerrarPerfil() { document.getElementById('overlay-perfil').classList.remove('on'); }
+
+function cambiarTab(tab, btn) {
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  document.querySelectorAll('.tc').forEach(t=>t.classList.remove('on'));
+  btn.classList.add('on');
+  document.getElementById(`tc-${tab}`).classList.add('on');
+  document.getElementById('alerta-perfil').style.display='none';
+}
+
+function mostrarAlertaPerfil(msg,tipo) {
+  const el=document.getElementById('alerta-perfil');
+  el.textContent=msg; el.className=`alerta ${tipo}`; el.style.display='block';
+}
+
+async function guardarPerfil() {
+  const nombre = document.getElementById('p-nombre').value.trim();
+  const telefono = document.getElementById('p-telefono').value.trim();
+  if (!nombre) { mostrarAlertaPerfil('❌ El nombre es requerido','e'); return; }
+  try {
+    const res = await fetch('/auth/me',{
+      method:'PUT', headers:{'Content-Type':'application/json',Authorization:`Bearer ${token}`},
+      body: JSON.stringify({nombre, telefono: telefono||null, color_avatar: colorActual})
+    });
+    const d = await res.json();
+    if (!res.ok) throw new Error(d.detail);
+    usuario.nombre=nombre; usuario.telefono=telefono; usuario.color_avatar=colorActual;
+    localStorage.setItem('usuario',JSON.stringify(usuario));
+    document.getElementById('nav-nombre').textContent=nombre;
+    document.getElementById('nombre-bienvenida').textContent=nombre.split(' ')[0];
+    document.getElementById('nav-mark').style.background=colorActual;
+    mostrarAlertaPerfil('✅ Perfil actualizado','s');
+  } catch(err){ mostrarAlertaPerfil('❌ '+err.message,'e'); }
+}
+
+async function cambiarPassword() {
+  const actual=document.getElementById('p-actual').value;
+  const nueva=document.getElementById('p-nueva').value;
+  const conf=document.getElementById('p-conf').value;
+  if (!actual||!nueva) { mostrarAlertaPerfil('❌ Completa todos los campos','e'); return; }
+  if (nueva.length<6) { mostrarAlertaPerfil('❌ Mínimo 6 caracteres','e'); return; }
+  if (nueva!==conf) { mostrarAlertaPerfil('❌ Las contraseñas no coinciden','e'); return; }
+  try {
+    const res=await fetch('/auth/cambiar-password',{
+      method:'POST', headers:{'Content-Type':'application/json',Authorization:`Bearer ${token}`},
+      body:JSON.stringify({password_actual:actual,nueva_password:nueva})
+    });
+    const d=await res.json();
+    if (!res.ok) throw new Error(d.detail);
+    mostrarAlertaPerfil('✅ Contraseña cambiada','s');
+    ['p-actual','p-nueva','p-conf'].forEach(id=>document.getElementById(id).value='');
+  } catch(err){ mostrarAlertaPerfil('❌ '+err.message,'e'); }
+}
+
+document.getElementById('overlay-perfil').addEventListener('click',e=>{if(e.target.id==='overlay-perfil')cerrarPerfil();});
+function cerrarSesion(){ localStorage.clear(); window.location.href='/'; }
+
+// Dark mode
+function toggleDark() {
+  const isDark = document.body.classList.toggle('dark');
+  localStorage.setItem('darkMode', isDark ? '1' : '0');
+  document.getElementById('btn-dark').textContent = isDark ? '☀️' : '🌙';
+}
+
+// Init dark mode from storage
+if (localStorage.getItem('darkMode') === '1') {
+  document.body.classList.add('dark');
+  document.getElementById('btn-dark').textContent = '☀️';
+}
+
+// Cerrar dropdown al hacer clic fuera
+document.addEventListener('click', e => {
+  const dd = document.getElementById('notif-dropdown');
+  const btn = document.querySelector('.notif-btn');
+  if (dd && !dd.contains(e.target) && !btn.contains(e.target)) {
+    dd.classList.remove('on');
+  }
+});
+
+// Sidebar widget dinámico
+function initWidget() {
+  const ahora = new Date();
+  const hora = ahora.getHours();
+  const min = ahora.getMinutes();
+  const horaStr = String(hora).padStart(2,'0') + ':' + String(min).padStart(2,'0');
+  document.getElementById('w-hora').textContent = horaStr;
+
+  const rol = (typeof usuario !== 'undefined' && usuario) ? usuario.rol : 'paciente';
+
+  var icono, mensaje, sub;
+  if (hora >= 6 && hora < 12) {
+    if (rol === 'medico') { icono='🩺'; mensaje='Buenos dias, doctor! Lista tu agenda.'; sub='Revisa tus pacientes programados para hoy.'; }
+    else if (rol === 'admin') { icono='⚙️'; mensaje='Buenos dias, Admin! Sistema en linea.'; sub='Revisa si hay medicos pendientes de aprobacion.'; }
+    else { icono='🌅'; mensaje='Buenos dias! Un buen dia para cuidar tu salud.'; sub='Agenda tu proxima cita con un especialista.'; }
+  } else if (hora >= 12 && hora < 18) {
+    if (rol === 'medico') { icono='💊'; mensaje='Buenas tardes! Sigue adelante.'; sub='Confirma las citas pendientes de tus pacientes.'; }
+    else if (rol === 'admin') { icono='📊'; mensaje='Sistema funcionando con normalidad.'; sub='Todos los servicios estan activos.'; }
+    else { icono='☀️'; mensaje='Buenas tardes! Tu salud es lo primero.'; sub='Revisa tus citas o agenda una nueva.'; }
+  } else if (hora >= 18) {
+    if (rol === 'medico') { icono='🌙'; mensaje='Terminando la jornada. Bien hecho!'; sub='Descansa, manana hay mas pacientes que atender.'; }
+    else if (rol === 'admin') { icono='🔒'; mensaje='Cerrando el dia. Sistema estable.'; sub='Puedes revisar las estadisticas del dia.'; }
+    else { icono='🌙'; mensaje='Buenas noches! Recuerda descansar bien.'; sub='Manana puedes agendar tu proxima cita.'; }
+  } else {
+    icono='⭐'; mensaje='Trabajando tarde... cuidate mucho.'; sub='No olvides dormir bien para tu salud.';
   }
 
-  function cerrarPerfil() {
-    document.getElementById('modal-perfil').classList.remove('visible');
-  }
+  document.getElementById('w-icon').textContent = icono;
+  document.getElementById('w-msg').textContent = mensaje;
+  document.getElementById('w-sub').textContent = sub;
+}
 
-  function cambiarTab(tab) {
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('activo'));
-    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('visible'));
-    document.getElementById(`tab-${tab}`).classList.add('visible');
-    event.target.classList.add('activo');
-    document.getElementById('alerta-perfil').style.display = 'none';
-  }
+// Sidebar user card
+const sbAvatar = document.getElementById('sb-avatar');
+const sbName = document.getElementById('sb-user-name');
+const sbRole = document.getElementById('sb-user-role');
+sbAvatar.textContent = usuario.nombre.charAt(0).toUpperCase();
+sbAvatar.style.background = usuario.color_avatar || '#1a56db';
+sbName.textContent = usuario.nombre;
+const roleLabels = {paciente:'Paciente',medico:'Médico',admin:'Administrador'};
+sbRole.textContent = roleLabels[usuario.rol] || usuario.rol;
 
-  function mostrarAlertaPerfil(msg, tipo) {
-    const el = document.getElementById('alerta-perfil');
-    el.textContent = msg; el.className = `alerta-modal ${tipo}`; el.style.display = 'block';
-  }
-
-  async function guardarPerfil() {
-    const nombre = document.getElementById('p-nombre').value.trim();
-    const telefono = document.getElementById('p-telefono').value.trim();
-    const fecha_nacimiento = document.getElementById('p-nacimiento').value;
-    if (!nombre) { mostrarAlertaPerfil('❌ El nombre es requerido', 'error'); return; }
-    try {
-      const res = await fetch('/auth/me', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-        body: JSON.stringify({ nombre, telefono: telefono || null, fecha_nacimiento: fecha_nacimiento || null })
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.detail);
-      // Actualizar localStorage
-      const u = JSON.parse(localStorage.getItem('usuario'));
-      u.nombre = nombre;
-      localStorage.setItem('usuario', JSON.stringify(u));
-      document.getElementById('nav-nombre').textContent = nombre;
-      document.getElementById('nombre-usuario').textContent = nombre.split(' ')[0];
-      document.getElementById('perfil-avatar').textContent = nombre.charAt(0).toUpperCase();
-      mostrarAlertaPerfil('✅ Perfil actualizado exitosamente', 'exito');
-    } catch (err) { mostrarAlertaPerfil('❌ ' + err.message, 'error'); }
-  }
-
-  async function cambiarPassword() {
-    const actual = document.getElementById('p-pass-actual').value;
-    const nueva = document.getElementById('p-pass-nueva').value;
-    const confirmar = document.getElementById('p-pass-confirmar').value;
-    if (!actual || !nueva) { mostrarAlertaPerfil('❌ Completa todos los campos', 'error'); return; }
-    if (nueva.length < 6) { mostrarAlertaPerfil('❌ La contraseña debe tener al menos 6 caracteres', 'error'); return; }
-    if (nueva !== confirmar) { mostrarAlertaPerfil('❌ Las contraseñas no coinciden', 'error'); return; }
-    try {
-      const res = await fetch('/auth/cambiar-password', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-        body: JSON.stringify({ password_actual: actual, nueva_password: nueva })
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.detail);
-      mostrarAlertaPerfil('✅ Contraseña cambiada exitosamente', 'exito');
-      ['p-pass-actual','p-pass-nueva','p-pass-confirmar'].forEach(id => document.getElementById(id).value = '');
-    } catch (err) { mostrarAlertaPerfil('❌ ' + err.message, 'error'); }
-  }
-
-  // Cerrar modal al hacer clic fuera
-  document.getElementById('modal-perfil').addEventListener('click', function(e) {
-    if (e.target === this) cerrarPerfil();
-  });
-
-  function cerrarSesion() { localStorage.clear(); window.location.href = '/'; }
+initUI();
+cargarStats();
+cargarProximaCita();
+cargarNotificaciones();
+initWidget();
 </script>
 </body>
 </html>

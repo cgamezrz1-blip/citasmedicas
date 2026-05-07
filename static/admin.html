@@ -9,59 +9,112 @@
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     :root{--azul:#1a56db;--azul-o:#1e3a8a;--azul-c:#dbeafe;--azul-mc:#eff6ff;--blanco:#fff;--gris-t:#1f2937;--gris-m:#6b7280;--gris-b:#e5e7eb;--gris-f:#f8fafc;--verde:#059669;--verde-c:#d1fae5;--naran:#d97706;--naran-c:#fef3c7;--error:#dc2626;--error-c:#fee2e2;--morado:#7c3aed;--morado-c:#ede9fe}
     body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--gris-f);min-height:100vh}
-    .navbar{background:var(--blanco);border-bottom:1px solid var(--gris-b);padding:0 2rem;height:64px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+    .navbar{background:var(--blanco);border-bottom:1px solid var(--gris-b);padding:0 1.5rem;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 1px 3px rgba(0,0,0,.06)}
     .nav-logo{display:flex;align-items:center;gap:.65rem;text-decoration:none}
-    .nav-logo-mark{width:38px;height:38px;background:var(--morado);border-radius:10px;display:grid;place-items:center;font-size:.8rem;font-weight:700;color:white}
-    .nav-logo-name{font-size:1rem;font-weight:700;color:var(--gris-t)}
-    .nav-right{display:flex;align-items:center;gap:1rem}
-    .badge{padding:.3rem .8rem;border-radius:20px;font-size:.75rem;font-weight:700;background:var(--morado-c);color:var(--morado)}
-    .btn-logout{padding:.45rem 1rem;border:1.5px solid var(--gris-b);border-radius:8px;background:var(--blanco);font-family:'Plus Jakarta Sans',sans-serif;font-size:.82rem;color:var(--gris-m);cursor:pointer;transition:all .2s;font-weight:500}
+    .nav-logo-mark{width:36px;height:36px;background:var(--morado);border-radius:10px;display:grid;place-items:center;font-size:.8rem;font-weight:700;color:white}
+    .nav-logo-name{font-size:.95rem;font-weight:700;color:var(--gris-t)}
+    .nav-right{display:flex;align-items:center;gap:.75rem}
+    .badge{padding:.28rem .75rem;border-radius:20px;font-size:.73rem;font-weight:700;background:var(--morado-c);color:var(--morado)}
+    .btn-back{padding:.4rem .9rem;border:1.5px solid var(--gris-b);border-radius:8px;background:var(--blanco);font-family:'Plus Jakarta Sans',sans-serif;font-size:.8rem;color:var(--gris-m);cursor:pointer;text-decoration:none;transition:all .2s}
+    .btn-back:hover{border-color:var(--azul);color:var(--azul)}
+    .btn-logout{padding:.4rem .9rem;border:1.5px solid var(--gris-b);border-radius:8px;background:var(--blanco);font-family:'Plus Jakarta Sans',sans-serif;font-size:.8rem;color:var(--gris-m);cursor:pointer;transition:all .2s}
     .btn-logout:hover{border-color:var(--error);color:var(--error);background:var(--error-c)}
-    .contenido{padding:2rem 2.5rem;max-width:1200px;margin:0 auto}
-    .page-header{margin-bottom:2rem}
-    .page-header h1{font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--gris-t)}
-    .page-header p{color:var(--gris-m);font-size:.9rem;margin-top:.25rem}
-    .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin-bottom:2rem}
-    .stat-card{background:var(--blanco);border:1px solid var(--gris-b);border-radius:12px;padding:1.25rem;text-align:center;transition:box-shadow .2s}
-    .stat-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.08)}
-    .stat-num{font-family:'Playfair Display',serif;font-size:2rem;color:var(--gris-t);line-height:1}
-    .stat-label{font-size:.8rem;color:var(--gris-m);margin-top:.3rem;font-weight:500}
-    .stat-card.azul .stat-num{color:var(--azul)}
-    .stat-card.verde .stat-num{color:var(--verde)}
-    .stat-card.naran .stat-num{color:var(--naran)}
-    .stat-card.error .stat-num{color:var(--error)}
-    .stat-card.morado .stat-num{color:var(--morado)}
-    .section-title{font-size:1rem;font-weight:700;color:var(--gris-t);margin-bottom:1rem;display:flex;align-items:center;gap:.5rem}
-    .section-title::after{content:'';flex:1;height:1px;background:var(--gris-b)}
-    .tabla-wrap{background:var(--blanco);border:1px solid var(--gris-b);border-radius:14px;overflow:hidden;margin-bottom:2rem}
-    table{width:100%;border-collapse:collapse}
+    .contenido{padding:1.75rem 2rem;max-width:1200px;margin:0 auto}
+    .page-header{margin-bottom:1.5rem}
+    .page-header h1{font-family:'Playfair Display',serif;font-size:1.7rem;color:var(--gris-t)}
+    .page-header p{color:var(--gris-m);font-size:.87rem;margin-top:.2rem}
+    /* Tabs */
+    .tabs-wrap{display:flex;gap:.35rem;border-bottom:2px solid var(--gris-b);margin-bottom:1.5rem}
+    .tab-btn{padding:.65rem 1.25rem;border:none;background:none;font-family:'Plus Jakarta Sans',sans-serif;font-size:.88rem;font-weight:600;color:var(--gris-m);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .2s;display:flex;align-items:center;gap:.4rem;white-space:nowrap}
+    .tab-btn:hover{color:var(--azul)}
+    .tab-btn.on{color:var(--azul);border-bottom-color:var(--azul)}
+    .tab-btn.on.morado{color:var(--morado);border-bottom-color:var(--morado)}
+    .tab-count{background:var(--error);color:white;border-radius:20px;font-size:.68rem;font-weight:700;padding:.1rem .45rem;display:none}
+    .tab-count.on{display:inline}
+    .tab-content{display:none}.tab-content.on{display:block}
+    /* Stats grid */
+    .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:.75rem;margin-bottom:1.75rem}
+    .stat{background:var(--blanco);border:1px solid var(--gris-b);border-radius:12px;padding:1rem 1.1rem;text-align:center;transition:all .2s}
+    .stat:hover{box-shadow:0 4px 16px rgba(0,0,0,.08);transform:translateY(-1px)}
+    .stat-num{font-family:'Playfair Display',serif;font-size:1.9rem;line-height:1;margin-bottom:.25rem}
+    .stat-label{font-size:.75rem;color:var(--gris-m);font-weight:500}
+    .stat.azul .stat-num{color:var(--azul)}.stat.verde .stat-num{color:var(--verde)}.stat.naran .stat-num{color:var(--naran)}.stat.error .stat-num{color:var(--error)}.stat.morado .stat-num{color:var(--morado)}
+    /* Stats detalle */
+    .stats-detalle{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.75rem}
+    .detalle-card{background:var(--blanco);border:1px solid var(--gris-b);border-radius:14px;padding:1.25rem}
+    .detalle-card h3{font-size:.9rem;font-weight:700;color:var(--gris-t);margin-bottom:1rem;display:flex;align-items:center;gap:.4rem}
+    .detalle-row{display:flex;justify-content:space-between;align-items:center;padding:.5rem 0;border-bottom:1px solid var(--gris-b);font-size:.87rem}
+    .detalle-row:last-child{border-bottom:none}
+    .detalle-row span{color:var(--gris-m)}
+    .detalle-row strong{color:var(--gris-t)}
+    .barra-wrap{width:120px;height:8px;background:var(--gris-b);border-radius:4px;overflow:hidden}
+    .barra{height:100%;border-radius:4px;transition:width .5s ease}
+    /* Pendientes */
+    .pendientes-section{background:var(--naran-c);border:1.5px solid var(--naran);border-radius:14px;padding:1.25rem;margin-bottom:1.5rem;display:none}
+    .pendientes-title{font-size:.9rem;font-weight:700;color:var(--naran);margin-bottom:.75rem;display:flex;align-items:center;gap:.4rem}
+    .pendiente-card{background:var(--blanco);border-radius:12px;padding:1rem 1.1rem;display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;margin-bottom:.6rem;border:1px solid var(--gris-b)}
+    .pendiente-card:last-child{margin-bottom:0}
+    .pendiente-info h4{font-size:.9rem;font-weight:700;color:var(--gris-t);margin-bottom:.3rem}
+    .pendiente-info p{font-size:.8rem;color:var(--gris-m);line-height:1.55;margin-bottom:.1rem}
+    .pendiente-btns{display:flex;flex-direction:column;gap:.4rem;flex-shrink:0}
+    .btn-aprobar{padding:.45rem .9rem;border:none;border-radius:8px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.8rem;font-weight:700;cursor:pointer;transition:all .2s;white-space:nowrap}
+    .btn-aprobar.verde{background:var(--verde);color:white}
+    .btn-aprobar.verde:hover{opacity:.85}
+    .btn-aprobar.rojo{background:var(--error);color:white}
+    .btn-aprobar.rojo:hover{opacity:.85}
+    /* Tabla */
+    .tabla-toolbar{display:flex;gap:.6rem;margin-bottom:.9rem;flex-wrap:wrap}
+    .fi{padding:.52rem .9rem;border:1.5px solid var(--gris-b);border-radius:8px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.85rem;color:var(--gris-t);background:var(--blanco);outline:none;transition:border-color .2s}
+    .fi:focus{border-color:var(--azul)}
+    .tabla-wrap{background:var(--blanco);border:1px solid var(--gris-b);border-radius:14px;overflow:hidden;overflow-x:auto}
+    table{width:100%;border-collapse:collapse;min-width:640px}
     thead{background:var(--azul-o)}
-    thead th{padding:.85rem 1rem;text-align:left;font-size:.82rem;font-weight:700;color:white;letter-spacing:.03em}
+    thead th{padding:.75rem 1rem;text-align:left;font-size:.78rem;font-weight:700;color:white;letter-spacing:.03em}
     tbody tr{border-bottom:1px solid var(--gris-b);transition:background .15s}
     tbody tr:last-child{border-bottom:none}
     tbody tr:hover{background:var(--azul-mc)}
-    tbody td{padding:.8rem 1rem;font-size:.87rem;color:var(--gris-t)}
-    .rol-badge{padding:.25rem .7rem;border-radius:20px;font-size:.72rem;font-weight:700;display:inline-block}
-    .rol-admin{background:var(--morado-c);color:var(--morado)}
-    .rol-medico{background:var(--azul-c);color:var(--azul-o)}
-    .rol-paciente{background:var(--verde-c);color:var(--verde)}
-    .estado-badge{padding:.2rem .6rem;border-radius:20px;font-size:.72rem;font-weight:700;display:inline-block}
-    .activo{background:var(--verde-c);color:var(--verde)}
-    .inactivo{background:var(--error-c);color:var(--error)}
-    .acciones{display:flex;gap:.4rem}
-    .btn-accion{padding:.35rem .75rem;border-radius:6px;font-size:.78rem;font-weight:600;cursor:pointer;border:1.5px solid;transition:all .15s;font-family:'Plus Jakarta Sans',sans-serif}
-    .btn-toggle{border-color:var(--naran);color:var(--naran);background:var(--naran-c)}
-    .btn-toggle:hover{background:var(--naran);color:white}
-    .btn-del{border-color:var(--error);color:var(--error);background:var(--error-c)}
-    .btn-del:hover{background:var(--error);color:white}
-    .alerta-global{padding:.75rem 1rem;border-radius:10px;font-size:.85rem;margin-bottom:1rem;display:none;border:1px solid transparent}
-    .alerta-global.exito{background:#f0fdf4;color:var(--verde);border-color:#bbf7d0}
-    .alerta-global.error{background:var(--error-c);color:var(--error);border-color:#fecaca}
-    .filtro-wrap{display:flex;gap:.75rem;margin-bottom:1rem;flex-wrap:wrap}
-    .filtro-input{padding:.55rem 1rem;border:1.5px solid var(--gris-b);border-radius:8px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.87rem;color:var(--gris-t);background:var(--blanco);outline:none;transition:border-color .2s}
-    .filtro-input:focus{border-color:var(--azul)}
-    .empty{text-align:center;padding:3rem;color:var(--gris-m)}
-    .spinner-global{text-align:center;padding:2rem;color:var(--gris-m);font-size:.9rem}
+    tbody td{padding:.7rem 1rem;font-size:.84rem;color:var(--gris-t);vertical-align:middle}
+    .rol-badge{padding:.22rem .65rem;border-radius:20px;font-size:.7rem;font-weight:700;display:inline-block}
+    .rol-admin{background:var(--morado-c);color:var(--morado)}.rol-medico{background:var(--azul-c);color:var(--azul-o)}.rol-paciente{background:var(--verde-c);color:var(--verde)}
+    .estado-badge{padding:.2rem .6rem;border-radius:20px;font-size:.7rem;font-weight:700;display:inline-block}
+    .activo-b{background:var(--verde-c);color:var(--verde)}.inactivo-b{background:var(--error-c);color:var(--error)}.pendiente-b{background:var(--naran-c);color:var(--naran)}
+    .acciones{display:flex;gap:.35rem;flex-wrap:wrap}
+    .btn-accion{padding:.3rem .7rem;border-radius:6px;font-size:.75rem;font-weight:600;cursor:pointer;border:1.5px solid;transition:all .15s;font-family:'Plus Jakarta Sans',sans-serif;white-space:nowrap}
+    .btn-toggle{border-color:var(--naran);color:var(--naran);background:var(--naran-c)}.btn-toggle:hover{background:var(--naran);color:white}
+    .btn-del{border-color:var(--error);color:var(--error);background:var(--error-c)}.btn-del:hover{background:var(--error);color:white}
+    .btn-ok{border-color:var(--verde);color:var(--verde);background:var(--verde-c)}.btn-ok:hover{background:var(--verde);color:white}
+    /* Alerta */
+    .alerta-g{padding:.7rem 1rem;border-radius:10px;font-size:.84rem;margin-bottom:1rem;display:none;border:1px solid transparent}
+    .alerta-g.s{background:#f0fdf4;color:var(--verde);border-color:#bbf7d0}.alerta-g.e{background:var(--error-c);color:var(--error);border-color:#fecaca}
+    /* Dark mode */
+    body.dark{--blanco:#1e2433;--gris-f:#151b27;--gris-t:#f1f5f9;--gris-m:#94a3b8;--gris-b:#2d3748;background:#151b27}
+    body.dark .navbar{background:#1a2235;border-color:#2d3748}
+    body.dark .nav-logo-name{color:#f1f5f9}
+    body.dark .stat{background:#1a2235;border-color:#2d3748}
+    body.dark .stat-label{color:#94a3b8}
+    body.dark .detalle-card{background:#1a2235;border-color:#2d3748}
+    body.dark .detalle-card h3{color:#f1f5f9}
+    body.dark .detalle-row{border-color:#2d3748}
+    body.dark .detalle-row span{color:#94a3b8}
+    body.dark .detalle-row strong{color:#f1f5f9}
+    body.dark .barra-wrap{background:#2d3748}
+    body.dark .tabs-wrap{border-color:#2d3748}
+    body.dark .tab-btn{color:#94a3b8}
+    body.dark .tab-btn:hover{color:#60a5fa}
+    body.dark .tab-btn.on{color:#60a5fa;border-bottom-color:#60a5fa}
+    body.dark .tab-btn.on.morado{color:#a78bfa;border-bottom-color:#a78bfa}
+    body.dark .fi{background:#1a2235;border-color:#2d3748;color:#f1f5f9}
+    body.dark .tabla-wrap{background:#1a2235;border-color:#2d3748}
+    body.dark table thead{background:#0f172a}
+    body.dark tbody tr{border-color:#2d3748}
+    body.dark tbody tr:hover{background:#253047}
+    body.dark tbody td{color:#f1f5f9}
+    body.dark .page-header h1{color:#f1f5f9}
+    body.dark .page-header p{color:#94a3b8}
+    body.dark .pendiente-card{background:#1a2235;border-color:#2d3748}
+    body.dark .pendiente-info h4{color:#f1f5f9}
+    body.dark .pendiente-info p{color:#94a3b8}
+    @media(max-width:768px){.contenido{padding:1rem}.stats-grid{grid-template-columns:repeat(2,1fr)}.stats-detalle{grid-template-columns:1fr}.pendiente-card{flex-direction:column}.tabs-wrap{overflow-x:auto}.tab-btn{font-size:.8rem;padding:.55rem .9rem}}
   </style>
 </head>
 <body>
@@ -72,139 +125,336 @@
     <span class="nav-logo-name">CitasMédicas — Admin</span>
   </a>
   <div class="nav-right">
+    <a href="/dashboard" class="btn-back">← Dashboard</a>
     <span class="badge">👑 Administrador</span>
-    <button class="btn-logout" onclick="cerrarSesion()">Cerrar sesión</button>
+    <button onclick="toggleDark()" id="btn-dark" title="Modo oscuro" style="width:34px;height:34px;border:1.5px solid var(--gris-b);border-radius:8px;background:var(--blanco);cursor:pointer;display:grid;place-items:center;font-size:.95rem">🌙</button>
+    <button class="btn-logout" onclick="cerrarSesion()">Salir</button>
   </div>
 </nav>
 
 <div class="contenido">
   <div class="page-header">
     <h1>Panel de Administración</h1>
-    <p>Gestiona usuarios, citas y estadísticas del sistema</p>
+    <p>Gestiona usuarios, médicos pendientes y estadísticas del sistema</p>
   </div>
 
-  <div id="alerta-global" class="alerta-global"></div>
+  <div id="alerta-g" class="alerta-g"></div>
 
-  <!-- Stats -->
-  <div class="stats-grid" id="stats-grid">
-    <div class="spinner-global">Cargando estadísticas...</div>
+  <!-- Tabs -->
+  <div class="tabs-wrap">
+    <button class="tab-btn on" onclick="cambiarTab('estadisticas',this)">📊 Estadísticas</button>
+    <button class="tab-btn morado" onclick="cambiarTab('pendientes',this)">
+      ⏳ Médicos pendientes <span class="tab-count" id="count-pendientes">0</span>
+    </button>
+    <button class="tab-btn" onclick="cambiarTab('usuarios',this)">👥 Usuarios</button>
   </div>
 
-  <!-- Usuarios -->
-  <div class="section-title">Gestión de Usuarios</div>
-  <div class="filtro-wrap">
-    <input class="filtro-input" id="buscar-usuario" placeholder="🔍 Buscar por nombre o email..." oninput="filtrarUsuarios()" style="flex:1;min-width:200px"/>
-    <select class="filtro-input" id="filtro-rol" onchange="filtrarUsuarios()">
-      <option value="">Todos los roles</option>
-      <option value="paciente">Paciente</option>
-      <option value="medico">Médico</option>
-      <option value="admin">Admin</option>
-    </select>
+  <!-- Tab 1: Estadísticas -->
+  <div class="tab-content on" id="tab-estadisticas">
+    <div class="stats-grid">
+      <div class="stat azul"><div class="stat-num" id="s-usuarios">—</div><div class="stat-label">Total usuarios</div></div>
+      <div class="stat verde"><div class="stat-num" id="s-pacientes">—</div><div class="stat-label">Pacientes</div></div>
+      <div class="stat azul"><div class="stat-num" id="s-medicos">—</div><div class="stat-label">Médicos</div></div>
+      <div class="stat naran"><div class="stat-num" id="s-pendientes-num">—</div><div class="stat-label">Pendientes</div></div>
+      <div class="stat morado"><div class="stat-num" id="s-citas">—</div><div class="stat-label">Total citas</div></div>
+      <div class="stat naran"><div class="stat-num" id="s-hoy">—</div><div class="stat-label">Citas hoy</div></div>
+      <div class="stat verde"><div class="stat-num" id="s-confirmadas">—</div><div class="stat-label">Confirmadas</div></div>
+      <div class="stat error"><div class="stat-num" id="s-canceladas">—</div><div class="stat-label">Canceladas</div></div>
+    </div>
+    <div class="stats-detalle">
+      <div class="detalle-card">
+        <h3>📋 Distribución de citas</h3>
+        <div class="detalle-row">
+          <span>⏳ Pendientes</span>
+          <div style="display:flex;align-items:center;gap:.75rem">
+            <div class="barra-wrap"><div class="barra" id="b-pend" style="background:var(--naran)"></div></div>
+            <strong id="n-pend">0</strong>
+          </div>
+        </div>
+        <div class="detalle-row">
+          <span>✅ Confirmadas</span>
+          <div style="display:flex;align-items:center;gap:.75rem">
+            <div class="barra-wrap"><div class="barra" id="b-conf" style="background:var(--verde)"></div></div>
+            <strong id="n-conf">0</strong>
+          </div>
+        </div>
+        <div class="detalle-row">
+          <span>❌ Canceladas</span>
+          <div style="display:flex;align-items:center;gap:.75rem">
+            <div class="barra-wrap"><div class="barra" id="b-canc" style="background:var(--error)"></div></div>
+            <strong id="n-canc">0</strong>
+          </div>
+        </div>
+      </div>
+      <div class="detalle-card">
+        <h3>👥 Distribución de usuarios</h3>
+        <div class="detalle-row">
+          <span>🙋 Pacientes</span>
+          <div style="display:flex;align-items:center;gap:.75rem">
+            <div class="barra-wrap"><div class="barra" id="b-pac" style="background:var(--verde)"></div></div>
+            <strong id="n-pac">0</strong>
+          </div>
+        </div>
+        <div class="detalle-row">
+          <span>👨‍⚕️ Médicos activos</span>
+          <div style="display:flex;align-items:center;gap:.75rem">
+            <div class="barra-wrap"><div class="barra" id="b-med" style="background:var(--azul)"></div></div>
+            <strong id="n-med">0</strong>
+          </div>
+        </div>
+        <div class="detalle-row">
+          <span>⏳ Médicos pendientes</span>
+          <div style="display:flex;align-items:center;gap:.75rem">
+            <div class="barra-wrap"><div class="barra" id="b-medp" style="background:var(--naran)"></div></div>
+            <strong id="n-medp">0</strong>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-  <div class="tabla-wrap">
-    <table>
-      <thead><tr>
-        <th>ID</th><th>Nombre</th><th>Email</th><th>Rol</th><th>Estado</th><th>Registrado</th><th>Acciones</th>
-      </tr></thead>
-      <tbody id="tabla-usuarios"><tr><td colspan="7" class="spinner-global">Cargando...</td></tr></tbody>
-    </table>
+
+  <!-- Tab 2: Médicos pendientes -->
+  <div class="tab-content" id="tab-pendientes">
+    <div id="pendientes-wrap">
+      <div style="text-align:center;padding:3rem;color:var(--gris-m)">Cargando...</div>
+    </div>
+  </div>
+
+  <!-- Tab 3: Usuarios -->
+  <div class="tab-content" id="tab-usuarios">
+    <div class="tabla-toolbar">
+      <input class="fi" id="buscar" placeholder="🔍 Buscar por nombre o email..." oninput="filtrar()" style="flex:1;min-width:180px"/>
+      <select class="fi" id="filtro-rol" onchange="filtrar()">
+        <option value="">Todos los roles</option>
+        <option value="paciente">Paciente</option>
+        <option value="medico">Médico</option>
+        <option value="admin">Admin</option>
+      </select>
+    </div>
+    <div class="tabla-wrap">
+      <table>
+        <thead><tr>
+          <th>ID</th><th>Nombre</th><th>Email</th><th>Rol</th><th>ReTHUS</th><th>Estado</th><th>Registrado</th><th>Acciones</th>
+        </tr></thead>
+        <tbody id="tabla-body"><tr><td colspan="8" style="text-align:center;padding:2rem;color:var(--gris-m)">Cargando...</td></tr></tbody>
+      </table>
+    </div>
   </div>
 </div>
 
 <script>
-  const token = localStorage.getItem('token');
-  const usuarioStr = localStorage.getItem('usuario');
-  if (!token || !usuarioStr) { window.location.href = '/'; }
-  const usuario = JSON.parse(usuarioStr);
-  if (usuario.rol !== 'admin') { window.location.href = '/dashboard'; }
+const token = localStorage.getItem('token');
+const usuarioStr = localStorage.getItem('usuario');
+if (!token || !usuarioStr) { window.location.href = '/'; }
+const usuario = JSON.parse(usuarioStr);
+if (usuario.rol !== 'admin') { window.location.href = '/dashboard'; }
 
-  let todosUsuarios = [];
+let todosUsuarios = [];
+let statsData = {};
 
-  async function cargarEstadisticas() {
-    try {
-      const res = await fetch('/admin/estadisticas', { headers: { Authorization: `Bearer ${token}` } });
-      const d = await res.json();
-      document.getElementById('stats-grid').innerHTML = `
-        <div class="stat-card azul"><div class="stat-num">${d.total_usuarios}</div><div class="stat-label">Total usuarios</div></div>
-        <div class="stat-card verde"><div class="stat-num">${d.total_pacientes}</div><div class="stat-label">Pacientes</div></div>
-        <div class="stat-card azul"><div class="stat-num">${d.total_medicos}</div><div class="stat-label">Médicos</div></div>
-        <div class="stat-card morado"><div class="stat-num">${d.total_citas}</div><div class="stat-label">Total citas</div></div>
-        <div class="stat-card naran"><div class="stat-num">${d.citas_pendientes}</div><div class="stat-label">Citas pendientes</div></div>
-        <div class="stat-card verde"><div class="stat-num">${d.citas_confirmadas}</div><div class="stat-label">Confirmadas</div></div>
-        <div class="stat-card error"><div class="stat-num">${d.citas_canceladas}</div><div class="stat-label">Canceladas</div></div>
-        <div class="stat-card azul"><div class="stat-num">${d.especialidades}</div><div class="stat-label">Especialidades</div></div>
-      `;
-    } catch { document.getElementById('stats-grid').innerHTML = '<div class="empty">Error al cargar estadísticas</div>'; }
+// ── Tabs ───────────────────────────────────────────────────────
+function cambiarTab(tab, btn) {
+  document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('on'));
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('on'));
+  btn.classList.add('on');
+  document.getElementById(`tab-${tab}`).classList.add('on');
+  if (tab === 'pendientes' && !document.getElementById('pendientes-wrap').dataset.loaded) {
+    cargarPendientes();
   }
-
-  async function cargarUsuarios() {
-    try {
-      const res = await fetch('/admin/usuarios', { headers: { Authorization: `Bearer ${token}` } });
-      todosUsuarios = await res.json();
-      renderUsuarios(todosUsuarios);
-    } catch { document.getElementById('tabla-usuarios').innerHTML = '<tr><td colspan="7" class="empty">Error al cargar usuarios</td></tr>'; }
+  if (tab === 'usuarios' && !todosUsuarios.length) {
+    cargarUsuarios();
   }
+}
 
-  function renderUsuarios(lista) {
-    if (!lista.length) { document.getElementById('tabla-usuarios').innerHTML = '<tr><td colspan="7" class="empty">No hay usuarios</td></tr>'; return; }
-    document.getElementById('tabla-usuarios').innerHTML = lista.map(u => `
-      <tr>
-        <td>${u.id}</td>
-        <td><strong>${u.nombre}</strong></td>
-        <td>${u.email}</td>
-        <td><span class="rol-badge rol-${u.rol}">${u.rol}</span></td>
-        <td><span class="estado-badge ${u.activo ? 'activo' : 'inactivo'}">${u.activo ? 'Activo' : 'Inactivo'}</span></td>
-        <td>${u.creado_en}</td>
-        <td>
-          <div class="acciones">
-            <button class="btn-accion btn-toggle" onclick="toggleUsuario(${u.id})">${u.activo ? 'Desactivar' : 'Activar'}</button>
-            ${u.id !== usuario.id ? `<button class="btn-accion btn-del" onclick="eliminarUsuario(${u.id}, '${u.nombre}')">Eliminar</button>` : ''}
-          </div>
-        </td>
-      </tr>
-    `).join('');
+// ── Estadísticas ───────────────────────────────────────────────
+async function cargarEstadisticas() {
+  try {
+    const res = await fetch('/admin/estadisticas', { headers: { Authorization: `Bearer ${token}` } });
+    statsData = await res.json();
+    document.getElementById('s-usuarios').textContent = statsData.total_usuarios;
+    document.getElementById('s-pacientes').textContent = statsData.total_pacientes;
+    document.getElementById('s-medicos').textContent = statsData.total_medicos;
+    document.getElementById('s-pendientes-num').textContent = statsData.medicos_pendientes;
+    document.getElementById('s-citas').textContent = statsData.total_citas;
+    document.getElementById('s-hoy').textContent = statsData.citas_hoy || 0;
+    document.getElementById('s-confirmadas').textContent = statsData.citas_confirmadas;
+    document.getElementById('s-canceladas').textContent = statsData.citas_canceladas;
+
+    // Barras citas
+    const totalC = statsData.total_citas || 1;
+    document.getElementById('b-pend').style.width = (statsData.citas_pendientes/totalC*100)+'%';
+    document.getElementById('b-conf').style.width = (statsData.citas_confirmadas/totalC*100)+'%';
+    document.getElementById('b-canc').style.width = (statsData.citas_canceladas/totalC*100)+'%';
+    document.getElementById('n-pend').textContent = statsData.citas_pendientes;
+    document.getElementById('n-conf').textContent = statsData.citas_confirmadas;
+    document.getElementById('n-canc').textContent = statsData.citas_canceladas;
+
+    // Barras usuarios
+    const totalU = statsData.total_usuarios || 1;
+    const medActivos = statsData.total_medicos - statsData.medicos_pendientes;
+    document.getElementById('b-pac').style.width = (statsData.total_pacientes/totalU*100)+'%';
+    document.getElementById('b-med').style.width = (medActivos/totalU*100)+'%';
+    document.getElementById('b-medp').style.width = (statsData.medicos_pendientes/totalU*100)+'%';
+    document.getElementById('n-pac').textContent = statsData.total_pacientes;
+    document.getElementById('n-med').textContent = medActivos;
+    document.getElementById('n-medp').textContent = statsData.medicos_pendientes;
+
+    // Badge tab pendientes
+    const cnt = statsData.medicos_pendientes;
+    const countEl = document.getElementById('count-pendientes');
+    countEl.textContent = cnt;
+    countEl.className = `tab-count${cnt > 0 ? ' on' : ''}`;
+  } catch {}
+}
+
+// ── Médicos pendientes ─────────────────────────────────────────
+async function cargarPendientes() {
+  try {
+    const res = await fetch('/admin/medicos-pendientes', { headers: { Authorization: `Bearer ${token}` } });
+    const lista = await res.json();
+    const wrap = document.getElementById('pendientes-wrap');
+    wrap.dataset.loaded = '1';
+    if (!lista.length) {
+      wrap.innerHTML = `
+        <div style="text-align:center;padding:4rem;color:var(--gris-m)">
+          <div style="font-size:3rem;margin-bottom:1rem">✅</div>
+          <div style="font-weight:700;color:var(--gris-t);margin-bottom:.4rem">No hay médicos pendientes</div>
+          <div style="font-size:.87rem">Todos los médicos han sido revisados</div>
+        </div>`;
+      return;
+    }
+    wrap.innerHTML = lista.map(m => `
+      <div class="pendiente-card" style="margin-bottom:.75rem">
+        <div class="pendiente-info">
+          <h4>👨‍⚕️ ${m.nombre}</h4>
+          <p>📧 ${m.email}</p>
+          <p>🏥 Especialidad: <strong>${m.especialidad}</strong></p>
+          <p>🪪 ReTHUS: <strong style="color:var(--azul-o)">${m.numero_rethus || '⚠️ No proporcionado'}</strong></p>
+          ${m.fecha_nacimiento ? `<p>🎂 Nacimiento: ${m.fecha_nacimiento}</p>` : ''}
+          <p style="font-size:.73rem;color:var(--gris-m);margin-top:.25rem">Registrado: ${m.creado_en}</p>
+        </div>
+        <div class="pendiente-btns">
+          <button class="btn-aprobar verde" onclick="aprobarMedico(${m.id}, '${m.nombre}')">✅ Aprobar</button>
+          <button class="btn-aprobar rojo" onclick="rechazarMedico(${m.id}, '${m.nombre}')">❌ Rechazar</button>
+        </div>
+      </div>`).join('');
+  } catch {}
+}
+
+// ── Usuarios ───────────────────────────────────────────────────
+async function cargarUsuarios() {
+  try {
+    const res = await fetch('/admin/usuarios', { headers: { Authorization: `Bearer ${token}` } });
+    todosUsuarios = await res.json();
+    renderUsuarios(todosUsuarios);
+  } catch {}
+}
+
+function renderUsuarios(lista) {
+  if (!lista.length) {
+    document.getElementById('tabla-body').innerHTML = '<tr><td colspan="8" style="text-align:center;padding:2rem;color:var(--gris-m)">No hay usuarios</td></tr>';
+    return;
   }
+  document.getElementById('tabla-body').innerHTML = lista.map(u => `
+    <tr>
+      <td style="color:var(--gris-m)">${u.id}</td>
+      <td><strong>${u.nombre}</strong></td>
+      <td style="font-size:.79rem;color:var(--gris-m)">${u.email}</td>
+      <td><span class="rol-badge rol-${u.rol}">${u.rol}</span></td>
+      <td style="font-size:.78rem;color:var(--gris-m)">${u.numero_rethus || '—'}</td>
+      <td>
+        <span class="estado-badge ${u.activo?'activo-b':'inactivo-b'}">${u.activo?'Activo':'Inactivo'}</span>
+        ${u.rol==='medico'&&!u.aprobado?'<span class="estado-badge pendiente-b" style="margin-left:.3rem">Pendiente</span>':''}
+      </td>
+      <td style="font-size:.8rem">${u.creado_en}</td>
+      <td>
+        <div class="acciones">
+          ${u.rol==='medico'&&!u.aprobado?`<button class="btn-accion btn-ok" onclick="aprobarMedico(${u.id},'${u.nombre}')">Aprobar</button>`:''}
+          <button class="btn-accion btn-toggle" onclick="toggleUsuario(${u.id})">${u.activo?'Desactivar':'Activar'}</button>
+          ${u.id!==usuario.id?`<button class="btn-accion btn-del" onclick="eliminarUsuario(${u.id},'${u.nombre}')">Eliminar</button>`:''}
+        </div>
+      </td>
+    </tr>`).join('');
+}
 
-  function filtrarUsuarios() {
-    const buscar = document.getElementById('buscar-usuario').value.toLowerCase();
-    const rol = document.getElementById('filtro-rol').value;
-    const filtrado = todosUsuarios.filter(u => {
-      const matchBuscar = u.nombre.toLowerCase().includes(buscar) || u.email.toLowerCase().includes(buscar);
-      const matchRol = !rol || u.rol === rol;
-      return matchBuscar && matchRol;
-    });
-    renderUsuarios(filtrado);
-  }
+function filtrar() {
+  const b = document.getElementById('buscar').value.toLowerCase();
+  const r = document.getElementById('filtro-rol').value;
+  renderUsuarios(todosUsuarios.filter(u => {
+    const mb = u.nombre.toLowerCase().includes(b) || u.email.toLowerCase().includes(b);
+    const mr = !r || u.rol === r;
+    return mb && mr;
+  }));
+}
 
-  async function toggleUsuario(id) {
-    try {
-      await fetch(`/admin/usuarios/${id}/activar`, { method: 'PUT', headers: { Authorization: `Bearer ${token}` } });
-      mostrarAlerta('✅ Estado del usuario actualizado', 'exito');
-      cargarUsuarios();
-    } catch { mostrarAlerta('❌ Error al actualizar', 'error'); }
-  }
+// ── Acciones ───────────────────────────────────────────────────
+async function aprobarMedico(id, nombre) {
+  try {
+    const res = await fetch(`/admin/usuarios/${id}/aprobar`, { method: 'PUT', headers: { Authorization: `Bearer ${token}` } });
+    const d = await res.json();
+    if (!res.ok) throw new Error(d.detail);
+    mostrarAlerta(`✅ ${nombre} aprobado exitosamente`, 's');
+    cargarEstadisticas();
+    document.getElementById('pendientes-wrap').dataset.loaded = '';
+    cargarPendientes();
+    cargarUsuarios();
+  } catch (err) { mostrarAlerta('❌ ' + err.message, 'e'); }
+}
 
-  async function eliminarUsuario(id, nombre) {
-    if (!confirm(`¿Eliminar al usuario "${nombre}"? Esta acción no se puede deshacer.`)) return;
-    try {
-      const res = await fetch(`/admin/usuarios/${id}`, { method: 'DELETE', headers: { Authorization: `Bearer ${token}` } });
-      const d = await res.json();
-      if (!res.ok) throw new Error(d.detail);
-      mostrarAlerta('✅ Usuario eliminado', 'exito');
-      cargarUsuarios();
-    } catch (err) { mostrarAlerta('❌ ' + err.message, 'error'); }
-  }
+async function rechazarMedico(id, nombre) {
+  if (!confirm(`¿Rechazar y eliminar la cuenta de "${nombre}"?`)) return;
+  try {
+    const res = await fetch(`/admin/usuarios/${id}/rechazar`, { method: 'PUT', headers: { Authorization: `Bearer ${token}` } });
+    const d = await res.json();
+    if (!res.ok) throw new Error(d.detail);
+    mostrarAlerta(`✅ Cuenta de ${nombre} rechazada`, 's');
+    cargarEstadisticas();
+    document.getElementById('pendientes-wrap').dataset.loaded = '';
+    cargarPendientes();
+    cargarUsuarios();
+  } catch (err) { mostrarAlerta('❌ ' + err.message, 'e'); }
+}
 
-  function mostrarAlerta(msg, tipo) {
-    const el = document.getElementById('alerta-global');
-    el.textContent = msg; el.className = `alerta-global ${tipo}`; el.style.display = 'block';
-    setTimeout(() => { el.style.display = 'none'; }, 3500);
-  }
+async function toggleUsuario(id) {
+  try {
+    await fetch(`/admin/usuarios/${id}/activar`, { method: 'PUT', headers: { Authorization: `Bearer ${token}` } });
+    mostrarAlerta('✅ Estado actualizado', 's');
+    cargarUsuarios(); cargarEstadisticas();
+  } catch { mostrarAlerta('❌ Error al actualizar', 'e'); }
+}
 
-  function cerrarSesion() { localStorage.clear(); window.location.href = '/'; }
+async function eliminarUsuario(id, nombre) {
+  if (!confirm(`¿Eliminar a "${nombre}"? Esta acción no se puede deshacer.`)) return;
+  try {
+    const res = await fetch(`/admin/usuarios/${id}`, { method: 'DELETE', headers: { Authorization: `Bearer ${token}` } });
+    const d = await res.json();
+    if (!res.ok) throw new Error(d.detail);
+    mostrarAlerta('✅ Usuario eliminado', 's');
+    cargarUsuarios(); cargarEstadisticas();
+  } catch (err) { mostrarAlerta('❌ ' + err.message, 'e'); }
+}
 
-  cargarEstadisticas();
-  cargarUsuarios();
+function mostrarAlerta(msg, tipo) {
+  const el = document.getElementById('alerta-g');
+  el.textContent = msg; el.className = `alerta-g ${tipo}`; el.style.display = 'block';
+  setTimeout(() => el.style.display = 'none', 3500);
+}
+
+function toggleDark() {
+  const isDark = document.body.classList.toggle('dark');
+  localStorage.setItem('darkMode', isDark ? '1' : '0');
+  document.getElementById('btn-dark').textContent = isDark ? '☀️' : '🌙';
+}
+if (localStorage.getItem('darkMode') === '1') {
+  document.body.classList.add('dark');
+  document.getElementById('btn-dark').textContent = '☀️';
+}
+
+function cerrarSesion() { localStorage.clear(); window.location.href = '/'; }
+
+// Inicializar
+cargarEstadisticas();
+cargarUsuarios();
 </script>
 </body>
 </html>

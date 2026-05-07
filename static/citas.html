@@ -9,106 +9,159 @@
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     :root{--azul:#1a56db;--azul-o:#1e3a8a;--azul-c:#dbeafe;--azul-mc:#eff6ff;--blanco:#fff;--gris-t:#1f2937;--gris-m:#6b7280;--gris-b:#e5e7eb;--gris-f:#f8fafc;--verde:#059669;--verde-c:#d1fae5;--naran:#d97706;--naran-c:#fef3c7;--error:#dc2626;--error-c:#fee2e2;--morado:#7c3aed;--morado-c:#ede9fe}
     body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--gris-f);min-height:100vh}
-    .navbar{background:var(--blanco);border-bottom:1px solid var(--gris-b);padding:0 2rem;height:64px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+    .navbar{background:var(--blanco);border-bottom:1px solid var(--gris-b);padding:0 1.5rem;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 1px 3px rgba(0,0,0,.06)}
     .nav-logo{display:flex;align-items:center;gap:.65rem;text-decoration:none}
-    .nav-logo-mark{width:38px;height:38px;background:var(--azul);border-radius:10px;display:grid;place-items:center;font-size:.8rem;font-weight:700;color:white}
-    .nav-logo-name{font-size:1rem;font-weight:700;color:var(--gris-t)}
-    .nav-right{display:flex;align-items:center;gap:1rem}
-    .badge{padding:.3rem .8rem;border-radius:20px;font-size:.75rem;font-weight:700}
-    .badge-medico{background:var(--azul-c);color:var(--azul-o)}.badge-paciente{background:var(--verde-c);color:var(--verde)}.badge-admin{background:var(--morado-c);color:var(--morado)}
-    .btn-logout{padding:.45rem 1rem;border:1.5px solid var(--gris-b);border-radius:8px;background:var(--blanco);font-family:'Plus Jakarta Sans',sans-serif;font-size:.82rem;color:var(--gris-m);cursor:pointer;transition:all .2s}
+    .nav-logo-mark{width:36px;height:36px;background:var(--azul);border-radius:10px;display:grid;place-items:center;font-size:.8rem;font-weight:700;color:white}
+    .nav-logo-name{font-size:.95rem;font-weight:700;color:var(--gris-t)}
+    .nav-right{display:flex;align-items:center;gap:.75rem}
+    .badge{padding:.28rem .75rem;border-radius:20px;font-size:.73rem;font-weight:700}
+    .badge-m{background:var(--azul-c);color:var(--azul-o)}.badge-p{background:var(--verde-c);color:var(--verde)}.badge-a{background:var(--morado-c);color:var(--morado)}
+    .btn-logout{padding:.4rem .9rem;border:1.5px solid var(--gris-b);border-radius:8px;background:var(--blanco);font-family:'Plus Jakarta Sans',sans-serif;font-size:.8rem;color:var(--gris-m);cursor:pointer;transition:all .2s}
     .btn-logout:hover{border-color:var(--error);color:var(--error);background:var(--error-c)}
-    .layout{display:grid;grid-template-columns:248px 1fr;min-height:calc(100vh - 64px)}
-    .sidebar{background:var(--blanco);border-right:1px solid var(--gris-b);padding:1.5rem 1rem}
-    .sidebar-section{margin-bottom:1.75rem}
-    .sidebar-title{font-size:.7rem;font-weight:700;color:var(--gris-m);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.6rem;padding:0 .6rem}
-    .nav-item{display:flex;align-items:center;gap:.7rem;padding:.6rem .75rem;border-radius:10px;font-size:.875rem;color:var(--gris-m);transition:all .2s;margin-bottom:.15rem;text-decoration:none;font-weight:500}
+    .layout{display:grid;grid-template-columns:230px 1fr;min-height:calc(100vh - 60px)}
+    .sidebar{background:var(--blanco);border-right:1px solid var(--gris-b);padding:1.25rem .85rem}
+    .sidebar-section{margin-bottom:1.5rem}
+    .sidebar-title{font-size:.68rem;font-weight:700;color:var(--gris-m);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.5rem;padding:0 .5rem}
+    .nav-item{display:flex;align-items:center;gap:.65rem;padding:.55rem .7rem;border-radius:10px;font-size:.85rem;color:var(--gris-m);transition:all .2s;margin-bottom:.1rem;text-decoration:none;font-weight:500}
     .nav-item:hover{background:var(--azul-mc);color:var(--azul)}.nav-item.activo{background:var(--azul-c);color:var(--azul-o);font-weight:700}
-    .contenido{padding:2rem 2.5rem}
-    .page-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.75rem}
-    .page-header h1{font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--gris-t)}
-    .page-header p{color:var(--gris-m);font-size:.88rem;margin-top:.2rem}
-    .btn-nueva{display:flex;align-items:center;gap:.5rem;padding:.7rem 1.25rem;background:var(--azul);color:white;border:none;border-radius:10px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.9rem;font-weight:700;cursor:pointer;transition:all .2s;box-shadow:0 4px 12px rgba(26,86,219,.3)}
+    .contenido{padding:1.75rem 2rem}
+    .page-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem}
+    .page-header h1{font-family:'Playfair Display',serif;font-size:1.7rem;color:var(--gris-t)}
+    .page-header p{color:var(--gris-m);font-size:.86rem;margin-top:.2rem}
+    .btn-nueva{display:flex;align-items:center;gap:.5rem;padding:.65rem 1.2rem;background:var(--azul);color:white;border:none;border-radius:10px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.88rem;font-weight:700;cursor:pointer;transition:all .2s;box-shadow:0 4px 12px rgba(26,86,219,.3);white-space:nowrap}
     .btn-nueva:hover{background:var(--azul-o);transform:translateY(-1px)}
-    .quick-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1.5rem}
-    .qs{background:var(--blanco);border:1px solid var(--gris-b);border-radius:12px;padding:1rem 1.25rem;display:flex;align-items:center;gap:.75rem}
-    .qs-icon{width:38px;height:38px;border-radius:8px;display:grid;place-items:center;font-size:1.1rem}
+    .qs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin-bottom:1.25rem}
+    .qs{background:var(--blanco);border:1px solid var(--gris-b);border-radius:12px;padding:.9rem 1rem;display:flex;align-items:center;gap:.65rem}
+    .qs-icon{width:36px;height:36px;border-radius:8px;display:grid;place-items:center;font-size:1rem;flex-shrink:0}
     .qs-icon.t{background:var(--azul-c)}.qs-icon.c{background:var(--verde-c)}.qs-icon.p{background:var(--naran-c)}
-    .qs-num{font-size:1.4rem;font-weight:700;color:var(--gris-t);font-family:'Playfair Display',serif;line-height:1}
-    .qs-label{font-size:.78rem;color:var(--gris-m);margin-top:.15rem}
-    .filtros{display:flex;gap:.75rem;margin-bottom:1.5rem;flex-wrap:wrap}
-    .fi{padding:.6rem 1rem;border:1.5px solid var(--gris-b);border-radius:8px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.87rem;color:var(--gris-t);background:var(--blanco);outline:none;transition:border-color .2s}
+    .qs-num{font-size:1.3rem;font-weight:700;color:var(--gris-t);font-family:'Playfair Display',serif;line-height:1}
+    .qs-label{font-size:.75rem;color:var(--gris-m);font-weight:500;margin-top:.1rem}
+    .filtros{display:flex;gap:.6rem;margin-bottom:1.25rem;flex-wrap:wrap}
+    .fi{padding:.55rem .9rem;border:1.5px solid var(--gris-b);border-radius:8px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.85rem;color:var(--gris-t);background:var(--blanco);outline:none;transition:border-color .2s}
     .fi:focus{border-color:var(--azul)}
-    .btn-f{padding:.6rem 1.1rem;background:var(--azul-mc);color:var(--azul);border:1.5px solid var(--azul-c);border-radius:8px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.87rem;font-weight:600;cursor:pointer}
-    .btn-l{padding:.6rem 1rem;background:var(--blanco);color:var(--gris-m);border:1.5px solid var(--gris-b);border-radius:8px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.87rem;cursor:pointer}
-    .lista{display:flex;flex-direction:column;gap:.75rem}
-    .card{background:var(--blanco);border:1.5px solid var(--gris-b);border-radius:14px;padding:1.25rem 1.5rem;display:flex;align-items:center;gap:1.25rem;transition:all .2s;position:relative;overflow:hidden}
+    .btn-f{padding:.55rem 1rem;background:var(--azul-mc);color:var(--azul);border:1.5px solid var(--azul-c);border-radius:8px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.85rem;font-weight:600;cursor:pointer}
+    .btn-l{padding:.55rem .9rem;background:var(--blanco);color:var(--gris-m);border:1.5px solid var(--gris-b);border-radius:8px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.85rem;cursor:pointer}
+    .lista{display:flex;flex-direction:column;gap:.65rem}
+    .card{background:var(--blanco);border:1.5px solid var(--gris-b);border-radius:14px;padding:1.1rem 1.4rem;display:flex;align-items:center;gap:1rem;transition:all .2s;position:relative;overflow:hidden}
     .card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px}
     .card.confirmada::before{background:var(--verde)}.card.pendiente::before{background:var(--naran)}.card.cancelada::before{background:var(--error)}
     .card:hover{border-color:var(--azul);box-shadow:0 4px 16px rgba(26,86,219,.1)}
-    .fecha-box{text-align:center;min-width:56px;background:var(--azul-mc);border-radius:10px;padding:.5rem}
-    .dia{font-size:1.4rem;font-weight:700;color:var(--azul-o);line-height:1}
-    .mes{font-size:.68rem;color:var(--azul);font-weight:600;text-transform:uppercase}
-    .info{flex:1}
-    .pac{font-size:.95rem;font-weight:700;color:var(--gris-t);margin-bottom:.2rem}
-    .med{font-size:.83rem;color:var(--gris-m);margin-bottom:.3rem}
-    .meta{display:flex;gap:1rem;flex-wrap:wrap}
-    .tag{font-size:.76rem;font-weight:600}
+    .fecha-box{text-align:center;min-width:50px;background:var(--azul-mc);border-radius:8px;padding:.45rem;flex-shrink:0}
+    .dia{font-size:1.3rem;font-weight:700;color:var(--azul-o);line-height:1}
+    .mes{font-size:.65rem;color:var(--azul);font-weight:600;text-transform:uppercase}
+    .info{flex:1;min-width:0}
+    .pac{font-size:.9rem;font-weight:700;color:var(--gris-t);margin-bottom:.15rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .med{font-size:.8rem;color:var(--gris-m);margin-bottom:.25rem}
+    .meta{display:flex;gap:.75rem;flex-wrap:wrap}
+    .tag{font-size:.74rem;font-weight:600}
     .tag.h{color:var(--azul)}.tag.m{color:var(--gris-m)}.tag.c{color:var(--verde)}
-    .estado{padding:.3rem .85rem;border-radius:20px;font-size:.75rem;font-weight:700;flex-shrink:0}
+    .estado{padding:.25rem .8rem;border-radius:20px;font-size:.72rem;font-weight:700;flex-shrink:0}
     .estado.confirmada{background:var(--verde-c);color:var(--verde)}.estado.pendiente{background:var(--naran-c);color:var(--naran)}.estado.cancelada{background:var(--error-c);color:var(--error)}
-    .acciones{display:flex;gap:.5rem}
-    .ba{width:34px;height:34px;border:1.5px solid var(--gris-b);border-radius:8px;background:var(--blanco);cursor:pointer;display:grid;place-items:center;font-size:.9rem;transition:all .2s}
+    .acciones{display:flex;gap:.4rem;flex-shrink:0}
+    .ba{width:32px;height:32px;border:1.5px solid var(--gris-b);border-radius:8px;background:var(--blanco);cursor:pointer;display:grid;place-items:center;font-size:.85rem;transition:all .2s}
     .ba:hover{border-color:var(--azul);background:var(--azul-mc)}.ba.del:hover{border-color:var(--error);background:var(--error-c)}
-    .empty{text-align:center;padding:4rem 2rem;color:var(--gris-m)}
-    .empty .ei{font-size:3.5rem;margin-bottom:1rem}
-    .empty h3{font-size:1.1rem;font-weight:700;color:var(--gris-t);margin-bottom:.5rem}
+    .ba.conf:hover{border-color:var(--verde);background:var(--verde-c)}
+    .empty{text-align:center;padding:3.5rem 2rem;color:var(--gris-m)}
+    .empty .ei{font-size:3rem;margin-bottom:.75rem}
+    .empty h3{font-size:1rem;font-weight:700;color:var(--gris-t);margin-bottom:.4rem}
     /* Modal */
     .overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:none;place-items:center;backdrop-filter:blur(2px)}
     .overlay.on{display:grid}
-    .modal{background:var(--blanco);border-radius:16px;padding:2rem;width:100%;max-width:520px;margin:1rem;box-shadow:0 20px 60px rgba(0,0,0,.2);max-height:92vh;overflow-y:auto;animation:mi .25s ease}
+    .modal{background:var(--blanco);border-radius:16px;padding:1.75rem;width:100%;max-width:520px;margin:1rem;box-shadow:0 20px 60px rgba(0,0,0,.2);max-height:94vh;overflow-y:auto;animation:mi .25s ease}
     @keyframes mi{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
-    .mh{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.25rem}
-    .mt{font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--gris-t)}
-    .mc{width:32px;height:32px;border:none;background:var(--gris-f);border-radius:8px;cursor:pointer;font-size:1rem;display:grid;place-items:center}
+    .mh{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.1rem}
+    .mt{font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--gris-t)}
+    .mc{width:30px;height:30px;border:none;background:var(--gris-f);border-radius:8px;cursor:pointer;font-size:.9rem;display:grid;place-items:center}
     .mc:hover{background:var(--error-c)}
-    .sl{font-size:.82rem;font-weight:600;color:var(--gris-t);margin-bottom:.5rem;display:block}
-    .campo{margin-bottom:.9rem}
-    .campo label{display:block;font-size:.82rem;font-weight:600;color:var(--gris-t);margin-bottom:.4rem}
-    .campo input,.campo select{width:100%;padding:.72rem .9rem;border:1.5px solid var(--gris-b);border-radius:8px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.9rem;color:var(--gris-t);background:var(--gris-f);outline:none;transition:border-color .2s}
+    .sl{font-size:.8rem;font-weight:700;color:var(--gris-t);margin:.75rem 0 .45rem;display:block}
+    .campo{margin-bottom:.8rem}
+    .campo label{display:block;font-size:.8rem;font-weight:600;color:var(--gris-t);margin-bottom:.35rem}
+    .campo input,.campo select{width:100%;padding:.7rem .9rem;border:1.5px solid var(--gris-b);border-radius:8px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.88rem;color:var(--gris-t);background:var(--gris-f);outline:none;transition:border-color .2s}
     .campo input:focus,.campo select:focus{border-color:var(--azul);background:var(--blanco)}
     .campo input:disabled{opacity:.7;cursor:not-allowed}
-    .hint{font-size:.74rem;margin-top:.3rem;display:block}
+    .hint{font-size:.73rem;margin-top:.25rem;display:block}
     .hint.ok{color:var(--verde)}.hint.warn{color:var(--error)}
-    /* Grids de selección */
-    .medico-grid{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;max-height:180px;overflow-y:auto}
-    .mc-card{border:1.5px solid var(--gris-b);border-radius:10px;padding:.75rem;cursor:pointer;transition:all .2s;background:var(--blanco)}
+    /* Especialidades */
+    .esp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;margin-bottom:.5rem}
+    .esp-btn{padding:.6rem .5rem;border:1.5px solid var(--gris-b);border-radius:8px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.78rem;font-weight:500;cursor:pointer;background:var(--blanco);color:var(--gris-t);text-align:center;transition:all .2s}
+    .esp-btn:hover{border-color:var(--azul);background:var(--azul-mc);color:var(--azul)}
+    .esp-btn.sel{border-color:var(--azul);background:var(--azul-c);color:var(--azul-o);font-weight:700}
+    /* Médicos */
+    .med-grid{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;max-height:160px;overflow-y:auto}
+    .mc-card{border:1.5px solid var(--gris-b);border-radius:10px;padding:.65rem;cursor:pointer;transition:all .2s;background:var(--blanco)}
     .mc-card:hover{border-color:var(--azul);background:var(--azul-mc)}
     .mc-card.sel{border-color:var(--azul);background:var(--azul-c)}
-    .mc-n{font-size:.84rem;font-weight:700;color:var(--gris-t)}
-    .mc-e{font-size:.73rem;color:var(--gris-m);margin-top:.15rem}
-    .mc-t{font-size:.73rem;color:var(--verde);font-weight:600;margin-top:.15rem}
-    .horas-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.4rem;max-height:140px;overflow-y:auto}
-    .hb{padding:.5rem .3rem;border:1.5px solid var(--gris-b);border-radius:8px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.8rem;font-weight:500;cursor:pointer;transition:all .2s;background:var(--blanco);color:var(--gris-t);text-align:center}
+    .mc-n{font-size:.82rem;font-weight:700;color:var(--gris-t)}
+    .mc-t{font-size:.72rem;color:var(--verde);font-weight:600;margin-top:.15rem}
+    /* Horas */
+    .horas-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.35rem;max-height:130px;overflow-y:auto}
+    .hb{padding:.45rem .3rem;border:1.5px solid var(--gris-b);border-radius:7px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.77rem;font-weight:500;cursor:pointer;background:var(--blanco);color:var(--gris-t);text-align:center;transition:all .2s}
     .hb:hover:not(:disabled){border-color:var(--azul);background:var(--azul-mc);color:var(--azul)}
     .hb.sel{border-color:var(--azul);background:var(--azul-c);color:var(--azul-o);font-weight:700}
     .hb:disabled{border-color:var(--error);background:var(--error-c);color:var(--error);cursor:not-allowed;opacity:.8}
-    .motivos-grid{display:grid;grid-template-columns:1fr 1fr;gap:.4rem}
-    .mb{padding:.55rem .7rem;border:1.5px solid var(--gris-b);border-radius:8px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.8rem;cursor:pointer;transition:all .2s;background:var(--blanco);color:var(--gris-t);text-align:left}
+    /* Motivos */
+    .mot-grid{display:grid;grid-template-columns:1fr 1fr;gap:.35rem}
+    .mb{padding:.5rem .6rem;border:1.5px solid var(--gris-b);border-radius:7px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.78rem;cursor:pointer;background:var(--blanco);color:var(--gris-t);text-align:left;transition:all .2s}
     .mb:hover{border-color:var(--azul);background:var(--azul-mc);color:var(--azul)}
     .mb.sel{border-color:var(--azul);background:var(--azul-c);color:var(--azul-o);font-weight:600}
-    .otro-input{width:100%;margin-top:.5rem;padding:.7rem .9rem;border:1.5px solid var(--gris-b);border-radius:8px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.9rem;outline:none;transition:border-color .2s;display:none}
+    .otro-input{width:100%;margin-top:.4rem;padding:.65rem .9rem;border:1.5px solid var(--gris-b);border-radius:8px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.88rem;outline:none;transition:border-color .2s;display:none}
     .otro-input:focus{border-color:var(--azul)}
-    .div{height:1px;background:var(--gris-b);margin:.75rem 0}
-    .mf{display:flex;gap:.75rem;margin-top:1.25rem}
-    .btn-can{flex:1;padding:.8rem;border:1.5px solid var(--gris-b);border-radius:10px;background:var(--blanco);font-family:'Plus Jakarta Sans',sans-serif;font-size:.9rem;font-weight:600;color:var(--gris-m);cursor:pointer;transition:all .2s}
-    .btn-ok{flex:2;padding:.8rem;background:var(--azul);color:white;border:none;border-radius:10px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.9rem;font-weight:700;cursor:pointer;box-shadow:0 4px 12px rgba(26,86,219,.3)}
+    .div{height:1px;background:var(--gris-b);margin:.65rem 0}
+    .mf{display:flex;gap:.65rem;margin-top:1.1rem}
+    .btn-can{flex:1;padding:.75rem;border:1.5px solid var(--gris-b);border-radius:10px;background:var(--blanco);font-family:'Plus Jakarta Sans',sans-serif;font-size:.88rem;font-weight:600;color:var(--gris-m);cursor:pointer}
+    .btn-ok{flex:2;padding:.75rem;background:var(--azul);color:white;border:none;border-radius:10px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.88rem;font-weight:700;cursor:pointer;box-shadow:0 4px 12px rgba(26,86,219,.3)}
     .btn-ok:hover{background:var(--azul-o)}
-    .alerta{padding:.8rem 1rem;border-radius:8px;font-size:.85rem;margin-bottom:.9rem;display:none;border:1px solid transparent}
+    .alerta{padding:.75rem 1rem;border-radius:8px;font-size:.83rem;margin-bottom:.8rem;display:none;border:1px solid transparent}
     .alerta.e{background:var(--error-c);color:var(--error);border-color:#fecaca}
     .alerta.s{background:#f0fdf4;color:var(--verde);border-color:#bbf7d0}
-    .txt-c{text-align:center;padding:1rem;color:var(--gris-m);font-size:.83rem;grid-column:1/-1}
-    @media(max-width:768px){.layout{grid-template-columns:1fr}.sidebar{display:none}.contenido{padding:1.5rem}.quick-stats,.medico-grid,.horas-grid,.motivos-grid{grid-template-columns:1fr}}
+    .txt-c{text-align:center;padding:1rem;color:var(--gris-m);font-size:.82rem;grid-column:1/-1}
+    .notas-medico{font-size:.78rem;color:var(--morado);background:var(--morado-c);padding:.3rem .6rem;border-radius:6px;margin-top:.35rem;display:inline-block}
+    .tag-pasada{font-size:.72rem;color:var(--gris-m);background:var(--gris-f);border:1px solid var(--gris-b);padding:.2rem .55rem;border-radius:6px;margin-top:.3rem;display:inline-block}
+    /* Dark mode */
+    body.dark{--blanco:#1e2433;--gris-f:#151b27;--gris-t:#f1f5f9;--gris-m:#94a3b8;--gris-b:#2d3748;background:#151b27}
+    body.dark .navbar,.body.dark .sidebar{background:#1a2235;border-color:#2d3748}
+    body.dark .navbar{background:#1a2235;border-color:#2d3748}
+    body.dark .sidebar{background:#1a2235;border-color:#2d3748;display:flex;flex-direction:column}
+    body.dark .qs{background:#1a2235;border-color:#2d3748}
+    body.dark .card{background:#1a2235;border-color:#2d3748}
+    body.dark .card:hover{border-color:var(--azul)}
+    body.dark .fi{background:#1a2235;border-color:#2d3748;color:#f1f5f9}
+    body.dark .btn-l{background:#1a2235;border-color:#2d3748;color:#94a3b8}
+    body.dark .pac,.body.dark .qs-num{color:#f1f5f9}
+    body.dark .pac{color:#f1f5f9}
+    body.dark .qs-num{color:#f1f5f9}
+    body.dark .modal{background:#1a2235}
+    body.dark .campo input,.body.dark .campo select{background:#151b27;border-color:#2d3748;color:#f1f5f9}
+    body.dark .mc-card{background:#1a2235;border-color:#2d3748}
+    body.dark .mc-card:hover{background:#253047;border-color:var(--azul)}
+    body.dark .mc-card.sel{background:#1e3a5f;border-color:var(--azul)}
+    body.dark .esp-btn{background:#1a2235;border-color:#2d3748;color:#94a3b8}
+    body.dark .esp-btn:hover{background:#253047;border-color:var(--azul);color:#60a5fa}
+    body.dark .esp-btn.sel{background:#1e3a5f;border-color:var(--azul);color:#93c5fd}
+    body.dark .hb{background:#1a2235;border-color:#2d3748;color:#94a3b8}
+    body.dark .hb:hover:not(:disabled){background:#253047;border-color:var(--azul);color:#60a5fa}
+    body.dark .hb.sel{background:#1e3a5f;color:#93c5fd}
+    body.dark .mb{background:#1a2235;border-color:#2d3748;color:#94a3b8}
+    body.dark .mb:hover{background:#253047;border-color:var(--azul);color:#60a5fa}
+    body.dark .mb.sel{background:#1e3a5f;color:#93c5fd}
+    body.dark .otro-input{background:#151b27;border-color:#2d3748;color:#f1f5f9}
+    body.dark .nav-name{color:#f1f5f9}
+    body.dark .sb-item{color:#94a3b8}
+    body.dark .sb-item:hover{background:#253047;color:#60a5fa}
+    body.dark .sb-item.activo{background:#1e3a5f;color:#93c5fd}
+    body.dark .sb-title{color:#475569}
+    body.dark .btn-can{background:#1a2235;border-color:#2d3748;color:#94a3b8}
+    body.dark .sb-user-card{border-color:#2d3748}
+    body.dark .sb-user-name{color:#f1f5f9}
+    /* Sidebar user */
+    .sidebar{display:flex;flex-direction:column}
+    .sb-user-card{margin-top:auto;padding:.85rem .7rem;border-top:1px solid var(--gris-b);display:flex;align-items:center;gap:.65rem}
+    .sb-avatar{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-size:.85rem;font-weight:700;color:white;flex-shrink:0}
+    .sb-user-info{min-width:0}
+    .sb-user-name{font-size:.82rem;font-weight:700;color:var(--gris-t);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .sb-user-role{font-size:.72rem;color:var(--gris-m);margin-top:.05rem}
+    @media(max-width:900px){.layout{grid-template-columns:1fr}.sidebar{display:none}.contenido{padding:1.25rem}.qs-grid{grid-template-columns:1fr 1fr}.med-grid,.mot-grid,.esp-grid{grid-template-columns:1fr}}
+    @media(max-width:480px){.qs-grid{grid-template-columns:1fr}.horas-grid{grid-template-columns:repeat(3,1fr)}.card{flex-wrap:wrap}.acciones{width:100%;justify-content:flex-end}}
   </style>
 </head>
 <body>
@@ -116,6 +169,7 @@
   <a class="nav-logo" href="/dashboard"><div class="nav-logo-mark">CM</div><span class="nav-logo-name">CitasMédicas</span></a>
   <div class="nav-right">
     <span class="badge" id="badge-rol"></span>
+    <button class="btn-dark" onclick="toggleDark()" id="btn-dark" title="Modo oscuro" style="width:36px;height:36px;border:1.5px solid var(--gris-b);border-radius:10px;background:var(--blanco);cursor:pointer;display:grid;place-items:center;font-size:1rem">🌙</button>
     <button class="btn-logout" onclick="cerrarSesion()">Cerrar sesión</button>
   </div>
 </nav>
@@ -124,7 +178,7 @@
     <div class="sidebar-section">
       <div class="sidebar-title">Principal</div>
       <a class="nav-item" href="/dashboard">🏠 Inicio</a>
-      <a class="nav-item activo" href="#">📅 Mis citas</a>
+      <a class="nav-item activo" href="#">📅 Citas médicas</a>
       <a class="nav-item" href="/dashboard">👤 Mi perfil</a>
     </div>
     <div class="sidebar-section" id="sb-admin" style="display:none">
@@ -133,28 +187,41 @@
     </div>
     <div class="sidebar-section">
       <div class="sidebar-title">Sistema</div>
-      <a class="nav-item" href="/docs" target="_blank">📖 API Docs</a>
       <a class="nav-item" href="#" onclick="cerrarSesion()">🚪 Salir</a>
+    </div>
+    <div class="sb-user-card" id="sb-user-card">
+      <div class="sb-avatar" id="sb-avatar">A</div>
+      <div class="sb-user-info">
+        <div class="sb-user-name" id="sb-user-name">...</div>
+        <div class="sb-user-role" id="sb-user-role">...</div>
+      </div>
     </div>
   </aside>
   <main class="contenido">
     <div class="page-header">
-      <div><h1>Gestión de Citas</h1><p id="sub">Crea y administra tus citas médicas</p></div>
-      <button class="btn-nueva" onclick="abrirModal()">➕ Nueva cita</button>
+      <div>
+        <h1>Mis Citas Médicas</h1>
+        <p id="sub">Agenda y administra tus citas médicas en un solo lugar</p>
+      </div>
+      <button class="btn-nueva" onclick="abrirModal()">➕ Agendar cita</button>
     </div>
-    <div class="quick-stats">
+    <div class="qs-grid">
       <div class="qs"><div class="qs-icon t">📅</div><div><div class="qs-num" id="tot">0</div><div class="qs-label">Total</div></div></div>
       <div class="qs"><div class="qs-icon c">✅</div><div><div class="qs-num" id="con">0</div><div class="qs-label">Confirmadas</div></div></div>
       <div class="qs"><div class="qs-icon p">⏳</div><div><div class="qs-num" id="pen">0</div><div class="qs-label">Pendientes</div></div></div>
     </div>
     <div class="filtros">
-      <input class="fi" id="fm" placeholder="🔍 Buscar médico..." style="flex:1;min-width:180px"/>
-      <select class="fi" id="fe">
+      <select class="fi" id="ftipo" onchange="filtrar()" style="min-width:130px">
+        <option value="">🗓️ Todas</option>
+        <option value="proximas">⏩ Próximas</option>
+        <option value="pasadas">⏪ Pasadas</option>
+      </select>
+      <select class="fi" id="fe" onchange="filtrar()">
         <option value="">Todos los estados</option>
         <option value="true">✅ Confirmadas</option>
         <option value="false">⏳ Pendientes</option>
       </select>
-      <button class="btn-f" onclick="filtrar()">Filtrar</button>
+      <input class="fi" id="fm" placeholder="🔍 Buscar médico..." style="flex:1;min-width:140px" oninput="filtrar()"/>
       <button class="btn-l" onclick="limpiar()">Limpiar</button>
     </div>
     <div id="alerta-p" class="alerta"></div>
@@ -172,41 +239,51 @@
     <div class="campo">
       <label>Paciente</label>
       <input type="text" id="m-pac" disabled/>
-      <span class="hint ok">✅ Asignado automáticamente a tu cuenta</span>
+      <span class="hint ok">✅ Asignado automáticamente</span>
     </div>
     <div class="div"></div>
 
-    <!-- Médico -->
-    <span class="sl">Selecciona un médico</span>
-    <div class="medico-grid" id="med-grid"><div class="txt-c">Cargando médicos...</div></div>
-    <span class="hint ok" id="med-hint" style="display:none;margin-top:.4rem"></span>
+    <!-- Paso 1: Especialidad -->
+    <span class="sl">1. Selecciona la especialidad</span>
+    <div class="esp-grid" id="esp-grid"><div class="txt-c">Cargando especialidades...</div></div>
     <div class="div"></div>
 
-    <!-- Fecha -->
+    <!-- Paso 2: Médico -->
+    <span class="sl">2. Selecciona un médico</span>
+    <div class="med-grid" id="med-grid"><div class="txt-c">Selecciona primero una especialidad</div></div>
+    <span class="hint ok" id="med-hint" style="display:none;margin-top:.3rem"></span>
+    <div class="div"></div>
+
+    <!-- Paso 3: Fecha y hora -->
     <div class="campo">
-      <label>Fecha de la cita</label>
+      <label>3. Fecha de la cita</label>
       <input type="date" id="m-fecha" onchange="actualizarHoras()"/>
       <span class="hint" id="fecha-hint"></span>
     </div>
-
-    <!-- Horas -->
-    <span class="sl">Selecciona una hora</span>
-    <div class="horas-grid" id="horas-grid"><div class="txt-c">Selecciona primero un médico y fecha</div></div>
+    <span class="sl">4. Selecciona una hora</span>
+    <div class="horas-grid" id="horas-grid"><div class="txt-c">Selecciona médico y fecha</div></div>
     <input type="hidden" id="m-hora"/>
     <div class="div"></div>
 
-    <!-- Motivos -->
-    <span class="sl">Motivo de la consulta</span>
-    <div class="motivos-grid" id="mot-grid"><div class="txt-c">Selecciona primero un médico</div></div>
+    <!-- Motivo -->
+    <span class="sl">5. Motivo de la consulta</span>
+    <div class="mot-grid" id="mot-grid"><div class="txt-c">Selecciona primero un médico</div></div>
     <input type="text" class="otro-input" id="otro-input" placeholder="Describe el motivo..."/>
     <input type="hidden" id="m-motivo"/>
     <div class="div"></div>
 
     <!-- Costo -->
     <div class="campo">
-      <label>💰 Costo de la consulta (COP)</label>
+      <label>💰 Costo (COP)</label>
       <input type="number" id="m-costo" placeholder="0" min="0"/>
       <span class="hint ok" id="costo-hint"></span>
+    </div>
+
+    <!-- Notas médico -->
+    <div class="campo" id="campo-notas" style="display:none">
+      <label>📝 Notas / Diagnóstico</label>
+      <input type="text" id="m-notas" placeholder="Diagnóstico, observaciones, indicaciones..."/>
+      <span class="hint">Solo visible para el paciente después de la consulta</span>
     </div>
 
     <div class="mf">
@@ -222,74 +299,78 @@ const usuarioStr = localStorage.getItem('usuario');
 if (!token || !usuarioStr) { window.location.href = '/'; }
 const usuario = JSON.parse(usuarioStr);
 
-// Badge
 const badgeTextos = { admin:'👑 Admin', medico:'👨‍⚕️ Médico', paciente:'🙋 Paciente' };
-const badgeClases = { admin:'badge badge-admin', medico:'badge badge-medico', paciente:'badge badge-paciente' };
+const badgeClases = { admin:'badge badge-a', medico:'badge badge-m', paciente:'badge badge-p' };
 document.getElementById('badge-rol').textContent = badgeTextos[usuario.rol];
 document.getElementById('badge-rol').className = badgeClases[usuario.rol];
 if (usuario.rol === 'admin') document.getElementById('sb-admin').style.display = 'block';
-document.getElementById('sub').textContent = usuario.rol === 'admin' ? 'Todas las citas del sistema' : usuario.rol === 'medico' ? 'Citas de tus pacientes' : 'Tus citas médicas';
+document.getElementById('sub').textContent = usuario.rol === 'admin' ? 'Todas las citas del sistema' : usuario.rol === 'medico' ? 'Citas de tus pacientes' : 'Agenda y gestiona tus citas médicas';
 
-// Fecha mínima hoy
 const hoy = new Date().toISOString().split('T')[0];
 document.getElementById('m-fecha').min = hoy;
 
-// Tarifas fijas por especialidad
-const TARIFAS = {
-  'Medicina General': 35000, 'Pediatria': 55000, 'Cardiologia': 120000,
-  'Dermatologia': 90000, 'Ginecologia': 100000, 'Ortopedia': 110000
-};
-
-// Motivos por especialidad
+const TARIFAS = { 'Medicina General':35000,'Pediatria':55000,'Cardiologia':120000,'Dermatologia':90000,'Ginecologia':100000,'Ortopedia':110000 };
 const MOTIVOS = {
-  'Medicina General':  ['Consulta general','Control médico','Resfriado o gripa','Dolor de cabeza','Fiebre','Revisión general','Otro'],
-  'Pediatria':         ['Control de crecimiento','Vacunación','Fiebre en niños','Revisión neonatal','Control nutricional','Otro'],
-  'Cardiologia':       ['Dolor en el pecho','Palpitaciones','Control de presión','Electrocardiograma','Revisión post-infarto','Otro'],
-  'Dermatologia':      ['Acné','Manchas en la piel','Alergia cutánea','Revisión de lunares','Psoriasis','Otro'],
-  'Ginecologia':       ['Control prenatal','Papanicolau','Dolor menstrual','Planificación familiar','Revisión ginecológica','Otro'],
-  'Ortopedia':         ['Dolor de espalda','Lesión deportiva','Fractura','Dolor articular','Control postoperatorio','Otro'],
-  'default':           ['Consulta general','Control médico','Revisión de exámenes','Urgencia','Seguimiento de tratamiento','Otro']
+  'Medicina General':['Consulta general','Control médico','Resfriado','Dolor de cabeza','Fiebre','Otro'],
+  'Pediatria':['Control crecimiento','Vacunación','Fiebre en niños','Control nutricional','Otro'],
+  'Cardiologia':['Dolor en el pecho','Palpitaciones','Control presión','Electrocardiograma','Otro'],
+  'Dermatologia':['Acné','Manchas en la piel','Alergia cutánea','Revisión de lunares','Otro'],
+  'Ginecologia':['Control prenatal','Papanicolau','Dolor menstrual','Planificación familiar','Otro'],
+  'Ortopedia':['Dolor de espalda','Lesión deportiva','Fractura','Dolor articular','Otro'],
+  'default':['Consulta general','Control médico','Urgencia','Seguimiento','Otro']
 };
 
-let medSelId = null, medSelEsp = null, horaSeleccionada = null, citaEditId = null;
-let medicos = [];
+let medSelId=null, medSelEsp=null, horaSeleccionada=null, citaEditId=null;
+let especialidades=[], medicos=[];
 
-// Cargar médicos
-async function cargarMedicos() {
+async function cargarEspecialidades() {
   try {
-    const res = await fetch('/medicos', { headers: { Authorization: `Bearer ${token}` } });
+    const res = await fetch('/especialidades');
+    especialidades = await res.json();
+    const grid = document.getElementById('esp-grid');
+    if (!especialidades.length) { grid.innerHTML = '<div class="txt-c">No hay especialidades</div>'; return; }
+    grid.innerHTML = especialidades.map(e => `<button class="esp-btn" onclick="selEspecialidad(${e.id},'${e.nombre}',this)">${e.nombre}</button>`).join('');
+  } catch {}
+}
+
+async function selEspecialidad(id, nombre, btn) {
+  document.querySelectorAll('.esp-btn').forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+  // Resetear médico
+  medSelId = null; medSelEsp = null;
+  document.getElementById('med-hint').style.display = 'none';
+  document.getElementById('m-costo').value = '';
+  document.getElementById('costo-hint').textContent = '';
+  document.getElementById('mot-grid').innerHTML = '<div class="txt-c">Selecciona primero un médico</div>';
+  // Cargar médicos de esa especialidad
+  document.getElementById('med-grid').innerHTML = '<div class="txt-c">Cargando médicos...</div>';
+  try {
+    const res = await fetch(`/medicos?especialidad_id=${id}`, { headers: { Authorization: `Bearer ${token}` } });
     medicos = await res.json();
-    // Médico no se ve a sí mismo
     if (usuario.rol === 'medico') medicos = medicos.filter(m => m.email !== usuario.email);
     const grid = document.getElementById('med-grid');
-    if (!medicos.length) { grid.innerHTML = '<div class="txt-c">No hay médicos disponibles</div>'; return; }
+    if (!medicos.length) { grid.innerHTML = '<div class="txt-c">No hay médicos en esta especialidad</div>'; return; }
     grid.innerHTML = medicos.map(m => `
       <div class="mc-card" id="mc-${m.id}" onclick="selMedico(${m.id})">
         <div class="mc-n">👨‍⚕️ ${m.nombre}</div>
-        <div class="mc-e">${m.especialidad || 'Medicina General'}</div>
-        <div class="mc-t">💰 $${new Intl.NumberFormat('es-CO').format(TARIFAS[m.especialidad] || 35000)}</div>
+        <div class="mc-t">💰 $${new Intl.NumberFormat('es-CO').format(TARIFAS[m.especialidad]||35000)}</div>
       </div>`).join('');
-  } catch { document.getElementById('med-grid').innerHTML = '<div class="txt-c">Error al cargar</div>'; }
+  } catch { document.getElementById('med-grid').innerHTML = '<div class="txt-c" style="color:var(--error)">Error al cargar</div>'; }
 }
 
 function selMedico(id) {
   const m = medicos.find(x => x.id === id);
   if (!m) return;
-  medSelId = id;
-  medSelEsp = m.especialidad || 'Medicina General';
+  medSelId = id; medSelEsp = m.especialidad || 'Medicina General';
   document.querySelectorAll('.mc-card').forEach(c => c.classList.remove('sel'));
   document.getElementById(`mc-${id}`).classList.add('sel');
   const hint = document.getElementById('med-hint');
-  hint.textContent = `✅ ${m.nombre} seleccionado`;
-  hint.style.display = 'block';
-  // Precio fijo
+  hint.textContent = `✅ ${m.nombre} seleccionado`; hint.style.display = 'block';
   const tarifa = TARIFAS[medSelEsp] || 35000;
   document.getElementById('m-costo').value = tarifa;
   document.getElementById('m-costo').disabled = usuario.rol === 'paciente';
-  document.getElementById('costo-hint').textContent = `Tarifa estándar ${medSelEsp}: $${new Intl.NumberFormat('es-CO').format(tarifa)}`;
-  // Motivos
+  document.getElementById('costo-hint').textContent = `Tarifa: $${new Intl.NumberFormat('es-CO').format(tarifa)}`;
   renderMotivos(medSelEsp);
-  // Horas si ya hay fecha
   if (document.getElementById('m-fecha').value) actualizarHoras();
 }
 
@@ -318,19 +399,9 @@ function selMotivo(m, btn) {
 async function actualizarHoras() {
   const fecha = document.getElementById('m-fecha').value;
   const hint = document.getElementById('fecha-hint');
-  if (fecha < hoy) {
-    hint.textContent = '❌ No puedes seleccionar una fecha pasada';
-    hint.className = 'hint warn';
-    document.getElementById('m-fecha').value = hoy;
-    return;
-  }
-  hint.textContent = '';
-  horaSeleccionada = null;
-  document.getElementById('m-hora').value = '';
-  if (!medSelId || !fecha) {
-    document.getElementById('horas-grid').innerHTML = '<div class="txt-c">Selecciona primero un médico y fecha</div>';
-    return;
-  }
+  if (fecha < hoy) { hint.textContent = '❌ Fecha pasada'; hint.className = 'hint warn'; document.getElementById('m-fecha').value = hoy; return; }
+  hint.textContent = ''; horaSeleccionada = null; document.getElementById('m-hora').value = '';
+  if (!medSelId || !fecha) { document.getElementById('horas-grid').innerHTML = '<div class="txt-c">Selecciona médico y fecha</div>'; return; }
   try {
     const res = await fetch(`/disponibilidad?medico_id=${medSelId}&fecha=${fecha}`, { headers: { Authorization: `Bearer ${token}` } });
     const data = await res.json();
@@ -338,141 +409,179 @@ async function actualizarHoras() {
     const horas = [];
     for (let h = 7; h < 18; h++) { horas.push(`${String(h).padStart(2,'0')}:00`); horas.push(`${String(h).padStart(2,'0')}:30`); }
     document.getElementById('horas-grid').innerHTML = horas.map(h => {
-      const ocupada = ocupadas.includes(h);
-      return `<button class="hb ${ocupada ? '' : ''}" onclick="${ocupada ? '' : `selHora('${h}',this)`}" ${ocupada ? 'disabled title="Hora ocupada"' : ''}>${h}${ocupada ? ' ❌' : ''}</button>`;
+      const ocu = ocupadas.includes(h);
+      return `<button class="hb" onclick="${ocu?'':`selHora('${h}',this)`}" ${ocu?'disabled title="Ocupada"':''}>${h}${ocu?' ❌':''}</button>`;
     }).join('');
-  } catch { document.getElementById('horas-grid').innerHTML = '<div class="txt-c" style="color:var(--error)">Error al cargar horarios</div>'; }
+  } catch { document.getElementById('horas-grid').innerHTML = '<div class="txt-c" style="color:var(--error)">Error al cargar</div>'; }
 }
 
 function selHora(h, btn) {
   document.querySelectorAll('.hb:not(:disabled)').forEach(b => b.classList.remove('sel'));
-  btn.classList.add('sel');
-  horaSeleccionada = h;
-  document.getElementById('m-hora').value = h;
+  btn.classList.add('sel'); horaSeleccionada = h; document.getElementById('m-hora').value = h;
 }
 
-async function cargarCitas(params = '') {
+async function cargarCitas(params='') {
   try {
-    const res = await fetch('/citas' + params, { headers: { Authorization: `Bearer ${token}` } });
+    const res = await fetch('/citas'+params, { headers: { Authorization: `Bearer ${token}` } });
     const data = await res.json();
     document.getElementById('tot').textContent = data.total;
-    document.getElementById('con').textContent = data.citas.filter(c => c.estado === 'confirmada').length;
-    document.getElementById('pen').textContent = data.citas.filter(c => c.estado === 'pendiente').length;
+    document.getElementById('con').textContent = data.citas.filter(c=>c.estado==='confirmada').length;
+    document.getElementById('pen').textContent = data.citas.filter(c=>c.estado==='pendiente').length;
     renderCitas(data.citas);
-  } catch { mostrarP('❌ Error al cargar citas', 'e'); }
+  } catch { mostrarP('❌ Error al cargar citas','e'); }
 }
 
 function renderCitas(citas) {
   const lista = document.getElementById('lista');
-  if (!citas.length) { lista.innerHTML = '<div class="empty"><div class="ei">📭</div><h3>No hay citas</h3><p>Crea tu primera cita</p></div>'; return; }
+  if (!citas.length) { lista.innerHTML='<div class="empty"><div class="ei">📭</div><h3>No hay citas</h3><p>Agenda tu primera cita</p></div>'; return; }
   lista.innerHTML = citas.map(c => {
-    const f = new Date(c.fecha + 'T00:00:00');
-    const costo = new Intl.NumberFormat('es-CO', {style:'currency',currency:'COP',maximumFractionDigits:0}).format(c.costo);
+    const f = new Date(c.fecha+'T00:00:00');
+    const costo = new Intl.NumberFormat('es-CO',{style:'currency',currency:'COP',maximumFractionDigits:0}).format(c.costo);
     return `<div class="card ${c.estado}">
       <div class="fecha-box"><div class="dia">${f.getDate()}</div><div class="mes">${f.toLocaleDateString('es-CO',{month:'short'}).toUpperCase()}</div></div>
       <div class="info">
         <div class="pac">👤 ${c.paciente_nombre}</div>
         <div class="med">🩺 ${c.medico_nombre}</div>
         <div class="meta"><span class="tag h">🕐 ${c.hora}</span><span class="tag m">📋 ${c.motivo}</span><span class="tag c">💰 ${costo}</span></div>
+        ${c.notas_medico ? `<div class="notas-medico">📝 ${c.notas_medico}</div>` : ''}
+        ${c.es_pasada && c.estado!=='cancelada' ? '<div class="tag-pasada">Cita pasada</div>' : ''}
       </div>
       <span class="estado ${c.estado}">${c.estado==='confirmada'?'✅ Confirmada':c.estado==='cancelada'?'❌ Cancelada':'⏳ Pendiente'}</span>
       <div class="acciones">
-        <button class="ba" onclick="editarCita(${c.id})" title="Editar">✏️</button>
-        <button class="ba del" onclick="eliminarCita(${c.id})" title="Eliminar">🗑️</button>
+        ${usuario.rol==='medico' && c.estado==='pendiente' ? `
+          <button class="ba conf" onclick="cambiarEstado(${c.id},'confirmada')" title="Confirmar">✅</button>
+          <button class="ba del" onclick="cambiarEstado(${c.id},'cancelada')" title="Cancelar">❌</button>
+        ` : usuario.rol==='paciente' && c.estado!=='cancelada' && !c.es_pasada ? `
+          <button class="ba del" onclick="cancelarCitaPaciente(${c.id})" title="Cancelar cita">❌</button>
+        ` : usuario.rol==='admin' ? `
+          <button class="ba" onclick="editarCita(${c.id})" title="Editar">✏️</button>
+          <button class="ba del" onclick="eliminarCita(${c.id})" title="Eliminar">🗑️</button>
+        ` : ``}
       </div>
     </div>`;
   }).join('');
 }
 
 function filtrar() {
-  const m = document.getElementById('fm').value.trim();
-  const e = document.getElementById('fe').value;
-  let p = [];
-  if (m) p.push(`medico_nombre=${encodeURIComponent(m)}`);
-  if (e !== '') p.push(`confirmada=${e}`);
-  cargarCitas(p.length ? '?' + p.join('&') : '');
+  const m=document.getElementById('fm').value.trim();
+  const e=document.getElementById('fe').value;
+  const t=document.getElementById('ftipo').value;
+  let p=[];
+  if(m) p.push(`medico_nombre=${encodeURIComponent(m)}`);
+  if(e!=='') p.push(`confirmada=${e}`);
+  if(t!=='') p.push(`tipo=${t}`);
+  cargarCitas(p.length?'?'+p.join('&'):'');
 }
 function limpiar() { document.getElementById('fm').value=''; document.getElementById('fe').value=''; cargarCitas(); }
 
-function abrirModal(cita = null) {
-  citaEditId = cita ? cita.id : null;
-  medSelId = null; medSelEsp = null; horaSeleccionada = null;
-  document.getElementById('mtitulo').textContent = cita ? 'Editar cita' : 'Nueva cita';
+function abrirModal(cita=null) {
+  citaEditId=cita?cita.id:null; medSelId=null; medSelEsp=null; horaSeleccionada=null;
+  document.getElementById('mtitulo').textContent = cita?'Editar cita':'Nueva cita';
   document.getElementById('m-pac').value = usuario.nombre;
-  document.getElementById('m-fecha').value = cita ? cita.fecha : '';
-  document.getElementById('m-hora').value = '';
-  document.getElementById('m-motivo').value = '';
-  document.getElementById('m-costo').value = '';
-  document.getElementById('m-costo').disabled = false;
-  document.getElementById('costo-hint').textContent = '';
-  document.getElementById('med-hint').style.display = 'none';
-  document.getElementById('fecha-hint').textContent = '';
-  document.getElementById('otro-input').style.display = 'none';
-  document.getElementById('alerta-m').style.display = 'none';
-  document.querySelectorAll('.mc-card').forEach(c => c.classList.remove('sel'));
-  document.getElementById('horas-grid').innerHTML = '<div class="txt-c">Selecciona primero un médico y fecha</div>';
-  document.getElementById('mot-grid').innerHTML = '<div class="txt-c">Selecciona primero un médico</div>';
+  document.getElementById('m-fecha').value = cita?cita.fecha:'';
+  document.getElementById('m-hora').value=''; document.getElementById('m-motivo').value='';
+  document.getElementById('m-costo').value=''; document.getElementById('m-costo').disabled=false;
+  document.getElementById('costo-hint').textContent=''; document.getElementById('med-hint').style.display='none';
+  document.getElementById('fecha-hint').textContent=''; document.getElementById('otro-input').style.display='none';
+  document.getElementById('alerta-m').style.display='none';
+  document.querySelectorAll('.mc-card').forEach(c=>c.classList.remove('sel'));
+  document.querySelectorAll('.esp-btn').forEach(b=>b.classList.remove('sel'));
+  document.getElementById('horas-grid').innerHTML='<div class="txt-c">Selecciona médico y fecha</div>';
+  document.getElementById('mot-grid').innerHTML='<div class="txt-c">Selecciona primero un médico</div>';
+  document.getElementById('med-grid').innerHTML='<div class="txt-c">Selecciona primero una especialidad</div>';
   document.getElementById('overlay').classList.add('on');
 }
 function cerrarModal() { document.getElementById('overlay').classList.remove('on'); }
 
 async function guardarCita() {
-  if (!medSelId) { mostrarM('❌ Selecciona un médico', 'e'); return; }
-  const fecha = document.getElementById('m-fecha').value;
-  const hora = document.getElementById('m-hora').value;
-  const motivo = document.getElementById('m-motivo').value.trim();
-  const costo = parseFloat(document.getElementById('m-costo').value) || 0;
-  if (!fecha) { mostrarM('❌ Selecciona una fecha', 'e'); return; }
-  if (fecha < hoy) { mostrarM('❌ No puedes agendar en fecha pasada', 'e'); return; }
-  if (!hora) { mostrarM('❌ Selecciona una hora', 'e'); return; }
-  if (!motivo) { mostrarM('❌ Selecciona el motivo', 'e'); return; }
+  if (!medSelId) { mostrarM('❌ Selecciona un médico','e'); return; }
+  const fecha=document.getElementById('m-fecha').value, hora=document.getElementById('m-hora').value;
+  const motivo=document.getElementById('m-motivo').value.trim(), costo=parseFloat(document.getElementById('m-costo').value)||0;
+  if (!fecha) { mostrarM('❌ Selecciona una fecha','e'); return; }
+  if (fecha<hoy) { mostrarM('❌ No puedes agendar en fecha pasada','e'); return; }
+  if (!hora) { mostrarM('❌ Selecciona una hora','e'); return; }
+  if (!motivo) { mostrarM('❌ Selecciona el motivo','e'); return; }
   try {
-    const url = citaEditId ? `/citas/${citaEditId}` : '/citas';
-    const method = citaEditId ? 'PUT' : 'POST';
-    const body = citaEditId ? { fecha, hora, motivo, costo } : { medico_id: medSelId, fecha, hora, motivo, costo };
-    const res = await fetch(url, { method, headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` }, body: JSON.stringify(body) });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.detail || 'Error al guardar');
-    cerrarModal();
-    mostrarP(citaEditId ? '✅ Cita actualizada' : '✅ Cita agendada exitosamente', 's');
-    cargarCitas();
-  } catch (err) { mostrarM('❌ ' + err.message, 'e'); }
+    const notas = document.getElementById('m-notas').value.trim();
+    const url=citaEditId?`/citas/${citaEditId}`:'/citas', method=citaEditId?'PUT':'POST';
+    const body=citaEditId?{fecha,hora,motivo,costo,notas_medico:notas||null}:{medico_id:medSelId,fecha,hora,motivo,costo};
+    const res=await fetch(url,{method,headers:{'Content-Type':'application/json',Authorization:`Bearer ${token}`},body:JSON.stringify(body)});
+    const data=await res.json();
+    if (!res.ok) throw new Error(data.detail||'Error');
+    cerrarModal(); mostrarP(citaEditId?'✅ Cita actualizada':'✅ Cita agendada exitosamente','s'); cargarCitas();
+  } catch(err) { mostrarM('❌ '+err.message,'e'); }
 }
 
 async function editarCita(id) {
   try {
-    const res = await fetch(`/citas/${id}`, { headers: { Authorization: `Bearer ${token}` } });
-    const c = await res.json();
-    abrirModal(c);
-    // Preseleccionar médico
-    if (c.medico_id) {
-      setTimeout(() => { const el = document.getElementById(`mc-${c.medico_id}`); if (el) el.click(); }, 100);
-    }
-  } catch { mostrarP('❌ Error al cargar la cita', 'e'); }
+    const res=await fetch(`/citas/${id}`,{headers:{Authorization:`Bearer ${token}`}});
+    const c=await res.json(); abrirModal(c);
+  } catch { mostrarP('❌ Error al cargar','e'); }
 }
 
 async function eliminarCita(id) {
   if (!confirm('¿Eliminar esta cita?')) return;
   try {
-    await fetch(`/citas/${id}`, { method: 'DELETE', headers: { Authorization: `Bearer ${token}` } });
-    mostrarP('✅ Cita eliminada', 's');
+    await fetch(`/citas/${id}`,{method:'DELETE',headers:{Authorization:`Bearer ${token}`}});
+    mostrarP('✅ Cita eliminada','s'); cargarCitas();
+  } catch { mostrarP('❌ Error al eliminar','e'); }
+}
+
+function mostrarP(msg,tipo) { const el=document.getElementById('alerta-p'); el.textContent=msg; el.className=`alerta ${tipo}`; el.style.display='block'; setTimeout(()=>el.style.display='none',3500); }
+function mostrarM(msg,tipo) { const el=document.getElementById('alerta-m'); el.textContent=msg; el.className=`alerta ${tipo}`; el.style.display='block'; }
+async function cancelarCitaPaciente(id) {
+  if (!confirm('¿Cancelar esta cita? Esta acción no se puede deshacer.')) return;
+  try {
+    const res = await fetch(`/citas/${id}`, {
+      method: 'PUT',
+      headers: {'Content-Type':'application/json', Authorization:`Bearer ${token}`},
+      body: JSON.stringify({estado: 'cancelada'})
+    });
+    const d = await res.json();
+    if (!res.ok) throw new Error(d.detail);
+    mostrarP('✅ Cita cancelada exitosamente', 's');
     cargarCitas();
-  } catch { mostrarP('❌ Error al eliminar', 'e'); }
+  } catch(err) { mostrarP('❌ '+err.message,'e'); }
 }
 
-function mostrarP(msg, tipo) {
-  const el = document.getElementById('alerta-p');
-  el.textContent = msg; el.className = `alerta ${tipo}`; el.style.display = 'block';
-  setTimeout(() => el.style.display = 'none', 3500);
+async function cambiarEstado(id, estado) {
+  const msgs = {confirmada:'¿Confirmar esta cita?', cancelada:'¿Cancelar esta cita?'};
+  if (!confirm(msgs[estado])) return;
+  try {
+    const res = await fetch(`/citas/${id}`, {
+      method: 'PUT',
+      headers: {'Content-Type':'application/json', Authorization:`Bearer ${token}`},
+      body: JSON.stringify({estado})
+    });
+    const d = await res.json();
+    if (!res.ok) throw new Error(d.detail);
+    mostrarP(estado==='confirmada' ? '✅ Cita confirmada — el paciente fue notificado' : '❌ Cita cancelada — el paciente fue notificado', 's');
+    cargarCitas();
+  } catch(err) { mostrarP('❌ '+err.message,'e'); }
 }
-function mostrarM(msg, tipo) {
-  const el = document.getElementById('alerta-m');
-  el.textContent = msg; el.className = `alerta ${tipo}`; el.style.display = 'block';
-}
-function cerrarSesion() { localStorage.clear(); window.location.href = '/'; }
-document.getElementById('overlay').addEventListener('click', e => { if (e.target.id === 'overlay') cerrarModal(); });
 
-cargarMedicos();
+function toggleDark() {
+  const isDark = document.body.classList.toggle('dark');
+  localStorage.setItem('darkMode', isDark ? '1' : '0');
+  document.getElementById('btn-dark').textContent = isDark ? '☀️' : '🌙';
+}
+if (localStorage.getItem('darkMode') === '1') {
+  document.body.classList.add('dark');
+  document.getElementById('btn-dark').textContent = '☀️';
+}
+
+// Sidebar user card
+const sbAvatar = document.getElementById('sb-avatar');
+sbAvatar.textContent = usuario.nombre.charAt(0).toUpperCase();
+sbAvatar.style.background = usuario.color_avatar || '#1a56db';
+document.getElementById('sb-user-name').textContent = usuario.nombre;
+const rls = {paciente:'Paciente',medico:'Médico',admin:'Administrador'};
+document.getElementById('sb-user-role').textContent = rls[usuario.rol] || usuario.rol;
+
+function cerrarSesion() { localStorage.clear(); window.location.href='/'; }
+document.getElementById('overlay').addEventListener('click',e=>{if(e.target.id==='overlay')cerrarModal();});
+
+cargarEspecialidades();
 cargarCitas();
 </script>
 </body>

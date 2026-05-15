@@ -4,13 +4,17 @@ from sqlalchemy.orm import sessionmaker, relationship
 from datetime import datetime
 import os
 
-DATABASE_URL = (
-    "sqlite:////home/site/wwwroot/citasmedicas.db"
-    if os.getenv("WEBSITE_SITE_NAME")
-    else "sqlite:///./citasmedicas.db"
-)
+# Configuracion de base de datos
+_PG_URL = os.getenv("DATABASE_URL")  # Variable de entorno en Azure
 
-engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
+if _PG_URL:
+    # PostgreSQL en Azure
+    DATABASE_URL = _PG_URL
+    engine = create_engine(DATABASE_URL)
+else:
+    # SQLite local para desarrollo
+    DATABASE_URL = "sqlite:///./citasmedicas.db"
+    engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 

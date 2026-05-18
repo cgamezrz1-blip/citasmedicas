@@ -3,6 +3,7 @@ Patron 1 — Factory Method
 Archivo: services/usuario_factory.py
 Resuelve: OCP y SRP en POST /auth/registro (main.py L129-L163)
 """
+from datetime import date, datetime
 from abc import ABC, abstractmethod
 from passlib.context import CryptContext
 from sqlalchemy.orm import Session

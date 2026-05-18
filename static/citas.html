@@ -309,6 +309,18 @@ document.getElementById('sub').textContent = usuario.rol === 'admin' ? 'Todas la
 const hoy = new Date().toISOString().split('T')[0];
 document.getElementById('m-fecha').min = hoy;
 
+// Patron 5 — Strategy: tarifas vienen del backend
+// ANTES: hardcodeadas aqui (violacion DIP y OCP)
+// DESPUES: calculadas por TarifaFijaStrategy en el servidor
+async function getTarifa(especialidadId) {
+  try {
+    const res = await fetch(`/especialidades/${especialidadId}/tarifa`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    const data = await res.json();
+    return data.tarifa || 35000;
+  } catch { return 35000; }
+}
 const TARIFAS = { 'Medicina General':35000,'Pediatria':55000,'Cardiologia':120000,'Dermatologia':90000,'Ginecologia':100000,'Ortopedia':110000 };
 const MOTIVOS = {
   'Medicina General':['Consulta general','Control médico','Resfriado','Dolor de cabeza','Fiebre','Otro'],

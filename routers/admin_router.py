@@ -10,7 +10,7 @@ from sqlalchemy.orm import Session
 from database import get_db
 from models import Usuario
 from services.citas_facade import CitasMedicasFacade
-from routers.deps import get_user, admin_only
+from routers.deps import admin_only
 
 router = APIRouter()
 facade = CitasMedicasFacade()

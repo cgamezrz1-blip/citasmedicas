@@ -102,8 +102,20 @@ class CitaServiceFacade:
             if perfil:
                 query = query.filter(Cita.medico_id == perfil.id)
         citas = query.order_by(Cita.fecha, Cita.hora).all()
-        return {"citas": [{"id": c.id, "fecha": c.fecha, "hora": c.hora,
-                           "estado": c.estado, "motivo": c.motivo} for c in citas]}
+        return {"citas": [{
+            "id": c.id,
+            "fecha": c.fecha,
+            "hora": c.hora,
+            "estado": c.estado,
+            "motivo": c.motivo,
+            "costo": c.costo,
+            "medico_nombre": c.medico.usuario.nombre if c.medico and c.medico.usuario else "—",
+            "paciente_nombre": c.paciente.nombre if c.paciente else "—",
+            "especialidad": c.medico.get_especialidad() if c.medico else "—",
+            "medico_id": c.medico_id,
+            "paciente_id": c.paciente_id,
+            "notas_medico": c.notas_medico or "",
+        } for c in citas]}
 
 
 class AdminService:

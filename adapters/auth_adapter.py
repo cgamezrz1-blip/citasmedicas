@@ -3,11 +3,11 @@ Patron 3 — Adapter
 Archivo: adapters/auth_adapter.py
 Resuelve: DIP en main.py L33-L36 (CryptContext y jwt instanciados directamente)
 """
+import os
 from abc import ABC, abstractmethod
 from datetime import datetime, timedelta
 from jose import JWTError, jwt
 from passlib.context import CryptContext
-import os
 
 
 class AuthServicePort(ABC):
@@ -20,22 +20,18 @@ class AuthServicePort(ABC):
     @abstractmethod
     def crear_token(self, email: str) -> str:
         """Crea un token JWT para el email dado."""
-        pass
 
     @abstractmethod
     def verificar_token(self, token: str) -> str:
         """Verifica el token y retorna el email. Lanza excepcion si invalido."""
-        pass
 
     @abstractmethod
     def hash_password(self, password: str) -> str:
         """Hashea una contrasena usando bcrypt."""
-        pass
 
     @abstractmethod
     def verify_password(self, plain: str, hashed: str) -> bool:
         """Verifica si la contrasena plana coincide con el hash."""
-        pass
 
 
 class BaseAdapter(ABC):
@@ -47,15 +43,14 @@ class BaseAdapter(ABC):
     @abstractmethod
     def _init_libs(self) -> None:
         """Inicializa las librerias externas necesarias."""
-        pass
 
     @abstractmethod
     def crear_token(self, email: str) -> str:
-        pass
+        """Crear token JWT."""
 
     @abstractmethod
     def verificar_token(self, token: str) -> str:
-        pass
+        """Verificar token JWT."""
 
 
 class JoseJWTAdapter(BaseAdapter, AuthServicePort):

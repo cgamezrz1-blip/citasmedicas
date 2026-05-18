@@ -9,9 +9,10 @@ DESPUES: Modelos separados con clase abstracta UsuarioBase
          que resuelve la violacion LSP y R0903 de Pylint.
 """
 from abc import ABC, abstractmethod
+from datetime import datetime
+
 from sqlalchemy import Column, Integer, String, Boolean, DateTime, Text, Float, ForeignKey
 from sqlalchemy.orm import relationship
-from datetime import datetime
 
 from database import Base
 
@@ -27,12 +28,10 @@ class UsuarioBase(ABC):
     @abstractmethod
     def get_rol(self) -> str:
         """Retorna el rol del usuario."""
-        pass
 
     @abstractmethod
     def esta_aprobado(self) -> bool:
         """Verifica si el usuario esta aprobado para usar el sistema."""
-        pass
 
 
 class Usuario(Base, UsuarioBase):
@@ -57,7 +56,8 @@ class Usuario(Base, UsuarioBase):
     creado_en           = Column(DateTime, default=datetime.utcnow)
 
     medico_perfil   = relationship("MedicoPerfil", back_populates="usuario", uselist=False)
-    citas_paciente  = relationship("Cita", foreign_keys="Cita.paciente_id", back_populates="paciente")
+    citas_paciente = relationship(
+        "Cita", foreign_keys="Cita.paciente_id", back_populates="paciente")
     notificaciones  = relationship("Notificacion", back_populates="usuario")
 
     def get_rol(self) -> str:
@@ -131,7 +131,8 @@ class Cita(Base):
 
     paciente       = relationship("Usuario", foreign_keys=[paciente_id], back_populates="citas_paciente")
     medico         = relationship("MedicoPerfil", foreign_keys=[medico_id], back_populates="citas")
-    notificaciones = relationship("Notificacion", back_populates="cita")
+    notificaciones = relationship(
+        "Notificacion", back_populates="cita")
 
     def get_estado(self) -> str:
         """Retorna el estado actual de la cita."""

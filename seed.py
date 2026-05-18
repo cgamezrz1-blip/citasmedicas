@@ -10,7 +10,6 @@ ANTES: La funcion _seed() estaba dentro de database.py
 DESPUES: Seed separado en su propio modulo con
          manejo de excepciones especifico.
 """
-import random
 from passlib.context import CryptContext
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError

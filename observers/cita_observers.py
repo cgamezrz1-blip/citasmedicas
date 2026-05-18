@@ -7,7 +7,7 @@ from abc import ABC, abstractmethod
 from datetime import datetime
 from sqlalchemy.orm import Session
 
-from database import Notificacion, Cita, Usuario
+from models import Notificacion, Cita, Usuario
 
 
 class CitaObserver(ABC):
@@ -19,7 +19,6 @@ class CitaObserver(ABC):
     @abstractmethod
     def actualizar(self, cita: Cita, usuario: Usuario, db: Session) -> None:
         """Ejecuta la accion correspondiente al evento de cita."""
-        pass
 
 
 class BaseObserver(CitaObserver):
@@ -30,7 +29,7 @@ class BaseObserver(CitaObserver):
 
     @abstractmethod
     def actualizar(self, cita: Cita, usuario: Usuario, db: Session) -> None:
-        pass
+        """Metodo abstracto — implementado por cada observer."""
 
 
 class NotificacionObserver(BaseObserver):

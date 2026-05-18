@@ -14,10 +14,10 @@ from database import get_db
 from models import Usuario, Especialidad, MedicoPerfil, Cita, Notificacion
 from adapters.auth_adapter import auth_adapter
 from services.citas_facade import CitasMedicasFacade
+from routers.deps import get_user
 from strategies.cost_strategy import cita_service
 
 router = APIRouter()
-oauth2 = OAuth2PasswordBearer(tokenUrl="auth/login")
 facade = CitasMedicasFacade()
 
 class CitaCreateReq(BaseModel):
@@ -28,20 +28,13 @@ class CitaUpdateReq(BaseModel):
     motivo: Optional[str] = None; estado: Optional[str] = None
     costo: Optional[float] = None; notas_medico: Optional[str] = None
 
-async def get_user(token: str = Depends(oauth2), db: Session = Depends(get_db)):
-    try:
-        email = auth_adapter.verificar_token(token)
-        u = db.query(Usuario).filter(Usuario.email == email).first()
-        if not u or not u.activo: raise HTTPException(401, "Token invalido")
-        return u
-    except ValueError as exc:
-        raise HTTPException(401, "Token invalido") from exc
+
 
 # ── Especialidades ─────────────────────────────────────────────
 @router.get("/especialidades")
 def get_especialidades(db: Session = Depends(get_db)):
     return [{"id": e.id, "nombre": e.nombre}
-            for e in db.query(Especialidad).filter(Especialidad.activa == True).all()]
+            for e in db.query(Especialidad).filter(Especialidad.activa.is_(True)).all()]
 
 @router.get("/especialidades/{esp_id}/tarifa")
 def get_tarifa(esp_id: int, db: Session = Depends(get_db)):
@@ -59,7 +52,7 @@ def get_tarifa(esp_id: int, db: Session = Depends(get_db)):
 @router.get("/medicos")
 def get_medicos(especialidad_id: Optional[int] = None, db: Session = Depends(get_db)):
     q = db.query(MedicoPerfil).join(Usuario).filter(
-        Usuario.activo == True, Usuario.aprobado == True)
+        Usuario.activo.is_(True), Usuario.aprobado.is_(True))
     if especialidad_id: q = q.filter(MedicoPerfil.especialidad_id == especialidad_id)
     return [{"id": m.id, "nombre": m.usuario.nombre, "email": m.usuario.email,
              "especialidad": m.get_especialidad(), "especialidad_id": m.especialidad_id,

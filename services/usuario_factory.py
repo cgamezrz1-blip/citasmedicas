@@ -7,7 +7,7 @@ from abc import ABC, abstractmethod
 from passlib.context import CryptContext
 from sqlalchemy.orm import Session
 
-from database import Usuario, MedicoPerfil
+from models import Usuario, MedicoPerfil
 
 pwd_ctx = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -21,7 +21,6 @@ class UsuarioCreator(ABC):
     @abstractmethod
     def crear_usuario(self, datos, db: Session) -> Usuario:
         """Metodo abstracto — implementado por cada subclase."""
-        pass
 
     def registrar(self, datos, db: Session) -> dict:
         """
@@ -70,9 +69,6 @@ class MedicoCreator(UsuarioCreator):
     """
 
     def crear_usuario(self, datos, db: Session) -> Usuario:
-        from fastapi import HTTPException
-        from datetime import date, datetime
-
         # Validar edad minima
         nac = datetime.strptime(datos.fecha_nacimiento, "%Y-%m-%d").date()
         hoy = date.today()

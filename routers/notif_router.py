@@ -9,21 +9,13 @@ from sqlalchemy.orm import Session
 
 from database import get_db
 from models import Usuario, Notificacion
-from adapters.auth_adapter import auth_adapter
 from services.citas_facade import CitasMedicasFacade
+from routers.deps import get_user
 
 router = APIRouter()
-oauth2 = OAuth2PasswordBearer(tokenUrl="auth/login")
 facade = CitasMedicasFacade()
 
-async def get_user(token: str = Depends(oauth2), db: Session = Depends(get_db)):
-    try:
-        email = auth_adapter.verificar_token(token)
-        u = db.query(Usuario).filter(Usuario.email == email).first()
-        if not u or not u.activo: raise HTTPException(401, "Token invalido")
-        return u
-    except ValueError as exc:
-        raise HTTPException(401, "Token invalido") from exc
+
 
 @router.get("")
 def get_notifs(u=Depends(get_user), db: Session = Depends(get_db)):
@@ -38,7 +30,7 @@ def leer_notif(nid: int, u=Depends(get_user), db: Session = Depends(get_db)):
 def leer_todas(u=Depends(get_user), db: Session = Depends(get_db)):
     db.query(Notificacion).filter(
         Notificacion.usuario_id == u.id,
-        Notificacion.leida == False
+        Notificacion.leida.is_(False)
     ).update({"leida": True})
     db.commit()
     return {"mensaje": "Todas marcadas como leidas"}

@@ -8,27 +8,14 @@ from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
 
 from database import get_db
-from models import Usuario, Cita, Especialidad
-from adapters.auth_adapter import auth_adapter
+from models import Usuario
 from services.citas_facade import CitasMedicasFacade
+from routers.deps import get_user, admin_only
 
 router = APIRouter()
-oauth2 = OAuth2PasswordBearer(tokenUrl="auth/login")
 facade = CitasMedicasFacade()
 
-async def get_user(token: str = Depends(oauth2), db: Session = Depends(get_db)):
-    try:
-        email = auth_adapter.verificar_token(token)
-        u = db.query(Usuario).filter(Usuario.email == email).first()
-        if not u or not u.activo: raise HTTPException(401, "Token invalido")
-        return u
-    except ValueError as exc:
-        raise HTTPException(401, "Token invalido") from exc
 
-def admin_only(u=Depends(get_user)):
-    """Usa get_rol() polimorfco — Patron 1 Factory Method (LSP)."""
-    if u.get_rol() != "admin": raise HTTPException(403, "Solo administradores")
-    return u
 
 @router.get("/usuarios")
 def get_usuarios(u=Depends(admin_only), db: Session = Depends(get_db)):

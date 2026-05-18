@@ -6,7 +6,7 @@ Resuelve: SRP en main.py L1-L415 (archivo dios con 415 lineas)
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
 
-from database import Usuario, Cita, Notificacion, MedicoPerfil, Especialidad
+from models import Usuario, Cita, Notificacion, MedicoPerfil
 from adapters.auth_adapter import AuthServicePort, JoseJWTAdapter
 from observers.cita_observers import CitaEventPublisher, NotificacionObserver, LogObserver
 from strategies.cost_strategy import CitaService, TarifaFijaStrategy
@@ -22,6 +22,7 @@ class AuthService:
         self._auth = auth or JoseJWTAdapter()
 
     def login(self, email: str, password: str, db: Session) -> dict:
+        """Autentica un usuario y retorna el token JWT."""
         usuario = db.query(Usuario).filter(Usuario.email == email).first()
         if not usuario or not self._auth.verify_password(password, usuario.password):
             raise HTTPException(401, "Email o contrasena incorrectos")
@@ -35,6 +36,7 @@ class AuthService:
                             "email": usuario.email, "rol": usuario.rol}}
 
     def verificar_token(self, token: str, db: Session) -> Usuario:
+        """Verifica el token y retorna el usuario autenticado."""
         try:
             email = self._auth.verificar_token(token)
             usuario = db.query(Usuario).filter(Usuario.email == email).first()
@@ -45,6 +47,7 @@ class AuthService:
             raise HTTPException(401, "Token invalido o expirado") from exc
 
     def hash_password(self, password: str) -> str:
+        """Hashea una contrasena usando el adapter."""
         return self._auth.hash_password(password)
 
 
@@ -61,6 +64,7 @@ class CitaServiceFacade:
         self._publisher.suscribir(LogObserver())
 
     def crear_cita(self, datos, usuario: Usuario, db: Session) -> dict:
+        """Crea una cita y notifica via Observer."""
         medico = db.query(MedicoPerfil).filter(MedicoPerfil.id == datos.medico_id).first()
         if not medico:
             raise HTTPException(404, "Medico no encontrado")
@@ -81,11 +85,14 @@ class CitaServiceFacade:
             costo=datos.costo,
             estado="pendiente"
         )
-        db.add(cita); db.commit(); db.refresh(cita)
+        db.add(cita)
+        db.commit()
+        db.refresh(cita)
         self._publisher.notificar(cita, usuario, db)
         return {"mensaje": "Cita creada", "cita_id": cita.id}
 
     def get_citas(self, usuario: Usuario, db: Session) -> dict:
+        """Retorna las citas segun el rol del usuario."""
         query = db.query(Cita)
         if usuario.rol == "paciente":
             query = query.filter(Cita.paciente_id == usuario.id)
@@ -106,18 +113,22 @@ class AdminService:
     """
 
     def get_usuarios(self, db: Session) -> list:
+        """Retorna todos los usuarios del sistema."""
         return [{"id": u.id, "nombre": u.nombre, "email": u.email,
                  "rol": u.rol, "activo": u.activo, "aprobado": u.aprobado}
                 for u in db.query(Usuario).all()]
 
     def aprobar_medico(self, uid: int, db: Session) -> dict:
+        """Aprueba un medico pendiente."""
         usuario = db.query(Usuario).filter(Usuario.id == uid).first()
         if not usuario:
             raise HTTPException(404, "No encontrado")
-        usuario.aprobado = True; db.commit()
+        usuario.aprobado = True
+        db.commit()
         return {"mensaje": f"{usuario.nombre} aprobado"}
 
     def get_estadisticas(self, db: Session) -> dict:
+        """Retorna estadisticas generales del sistema."""
         return {
             "total_usuarios": db.query(Usuario).count(),
             "total_citas":    db.query(Cita).count(),
@@ -132,6 +143,7 @@ class NotificacionService:
     """
 
     def get_notificaciones(self, usuario: Usuario, db: Session) -> list:
+        """Retorna las notificaciones del usuario."""
         notifs = db.query(Notificacion).filter(
             Notificacion.usuario_id == usuario.id
         ).order_by(Notificacion.creado_en.desc()).limit(20).all()
@@ -139,6 +151,7 @@ class NotificacionService:
                  "tipo": n.tipo} for n in notifs]
 
     def marcar_leida(self, nid: int, usuario: Usuario, db: Session) -> dict:
+        """Marca una notificacion como leida."""
         n = db.query(Notificacion).filter(
             Notificacion.id == nid,
             Notificacion.usuario_id == usuario.id
@@ -162,15 +175,19 @@ class CitasMedicasFacade:
         self.notif = NotificacionService()
 
     def login(self, datos, db: Session) -> dict:
+        """Delega el login al AuthService."""
         return self.auth.login(datos.email, datos.password, db)
 
     def agendar_cita(self, datos, usuario: Usuario, db: Session) -> dict:
+        """Delega el agendamiento al CitaServiceFacade."""
         return self.citas.crear_cita(datos, usuario, db)
 
     def get_notificaciones(self, usuario: Usuario, db: Session) -> list:
+        """Delega al NotificacionService."""
         return self.notif.get_notificaciones(usuario, db)
 
     def get_estadisticas(self, db: Session) -> dict:
+        """Delega al AdminService."""
         return self.admin.get_estadisticas(db)
 
 

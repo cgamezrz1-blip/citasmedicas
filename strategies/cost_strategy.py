@@ -15,7 +15,6 @@ class CostStrategy(ABC):
     @abstractmethod
     def calcular_costo(self, especialidad: str) -> float:
         """Calcula el costo de la consulta segun la especialidad."""
-        pass
 
 
 class BaseStrategy(CostStrategy):
@@ -35,7 +34,7 @@ class BaseStrategy(CostStrategy):
 
     @abstractmethod
     def calcular_costo(self, especialidad: str) -> float:
-        pass
+        """Metodo abstracto — implementado por cada strategy."""
 
     def get_tarifa_base(self, especialidad: str) -> float:
         """Retorna la tarifa base de la especialidad."""

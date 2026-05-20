@@ -14,13 +14,11 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
 # PostgreSQL en Azure — configurado via variable de entorno DATABASE_URL
-DATABASE_URL = os.getenv("DATABASE_URL")
-
-if not DATABASE_URL:
-    raise ValueError(
-        "Variable de entorno DATABASE_URL no configurada. "
-        "Debe apuntar a PostgreSQL en Azure."
-    )
+# Si no existe la variable, usa PostgreSQL de Azure por defecto
+DATABASE_URL = os.getenv(
+    "DATABASE_URL",
+    "postgresql://citasadmin:CitasAdmin2026!@citasmedicas-pg-2026.postgres.database.azure.com/citasmedicas"
+)
 
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)

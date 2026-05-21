@@ -24,7 +24,7 @@ class BaseStrategy(CostStrategy):
     """
 
     TARIFAS: dict = {
-        "Medicina General": 5000,
+        "Medicina General": 35000,
         "Pediatria":        55000,
         "Cardiologia":     120000,
         "Dermatologia":     90000,

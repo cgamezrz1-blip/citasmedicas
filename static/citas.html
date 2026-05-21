@@ -374,7 +374,7 @@ async function selEspecialidad(id, nombre, btn) {
   } catch { document.getElementById('med-grid').innerHTML = '<div class="txt-c" style="color:var(--error)">Error al cargar</div>'; }
 }
 
-function selMedico(id) {
+async function selMedico(id) {
   const m = medicos.find(x => x.id === id);
   if (!m) return;
   medSelId = id; medSelEsp = m.especialidad || 'Medicina General';

@@ -362,10 +362,14 @@ async function selEspecialidad(id, nombre, btn) {
     if (usuario.rol === 'medico') medicos = medicos.filter(m => m.email !== usuario.email);
     const grid = document.getElementById('med-grid');
     if (!medicos.length) { grid.innerHTML = '<div class="txt-c">No hay médicos en esta especialidad</div>'; return; }
+    const tarifas = {};
+    for (const m of medicos) {
+      tarifas[m.id] = await getTarifa(m.especialidad_id);
+    }
     grid.innerHTML = medicos.map(m => `
       <div class="mc-card" id="mc-${m.id}" onclick="selMedico(${m.id})">
         <div class="mc-n">👨‍⚕️ ${m.nombre}</div>
-        <div class="mc-t">💰 $${new Intl.NumberFormat('es-CO').format(await getTarifa(m.especialidad_id))}</div>
+        <div class="mc-t">💰 $${new Intl.NumberFormat('es-CO').format(tarifas[m.id] || 35000)}</div>
       </div>`).join('');
   } catch { document.getElementById('med-grid').innerHTML = '<div class="txt-c" style="color:var(--error)">Error al cargar</div>'; }
 }

@@ -365,7 +365,7 @@ async function selEspecialidad(id, nombre, btn) {
     grid.innerHTML = medicos.map(m => `
       <div class="mc-card" id="mc-${m.id}" onclick="selMedico(${m.id})">
         <div class="mc-n">👨‍⚕️ ${m.nombre}</div>
-        <div class="mc-t">💰 $${new Intl.NumberFormat('es-CO').format(TARIFAS[m.especialidad]||35000)}</div>
+        <div class="mc-t">💰 $${new Intl.NumberFormat('es-CO').format(await getTarifa(m.especialidad_id))}</div>
       </div>`).join('');
   } catch { document.getElementById('med-grid').innerHTML = '<div class="txt-c" style="color:var(--error)">Error al cargar</div>'; }
 }
@@ -378,7 +378,7 @@ function selMedico(id) {
   document.getElementById(`mc-${id}`).classList.add('sel');
   const hint = document.getElementById('med-hint');
   hint.textContent = `✅ ${m.nombre} seleccionado`; hint.style.display = 'block';
-  const tarifa = TARIFAS[medSelEsp] || 35000;
+  const tarifa = await getTarifa(medSelId);
   document.getElementById('m-costo').value = tarifa;
   document.getElementById('m-costo').disabled = usuario.rol === 'paciente';
   document.getElementById('costo-hint').textContent = `Tarifa: $${new Intl.NumberFormat('es-CO').format(tarifa)}`;

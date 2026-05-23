@@ -4,10 +4,11 @@ Responsabilidad unica: endpoints de autenticacion y perfil de usuario.
 Usa Patron 1 (Factory Method) y Patron 3 (Adapter).
 """
 import random
+import re
 from typing import Optional
 from fastapi import APIRouter, HTTPException, Depends
 from fastapi.security import OAuth2PasswordBearer
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
 from sqlalchemy.orm import Session
 
 from database import get_db
@@ -23,6 +24,22 @@ class LoginReq(BaseModel):
     email: str
     password: str
 
+    @field_validator('email')
+    @classmethod
+    def email_valido(cls, v):
+        if not v or len(v) < 5:
+            raise ValueError('Email debe tener al menos 5 caracteres')
+        if not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', v):
+            raise ValueError('Email inválido')
+        return v.lower()
+
+    @field_validator('password')
+    @classmethod
+    def password_valido(cls, v):
+        if not v or len(v) < 6:
+            raise ValueError('Contraseña debe tener al menos 6 caracteres')
+        return v
+
 class RegistroReq(BaseModel):
     nombre: str; email: str; password: str; rol: str = "paciente"
     especialidad_id: Optional[int] = None
@@ -31,19 +48,145 @@ class RegistroReq(BaseModel):
     respuesta_seguridad: Optional[str] = None
     numero_rethus: Optional[str] = None
 
+    @field_validator('nombre')
+    @classmethod
+    def nombre_valido(cls, v):
+        if not v or len(v) < 3:
+            raise ValueError('Nombre debe tener al menos 3 caracteres')
+        if len(v) > 100:
+            raise ValueError('Nombre no puede exceder 100 caracteres')
+        if not re.match(r'^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$', v):
+            raise ValueError('Nombre solo puede contener letras y espacios')
+        return v.strip()
+
+    @field_validator('email')
+    @classmethod
+    def email_valido(cls, v):
+        if not v or len(v) < 5:
+            raise ValueError('Email debe tener al menos 5 caracteres')
+        if not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', v):
+            raise ValueError('Email inválido')
+        return v.lower()
+
+    @field_validator('password')
+    @classmethod
+    def password_valido(cls, v):
+        if not v or len(v) < 6:
+            raise ValueError('Contraseña debe tener al menos 6 caracteres')
+        if len(v) > 255:
+            raise ValueError('Contraseña no puede exceder 255 caracteres')
+        return v
+
+    @field_validator('rol')
+    @classmethod
+    def rol_valido(cls, v):
+        if v not in ['paciente', 'medico']:
+            raise ValueError('Rol debe ser "paciente" o "medico"')
+        return v
+
 class VerifReq(BaseModel):
     email: str; respuesta: str
+
+    @field_validator('email')
+    @classmethod
+    def email_valido(cls, v):
+        if not v or len(v) < 5:
+            raise ValueError('Email debe tener al menos 5 caracteres')
+        if not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', v):
+            raise ValueError('Email inválido')
+        return v.lower()
+
+    @field_validator('respuesta')
+    @classmethod
+    def respuesta_valida(cls, v):
+        if not v or len(v) < 2:
+            raise ValueError('Respuesta debe tener al menos 2 caracteres')
+        if len(v) > 255:
+            raise ValueError('Respuesta no puede exceder 255 caracteres')
+        return v.strip().lower()
 
 class ResetReq(BaseModel):
     email: str; respuesta: str; nueva_password: str
 
+    @field_validator('email')
+    @classmethod
+    def email_valido(cls, v):
+        if not v or len(v) < 5:
+            raise ValueError('Email debe tener al menos 5 caracteres')
+        if not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', v):
+            raise ValueError('Email inválido')
+        return v.lower()
+
+    @field_validator('respuesta')
+    @classmethod
+    def respuesta_valida(cls, v):
+        if not v or len(v) < 2:
+            raise ValueError('Respuesta debe tener al menos 2 caracteres')
+        return v.strip().lower()
+
+    @field_validator('nueva_password')
+    @classmethod
+    def password_valido(cls, v):
+        if not v or len(v) < 6:
+            raise ValueError('Contraseña debe tener al menos 6 caracteres')
+        if len(v) > 255:
+            raise ValueError('Contraseña no puede exceder 255 caracteres')
+        return v
+
 class CambioPassReq(BaseModel):
     password_actual: str; nueva_password: str
+
+    @field_validator('password_actual')
+    @classmethod
+    def password_actual_valido(cls, v):
+        if not v or len(v) < 6:
+            raise ValueError('Contraseña debe tener al menos 6 caracteres')
+        return v
+
+    @field_validator('nueva_password')
+    @classmethod
+    def nueva_password_valida(cls, v):
+        if not v or len(v) < 6:
+            raise ValueError('Nueva contraseña debe tener al menos 6 caracteres')
+        if len(v) > 255:
+            raise ValueError('Contraseña no puede exceder 255 caracteres')
+        return v
 
 class UpdatePerfilReq(BaseModel):
     nombre: Optional[str] = None
     telefono: Optional[str] = None
     color_avatar: Optional[str] = None
+
+    @field_validator('nombre')
+    @classmethod
+    def nombre_valido(cls, v):
+        if v is None:
+            return v
+        if len(v) < 3:
+            raise ValueError('Nombre debe tener al menos 3 caracteres')
+        if len(v) > 100:
+            raise ValueError('Nombre no puede exceder 100 caracteres')
+        if not re.match(r'^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$', v):
+            raise ValueError('Nombre solo puede contener letras y espacios')
+        return v.strip()
+
+    @field_validator('telefono')
+    @classmethod
+    def telefono_valido(cls, v):
+        if v is None:
+            return v
+        if not re.match(r'^[0-9+\-\s()]{7,20}$', v):
+            raise ValueError('Teléfono inválido (solo números, +, -, espacios y paréntesis)')
+        return v.strip()
+
+    @field_validator('color_avatar')
+    @classmethod
+    def color_avatar_valido(cls, v):
+        if v is None:
+            return v
+        if not re.match(r'^#[0-9A-Fa-f]{6}$', v):
+            raise ValueError('Color debe ser un código hexadecimal válido (ej: #1a56db)')
+        return v
 
 def _u(u):
     return {"id": u.id, "nombre": u.nombre, "email": u.email, "rol": u.rol,

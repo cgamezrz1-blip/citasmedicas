@@ -160,7 +160,9 @@ class NotificacionService:
             Notificacion.usuario_id == usuario.id
         ).order_by(Notificacion.creado_en.desc()).limit(20).all()
         return [{"id": n.id, "mensaje": n.mensaje, "leida": n.leida,
-                 "tipo": n.tipo} for n in notifs]
+                 "tipo": n.tipo,
+                 "creado_en": n.creado_en.isoformat() if n.creado_en else None}
+                for n in notifs]
 
     def marcar_leida(self, nid: int, usuario: Usuario, db: Session) -> dict:
         """Marca una notificacion como leida."""

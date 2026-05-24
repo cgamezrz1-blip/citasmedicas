@@ -536,18 +536,18 @@ async function cargarNotificaciones() {
   try {
     const res = await fetch('/notificaciones',{headers:{Authorization:`Bearer ${token}`}});
     const lista = await res.json();
-    const noLeidas = lista.filter(n=>!n.leida).length;
+    const noLeidasCount = lista.filter(n=>!n.leida).length;
     const badge = document.getElementById('notif-count');
-    badge.textContent = noLeidas;
-    badge.className = `notif-badge${noLeidas>0?' on':''}`;
-    document.getElementById('s3').textContent = noLeidas;
+    badge.textContent = noLeidasCount;
+    badge.className = `notif-badge${noLeidasCount>0?' on':''}`;
+    document.getElementById('s3').textContent = noLeidasCount;
     if (!lista.length) {
       document.getElementById('notif-lista').innerHTML = '<div class="notif-empty">📭 Sin notificaciones</div>';
       return;
     }
     const iconos = {confirmacion:'📅',confirmada:'✅',cancelada:'❌',aprobacion:'🎉',recordatorio:'🔔',nueva_cita:'🩺'};
-    const noLeidas = lista.filter(n => !n.leida);
-    const mostrar = noLeidas.length > 0 ? noLeidas.slice(0,5) : lista.slice(0,3);
+    const noLeidasLista = lista.filter(n => !n.leida);
+    const mostrar = noLeidasLista.length > 0 ? noLeidasLista.slice(0,5) : lista.slice(0,3);
     if (!mostrar.length) {
       document.getElementById('notif-lista').innerHTML = '<div class="notif-empty">📭 Sin notificaciones nuevas</div>';
       return;

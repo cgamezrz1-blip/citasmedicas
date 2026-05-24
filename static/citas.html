@@ -382,7 +382,7 @@ async function selMedico(id) {
   document.getElementById(`mc-${id}`).classList.add('sel');
   const hint = document.getElementById('med-hint');
   hint.textContent = `✅ ${m.nombre} seleccionado`; hint.style.display = 'block';
-  const tarifa = await getTarifa(medSelId);
+  const tarifa = await getTarifa(m.especialidad_id);
   document.getElementById('m-costo').value = tarifa;
   document.getElementById('m-costo').disabled = usuario.rol === 'paciente';
   document.getElementById('costo-hint').textContent = `Tarifa: $${new Intl.NumberFormat('es-CO').format(tarifa)}`;

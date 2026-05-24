@@ -124,9 +124,15 @@ def update_cita(cita_id: int, d: CitaUpdateReq, u=Depends(get_user),
     if d.estado:
         c.estado = d.estado
         if d.estado == "cancelada": c.cancelado_en = datetime.utcnow()
-        if u.get_rol() == "medico" and d.estado in ["confirmada","cancelada"]:
-            db.add(Notificacion(usuario_id=c.paciente_id, cita_id=c.id,
-                tipo=d.estado, mensaje=f"Tu cita del {c.fecha} fue {d.estado}"))
+        if u.get_rol() == "medico" and d.estado in ["confirmada", "cancelada"]:
+            db.add(Notificacion(
+                usuario_id=c.paciente_id,
+                cita_id=c.id,
+                tipo=d.estado,
+                mensaje=f"Tu cita del {c.fecha} fue {d.estado}",
+                leida=False,
+                creado_en=datetime.utcnow(),
+            ))
     if d.costo is not None: c.costo = d.costo
     if d.notas_medico is not None: c.notas_medico = d.notas_medico
     db.commit()

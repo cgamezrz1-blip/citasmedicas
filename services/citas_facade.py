@@ -126,9 +126,19 @@ class AdminService:
 
     def get_usuarios(self, db: Session) -> list:
         """Retorna todos los usuarios del sistema."""
-        return [{"id": u.id, "nombre": u.nombre, "email": u.email,
-                 "rol": u.rol, "activo": u.activo, "aprobado": u.aprobado}
-                for u in db.query(Usuario).all()]
+        from models import MedicoPerfil
+        usuarios = db.query(Usuario).all()
+        resultado = []
+        for u in usuarios:
+            perfil = db.query(MedicoPerfil).filter(
+                MedicoPerfil.usuario_id == u.id).first() if u.rol == "medico" else None
+            resultado.append({
+                "id": u.id, "nombre": u.nombre, "email": u.email,
+                "rol": u.rol, "activo": u.activo, "aprobado": u.aprobado,
+                "creado_en": u.creado_en.isoformat() if u.creado_en else None,
+                "numero_rethus": perfil.numero_rethus if perfil else None,
+            })
+        return resultado
 
     def aprobar_medico(self, uid: int, db: Session) -> dict:
         """Aprueba un medico pendiente."""
@@ -160,9 +170,7 @@ class NotificacionService:
             Notificacion.usuario_id == usuario.id
         ).order_by(Notificacion.creado_en.desc()).limit(20).all()
         return [{"id": n.id, "mensaje": n.mensaje, "leida": n.leida,
-                 "tipo": n.tipo,
-                 "creado_en": n.creado_en.isoformat() if n.creado_en else None}
-                for n in notifs]
+                 "tipo": n.tipo} for n in notifs]
 
     def marcar_leida(self, nid: int, usuario: Usuario, db: Session) -> dict:
         """Marca una notificacion como leida."""

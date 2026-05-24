@@ -222,7 +222,7 @@
         <option value="pendiente">⏳ Pendientes</option>
         <option value="cancelada">❌ Canceladas</option>
       </select>
-      <input class="fi" id="fm" placeholder="🔍 Buscar médico..." style="flex:1;min-width:140px;display:none" oninput="filtrar()"/>
+      <input class="fi" id="fm" placeholder="🔍 Buscar médico..." style="flex:1;min-width:140px;display:none" oninput="aplicarFiltroMedico()"/>
       <button class="btn-l" onclick="limpiar()">Limpiar</button>
     </div>
     <div id="alerta-p" class="alerta"></div>
@@ -438,15 +438,27 @@ function selHora(h, btn) {
   btn.classList.add('sel'); horaSeleccionada = h; document.getElementById('m-hora').value = h;
 }
 
+let todasLasCitas = [];
+
 async function cargarCitas(params='') {
   try {
+    // Solo enviar tipo y estado al backend — medico_nombre se filtra en frontend
     const res = await fetch('/citas'+params, { headers: { Authorization: `Bearer ${token}` } });
     const data = await res.json();
+    todasLasCitas = data.citas;
     document.getElementById('tot').textContent = data.total;
     document.getElementById('con').textContent = data.citas.filter(c=>c.estado==='confirmada').length;
     document.getElementById('pen').textContent = data.citas.filter(c=>c.estado==='pendiente').length;
-    renderCitas(data.citas);
+    aplicarFiltroMedico();
   } catch { mostrarP('❌ Error al cargar citas','e'); }
+}
+
+function aplicarFiltroMedico() {
+  const m = document.getElementById('fm').value.trim().toLowerCase();
+  const filtradas = m
+    ? todasLasCitas.filter(c => c.medico_nombre && c.medico_nombre.toLowerCase().includes(m))
+    : todasLasCitas;
+  renderCitas(filtradas);
 }
 
 function renderCitas(citas) {
@@ -481,11 +493,9 @@ function renderCitas(citas) {
 }
 
 function filtrar() {
-  const m=document.getElementById('fm').value.trim();
   const e=document.getElementById('fe').value;
   const t=document.getElementById('ftipo').value;
   let p=[];
-  if(m) p.push(`medico_nombre=${encodeURIComponent(m)}`);
   if(e!=='') p.push(`estado=${e}`);
   if(t!=='') p.push(`tipo=${t}`);
   cargarCitas(p.length?'?'+p.join('&'):'');

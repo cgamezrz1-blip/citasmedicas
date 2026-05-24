@@ -361,16 +361,17 @@ function renderUsuarios(lista) {
       <td><strong>${u.nombre}</strong></td>
       <td style="font-size:.79rem;color:var(--gris-m)">${u.email}</td>
       <td><span class="rol-badge rol-${u.rol}">${u.rol}</span></td>
-      <td style="font-size:.78rem;color:var(--gris-m)">${u.numero_rethus || '—'}</td>
+      <td style="font-size:.78rem;color:var(--gris-m)">${u.numero_rethus && u.numero_rethus !== 'undefined' ? u.numero_rethus : '—'}</td>
       <td>
         <span class="estado-badge ${u.activo?'activo-b':'inactivo-b'}">${u.activo?'Activo':'Inactivo'}</span>
         ${u.rol==='medico'&&!u.aprobado?'<span class="estado-badge pendiente-b" style="margin-left:.3rem">Pendiente</span>':''}
       </td>
-      <td style="font-size:.8rem">${u.creado_en}</td>
+      <td style="font-size:.8rem">${u.creado_en && u.creado_en !== "undefined" ? u.creado_en.substring(0,10) : "—"}</td>
       <td>
         <div class="acciones">
           ${u.rol==='medico'&&!u.aprobado?`<button class="btn-accion btn-ok" onclick="aprobarMedico(${u.id},'${u.nombre}')">Aprobar</button>`:''}
-          <button class="btn-accion btn-toggle" onclick="toggleUsuario(${u.id})">${u.activo?'Desactivar':'Activar'}</button>
+          ${u.id!==usuario.id?`<button class="btn-accion btn-toggle" onclick="toggleUsuario(${u.id})">${u.activo?'Desactivar':'Activar'}</button>`:''}
+
           ${u.id!==usuario.id?`<button class="btn-accion btn-del" onclick="eliminarUsuario(${u.id},'${u.nombre}')">Eliminar</button>`:''}
         </div>
       </td>

@@ -656,13 +656,14 @@ async function guardarPerfil() {
   const nombre = document.getElementById('p-nombre').value.trim();
   const telefono = document.getElementById('p-telefono').value.trim();
   if (!nombre) { mostrarAlertaPerfil('❌ El nombre es requerido','e'); return; }
+  if (telefono && !/^[0-9+\-\s()]{7,20}$/.test(telefono)) { mostrarAlertaPerfil('❌ Teléfono inválido. Usa solo números, +, -, espacios','e'); return; }
   try {
     const res = await fetch('/auth/me',{
       method:'PUT', headers:{'Content-Type':'application/json',Authorization:`Bearer ${token}`},
       body: JSON.stringify({nombre, telefono: telefono||null, color_avatar: colorActual})
     });
     const d = await res.json();
-    if (!res.ok) throw new Error(d.detail);
+    if (!res.ok) throw new Error(Array.isArray(d.detail) ? d.detail.map(e=>e.msg||JSON.stringify(e)).join(", ") : d.detail||"Error al guardar");
     usuario.nombre=nombre; usuario.telefono=telefono; usuario.color_avatar=colorActual;
     localStorage.setItem('usuario',JSON.stringify(usuario));
     document.getElementById('nav-nombre').textContent=nombre;
@@ -685,7 +686,7 @@ async function cambiarPassword() {
       body:JSON.stringify({password_actual:actual,nueva_password:nueva})
     });
     const d=await res.json();
-    if (!res.ok) throw new Error(d.detail);
+    if (!res.ok) throw new Error(Array.isArray(d.detail) ? d.detail.map(e=>e.msg||JSON.stringify(e)).join(", ") : d.detail||"Error al guardar");
     mostrarAlertaPerfil('✅ Contraseña cambiada','s');
     ['p-actual','p-nueva','p-conf'].forEach(id=>document.getElementById(id).value='');
   } catch(err){ mostrarAlertaPerfil('❌ '+err.message,'e'); }

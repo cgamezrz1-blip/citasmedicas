@@ -218,10 +218,11 @@
       </select>
       <select class="fi" id="fe" onchange="filtrar()">
         <option value="">Todos los estados</option>
-        <option value="true">✅ Confirmadas</option>
-        <option value="false">⏳ Pendientes</option>
+        <option value="confirmada">✅ Confirmadas</option>
+        <option value="pendiente">⏳ Pendientes</option>
+        <option value="cancelada">❌ Canceladas</option>
       </select>
-      <input class="fi" id="fm" placeholder="🔍 Buscar médico..." style="flex:1;min-width:140px" oninput="filtrar()"/>
+      <input class="fi" id="fm" placeholder="🔍 Buscar médico..." style="flex:1;min-width:140px;display:none" oninput="filtrar()"/>
       <button class="btn-l" onclick="limpiar()">Limpiar</button>
     </div>
     <div id="alerta-p" class="alerta"></div>
@@ -305,6 +306,7 @@ document.getElementById('badge-rol').textContent = badgeTextos[usuario.rol];
 document.getElementById('badge-rol').className = badgeClases[usuario.rol];
 if (usuario.rol === 'admin') document.getElementById('sb-admin').style.display = 'block';
 document.getElementById('sub').textContent = usuario.rol === 'admin' ? 'Todas las citas del sistema' : usuario.rol === 'medico' ? 'Citas de tus pacientes' : 'Agenda y gestiona tus citas médicas';
+if (usuario.rol !== 'paciente' && usuario.rol !== 'admin') document.getElementById('fm').style.display = 'none'; else document.getElementById('fm').style.display = '';
 
 const hoy = new Date().toISOString().split('T')[0];
 document.getElementById('m-fecha').min = hoy;
@@ -382,7 +384,7 @@ async function selMedico(id) {
   document.getElementById(`mc-${id}`).classList.add('sel');
   const hint = document.getElementById('med-hint');
   hint.textContent = `✅ ${m.nombre} seleccionado`; hint.style.display = 'block';
-  const tarifa = await getTarifa(m.especialidad_id);
+  const tarifa = await getTarifa(medSelId);
   document.getElementById('m-costo').value = tarifa;
   document.getElementById('m-costo').disabled = usuario.rol === 'paciente';
   document.getElementById('costo-hint').textContent = `Tarifa: $${new Intl.NumberFormat('es-CO').format(tarifa)}`;
@@ -484,7 +486,7 @@ function filtrar() {
   const t=document.getElementById('ftipo').value;
   let p=[];
   if(m) p.push(`medico_nombre=${encodeURIComponent(m)}`);
-  if(e!=='') p.push(`confirmada=${e}`);
+  if(e!=='') p.push(`estado=${e}`);
   if(t!=='') p.push(`tipo=${t}`);
   cargarCitas(p.length?'?'+p.join('&'):'');
 }

@@ -69,7 +69,7 @@ def disponibilidad(medico_id: int, fecha: str, db: Session = Depends(get_db)):
 
 # ── Citas ──────────────────────────────────────────────────────
 @router.get("/citas")
-def get_citas(tipo: Optional[str] = None, u=Depends(get_user),
+def get_citas(tipo: Optional[str] = None, estado: Optional[str] = None, u=Depends(get_user),
               db: Session = Depends(get_db)):
     """Patron 2 — Facade: delega a CitaServiceFacade."""
     resultado = facade.citas.get_citas(u, db)
@@ -77,6 +77,7 @@ def get_citas(tipo: Optional[str] = None, u=Depends(get_user),
     hoy = date.today().isoformat()
     if tipo == "proximas": citas = [c for c in citas if c["fecha"] >= hoy]
     elif tipo == "pasadas": citas = [c for c in citas if c["fecha"] < hoy]
+    if estado: citas = [c for c in citas if c["estado"] == estado]
     return {"citas": citas, "total": len(citas)}
 
 @router.get("/citas/proxima")

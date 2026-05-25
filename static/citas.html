@@ -543,8 +543,39 @@ async function guardarCita() {
 async function editarCita(id) {
   try {
     const res=await fetch(`/citas/${id}`,{headers:{Authorization:`Bearer ${token}`}});
-    const c=await res.json(); abrirModal(c);
+    const c=await res.json();
+    if (usuario.rol === 'admin') {
+      citaEditId = c.id;
+      document.getElementById('admin-estado').value = c.estado;
+      document.getElementById('admin-costo').value = c.costo;
+      document.getElementById('admin-notas').value = c.notas_medico || '';
+      document.getElementById('alerta-admin').style.display = 'none';
+      document.getElementById('overlay-admin').classList.add('on');
+    } else {
+      abrirModal(c);
+    }
   } catch { mostrarP('❌ Error al cargar','e'); }
+}
+
+function cerrarModalAdmin() { document.getElementById('overlay-admin').classList.remove('on'); }
+
+async function guardarCitaAdmin() {
+  const estado = document.getElementById('admin-estado').value;
+  const costo = parseFloat(document.getElementById('admin-costo').value) || 0;
+  const notas = document.getElementById('admin-notas').value.trim();
+  try {
+    const res = await fetch(`/citas/${citaEditId}`, {
+      method: 'PUT',
+      headers: {'Content-Type':'application/json', Authorization:`Bearer ${token}`},
+      body: JSON.stringify({estado, costo, notas_medico: notas || null})
+    });
+    const d = await res.json();
+    if (!res.ok) throw new Error(d.detail);
+    cerrarModalAdmin(); mostrarP('✅ Cita actualizada', 's'); cargarCitas();
+  } catch(err) { 
+    const el = document.getElementById('alerta-admin');
+    el.textContent = '❌ ' + err.message; el.className = 'alerta e'; el.style.display = 'block';
+  }
 }
 
 async function eliminarCita(id) {
@@ -612,5 +643,30 @@ document.getElementById('overlay').addEventListener('click',e=>{if(e.target.id==
 cargarEspecialidades();
 cargarCitas();
 </script>
+
+<!-- Modal edición admin -->
+<div class="overlay" id="overlay-admin">
+  <div class="modal" style="max-width:420px">
+    <div class="mh"><div class="mt">Editar cita</div><button class="mc" onclick="cerrarModalAdmin()">✕</button></div>
+    <div id="alerta-admin" class="alerta"></div>
+    <div class="campo"><label>Estado</label>
+      <select id="admin-estado" class="fi" style="width:100%;padding:.7rem .9rem">
+        <option value="pendiente">⏳ Pendiente</option>
+        <option value="confirmada">✅ Confirmada</option>
+        <option value="cancelada">❌ Cancelada</option>
+      </select>
+    </div>
+    <div class="campo"><label>Costo (COP)</label>
+      <input class="fi" type="number" id="admin-costo" style="width:100%"/>
+    </div>
+    <div class="campo"><label>Notas médico</label>
+      <input class="fi" type="text" id="admin-notas" placeholder="Diagnóstico, observaciones..." style="width:100%"/>
+    </div>
+    <div class="mf">
+      <button class="btn-can" onclick="cerrarModalAdmin()">Cancelar</button>
+      <button class="btn-ok" onclick="guardarCitaAdmin()">💾 Guardar</button>
+    </div>
+  </div>
+</div>
 </body>
 </html>

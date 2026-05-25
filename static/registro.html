@@ -360,7 +360,7 @@
     const v = document.getElementById('email').value.trim();
     const h = document.getElementById('hint-email');
     if (!v) { h.textContent = ''; return false; }
-    if (!/^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/.test(v)) {
+    if (!/^[a-zA-Z0-9][a-zA-Z0-9._%+\-]*@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/.test(v) || v.includes('..') || v.startsWith('.') || v.includes('.@')) {
       h.textContent = '❌ Correo inválido'; h.className = 'hint warn'; return false;
     }
     h.textContent = '✅ Correo válido'; h.className = 'hint ok'; return true;

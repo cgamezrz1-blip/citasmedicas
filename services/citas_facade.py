@@ -8,7 +8,7 @@ from fastapi import HTTPException
 
 from models import Usuario, Cita, Notificacion, MedicoPerfil
 from adapters.auth_adapter import AuthServicePort, JoseJWTAdapter
-from observers.cita_observers import CitaEventPublisher, NotificacionObserver, LogObserver
+from observers.cita_observers import CitaEventPublisher, NotificacionObserver, LogObserver, AdminObserver
 from strategies.cost_strategy import CitaService, TarifaFijaStrategy
 
 
@@ -62,6 +62,7 @@ class CitaServiceFacade:
         self._publisher = CitaEventPublisher()
         self._publisher.suscribir(NotificacionObserver())
         self._publisher.suscribir(LogObserver())
+        self._publisher.suscribir(AdminObserver())
 
     def crear_cita(self, datos, usuario: Usuario, db: Session) -> dict:
         """Crea una cita y notifica via Observer."""

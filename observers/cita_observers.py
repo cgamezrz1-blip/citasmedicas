@@ -89,6 +89,33 @@ class LogObserver(BaseObserver):
         )
 
 
+class AdminObserver(BaseObserver):
+    """
+    Observer Concreto — notifica a todos los admins cuando se agenda una cita.
+    Unica responsabilidad: mantener al admin informado de nuevas citas.
+    """
+
+    def actualizar(self, cita: Cita, usuario: Usuario, db: Session) -> None:
+        ahora = datetime.utcnow()
+        admins = db.query(Usuario).filter(
+            Usuario.rol == "admin", Usuario.activo.is_(True)
+        ).all()
+        for admin in admins:
+            notif = Notificacion(
+                usuario_id=admin.id,
+                cita_id=cita.id,
+                tipo="nueva_cita",
+                mensaje=(
+                    f"Nueva cita agendada: {usuario.nombre} "
+                    f"el {cita.fecha} a las {cita.hora}"
+                ),
+                leida=False,
+                creado_en=ahora,
+            )
+            db.add(notif)
+        db.commit()
+
+
 class CitaEventPublisher:
     """
     Sujeto (Publisher) — mantiene la lista de observers y los notifica.
@@ -120,4 +147,5 @@ class CitaEventPublisher:
 publisher = CitaEventPublisher()
 publisher.suscribir(NotificacionObserver())
 publisher.suscribir(LogObserver())
+publisher.suscribir(AdminObserver())
 # Para agregar email: publisher.suscribir(EmailObserver())

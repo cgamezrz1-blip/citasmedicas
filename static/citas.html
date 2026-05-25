@@ -203,7 +203,7 @@
         <h1>Mis Citas Médicas</h1>
         <p id="sub">Agenda y administra tus citas médicas en un solo lugar</p>
       </div>
-      <button class="btn-nueva" onclick="abrirModal()">➕ Agendar cita</button>
+      <button class="btn-nueva" id="btn-agendar" onclick="abrirModal()">➕ Agendar cita</button>
     </div>
     <div class="qs-grid">
       <div class="qs"><div class="qs-icon t">📅</div><div><div class="qs-num" id="tot">0</div><div class="qs-label">Total</div></div></div>
@@ -304,7 +304,7 @@ const badgeTextos = { admin:'👑 Admin', medico:'👨‍⚕️ Médico', pacien
 const badgeClases = { admin:'badge badge-a', medico:'badge badge-m', paciente:'badge badge-p' };
 document.getElementById('badge-rol').textContent = badgeTextos[usuario.rol];
 document.getElementById('badge-rol').className = badgeClases[usuario.rol];
-if (usuario.rol === 'admin') document.getElementById('sb-admin').style.display = 'block';
+if (usuario.rol === 'admin') { document.getElementById('sb-admin').style.display = 'block'; document.getElementById('btn-agendar').style.display = 'none'; }
 document.getElementById('sub').textContent = usuario.rol === 'admin' ? 'Todas las citas del sistema' : usuario.rol === 'medico' ? 'Citas de tus pacientes' : 'Agenda y gestiona tus citas médicas';
 if (usuario.rol !== 'paciente' && usuario.rol !== 'admin') document.getElementById('fm').style.display = 'none'; else document.getElementById('fm').style.display = '';
 

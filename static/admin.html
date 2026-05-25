@@ -370,9 +370,9 @@ function renderUsuarios(lista) {
       <td>
         <div class="acciones">
           ${u.rol==='medico'&&!u.aprobado?`<button class="btn-accion btn-ok" onclick="aprobarMedico(${u.id},'${u.nombre}')">Aprobar</button>`:''}
-          ${u.id!==usuario.id?`<button class="btn-accion btn-toggle" onclick="toggleUsuario(${u.id})">${u.activo?'Desactivar':'Activar'}</button>`:''}
+          ${u.id!=usuario.id?`<button class="btn-accion btn-toggle" onclick="toggleUsuario(${u.id})">${u.activo?'Desactivar':'Activar'}</button>`:''}
 
-          ${u.id!==usuario.id?`<button class="btn-accion btn-del" onclick="eliminarUsuario(${u.id},'${u.nombre}')">Eliminar</button>`:''}
+          ${u.id!=usuario.id?`<button class="btn-accion btn-del" onclick="eliminarUsuario(${u.id},'${u.nombre}')">Eliminar</button>`:''}
         </div>
       </td>
     </tr>`).join('');

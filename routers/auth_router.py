@@ -173,11 +173,12 @@ class UpdatePerfilReq(BaseModel):
     @field_validator('telefono')
     @classmethod
     def telefono_valido(cls, v):
-        if v is None:
-            return v
+        if v is None or v.strip() == '':
+            return None
+        v = v.strip()
         if not re.match(r'^[0-9+\-\s()]{7,20}$', v):
-            raise ValueError('Teléfono inválido (solo números, +, -, espacios y paréntesis)')
-        return v.strip()
+            raise ValueError('Teléfono inválido: solo números, +, -, espacios. Ej: 3001234567')
+        return v
 
     @field_validator('color_avatar')
     @classmethod
@@ -266,7 +267,15 @@ def me(u=Depends(get_user)): return _u(u)
 @router.put("/me")
 def update_me(d: UpdatePerfilReq, u=Depends(get_user), db: Session = Depends(get_db)):
     if d.nombre: u.nombre = d.nombre
-    if d.telefono is not None: u.telefono = d.telefono
+    if d.telefono is not None:
+        if d.telefono:
+            existe = db.query(Usuario).filter(
+                Usuario.telefono == d.telefono,
+                Usuario.id != u.id
+            ).first()
+            if existe:
+                raise HTTPException(400, "Este número de teléfono ya está registrado por otro usuario")
+        u.telefono = d.telefono or None
     if d.color_avatar: u.color_avatar = d.color_avatar
     db.commit()
     return {"mensaje": "Perfil actualizado", "usuario": _u(u)}

@@ -318,7 +318,7 @@
           <select id="filtro-esp-dash" onchange="buscarMedicos()" style="padding:.6rem 1rem;border:1.5px solid var(--gris-b);border-radius:8px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.87rem;color:var(--gris-t);background:var(--blanco);outline:none;flex:1;min-width:160px">
             <option value="">Todas las especialidades</option>
           </select>
-          <a id="btn-agendar-grande" href="/mis-citas" style="display:inline-flex;align-items:center;gap:.4rem;padding:.6rem 1.2rem;background:var(--azul);color:white;border-radius:8px;font-size:.85rem;font-weight:700;text-decoration:none">
+          <a href="/mis-citas" style="display:inline-flex;align-items:center;gap:.4rem;padding:.6rem 1.2rem;background:var(--azul);color:white;border-radius:8px;font-size:.85rem;font-weight:700;text-decoration:none">
             📅 Agendar cita
           </a>
         </div>
@@ -452,7 +452,7 @@ async function buscarMedicos() {
         <div style="font-size:.88rem;font-weight:700;color:var(--gris-t);margin-bottom:.2rem">👨‍⚕️ ${m.nombre}</div>
         <div style="font-size:.78rem;color:var(--gris-m);margin-bottom:.3rem">${m.especialidad}</div>
         <div style="font-size:.78rem;color:var(--verde);font-weight:600;margin-bottom:.5rem">💰 $${new Intl.NumberFormat('es-CO').format(TARIFAS[m.especialidad]||35000)}</div>
-        <a id="link-agendar-cita" href="/mis-citas" style="font-size:.76rem;color:var(--azul);font-weight:700;text-decoration:none">Agendar cita →</a>
+        <a href="/mis-citas" style="font-size:.76rem;color:var(--azul);font-weight:700;text-decoration:none">Agendar cita →</a>
       </div>`).join('');
   } catch {}
 }
@@ -475,12 +475,6 @@ function initUI() {
     document.getElementById('buscador-medicos-section').style.display = 'block';
     cargarEspecialidadesDash();
     buscarMedicos();
-  }
-  if (usuario.rol === 'admin') {
-    const la = document.getElementById('link-agendar-cita');
-    if (la) la.style.display = 'none';
-    const ba = document.getElementById('btn-agendar-grande');
-    if (ba) ba.style.display = 'none';
   }
   // Modulos
   const lista = MODULOS[usuario.rol] || MODULOS.paciente;
@@ -536,31 +530,24 @@ async function cargarNotificaciones() {
   try {
     const res = await fetch('/notificaciones',{headers:{Authorization:`Bearer ${token}`}});
     const lista = await res.json();
-    const noLeidasCount = lista.filter(n=>!n.leida).length;
+    const noLeidas = lista.filter(n=>!n.leida).length;
     const badge = document.getElementById('notif-count');
-    badge.textContent = noLeidasCount;
-    badge.className = `notif-badge${noLeidasCount>0?' on':''}`;
-    document.getElementById('s3').textContent = noLeidasCount;
+    badge.textContent = noLeidas;
+    badge.className = `notif-badge${noLeidas>0?' on':''}`;
+    document.getElementById('s3').textContent = noLeidas;
     if (!lista.length) {
       document.getElementById('notif-lista').innerHTML = '<div class="notif-empty">📭 Sin notificaciones</div>';
       return;
     }
-    const iconos = {confirmacion:'📅',confirmada:'✅',cancelada:'❌',aprobacion:'🎉',recordatorio:'🔔',nueva_cita:'🩺'};
-    const noLeidasLista = lista.filter(n => !n.leida);
-    const mostrar = noLeidasLista.length > 0 ? noLeidasLista.slice(0,5) : lista.slice(0,3);
-    if (!mostrar.length) {
-      document.getElementById('notif-lista').innerHTML = '<div class="notif-empty">📭 Sin notificaciones nuevas</div>';
-      return;
-    }
-    const resto = lista.length - mostrar.length;
-    document.getElementById('notif-lista').innerHTML = mostrar.map(n => `
+    const iconos = {confirmacion:'📅',confirmada:'✅',cancelada:'❌',aprobacion:'🎉',recordatorio:'🔔'};
+    document.getElementById('notif-lista').innerHTML = lista.map(n => `
       <div class="notif-item${n.leida?'':' no-leida'}" onclick="leerNotif(${n.id},this)">
         <div class="notif-dot${n.leida?' leida':''}"></div>
         <div>
           <div class="notif-msg">${iconos[n.tipo]||'📌'} ${n.mensaje}</div>
-          <div class="notif-time">${n.creado_en ? n.creado_en.substring(0,16).replace('T',' ') : ''}</div>
+          <div class="notif-time">${n.creado_en}</div>
         </div>
-      </div>`).join('') + (resto > 0 ? `<div class="notif-empty" style="font-size:.78rem;padding:.75rem 1.25rem">+${resto} notificaciones anteriores ya leídas</div>` : '');
+      </div>`).join('');
   } catch {}
 }
 
@@ -582,7 +569,7 @@ async function cargarNotifDropdown() {
         <div class="nd-dot${n.leida?' leida':''}"></div>
         <div>
           <div class="nd-msg">${iconos[n.tipo]||'📌'} ${n.mensaje}</div>
-          <div class="nd-time">${n.creado_en ? n.creado_en.substring(0,16).replace("T"," ") : ""}</div>
+          <div class="nd-time">${n.creado_en}</div>
         </div>
       </div>`).join('');
   } catch {}
@@ -675,7 +662,7 @@ async function guardarPerfil() {
       body: JSON.stringify({nombre, telefono: telefono||null, color_avatar: colorActual})
     });
     const d = await res.json();
-    if (!res.ok) throw new Error(d.detail);
+    if (!res.ok) throw new Error(Array.isArray(d.detail) ? d.detail.map(e=>e.msg||JSON.stringify(e)).join(', ') : (d.detail||'Error al guardar'));
     usuario.nombre=nombre; usuario.telefono=telefono; usuario.color_avatar=colorActual;
     localStorage.setItem('usuario',JSON.stringify(usuario));
     document.getElementById('nav-nombre').textContent=nombre;
@@ -698,7 +685,7 @@ async function cambiarPassword() {
       body:JSON.stringify({password_actual:actual,nueva_password:nueva})
     });
     const d=await res.json();
-    if (!res.ok) throw new Error(d.detail);
+    if (!res.ok) throw new Error(Array.isArray(d.detail) ? d.detail.map(e=>e.msg||JSON.stringify(e)).join(', ') : (d.detail||'Error al guardar'));
     mostrarAlertaPerfil('✅ Contraseña cambiada','s');
     ['p-actual','p-nueva','p-conf'].forEach(id=>document.getElementById(id).value='');
   } catch(err){ mostrarAlertaPerfil('❌ '+err.message,'e'); }

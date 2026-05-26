@@ -135,6 +135,7 @@ class AdminService:
                 "id": u.id, "nombre": u.nombre, "email": u.email,
                 "rol": u.rol, "activo": u.activo, "aprobado": u.aprobado,
                 "creado_en": u.creado_en.isoformat() if u.creado_en else None,
+                "telefono": u.telefono or "",
                 "numero_rethus": perfil.numero_rethus if perfil and perfil.numero_rethus else None,
                 "especialidad": perfil.get_especialidad() if perfil else None,
             })

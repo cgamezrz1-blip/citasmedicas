@@ -164,36 +164,25 @@
     <div class="stats-detalle">
       <div class="detalle-card">
         <h3>📋 Distribución de citas</h3>
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.65rem;margin-bottom:.9rem">
-          <div style="background:#fff7ed;border:1.5px solid #fdba74;border-radius:12px;padding:.9rem;text-align:center">
-            <div style="font-size:1.8rem;font-weight:800;color:#ea580c" id="n-pend">0</div>
-            <div style="font-size:.75rem;color:#c2410c;font-weight:600;margin-top:.2rem">⏳ Pendientes</div>
-          </div>
-          <div style="background:#f0fdf4;border:1.5px solid #86efac;border-radius:12px;padding:.9rem;text-align:center">
-            <div style="font-size:1.8rem;font-weight:800;color:#16a34a" id="n-conf">0</div>
-            <div style="font-size:.75rem;color:#15803d;font-weight:600;margin-top:.2rem">✅ Confirmadas</div>
-          </div>
-          <div style="background:#fef2f2;border:1.5px solid #fca5a5;border-radius:12px;padding:.9rem;text-align:center">
-            <div style="font-size:1.8rem;font-weight:800;color:#dc2626" id="n-canc">0</div>
-            <div style="font-size:.75rem;color:#991b1b;font-weight:600;margin-top:.2rem">❌ Canceladas</div>
-          </div>
-        </div>
-        <div class="detalle-row" style="margin-top:.5rem">
-          <span style="font-size:.78rem;color:var(--gris-m)">⏳</span>
-          <div style="display:flex;align-items:center;gap:.5rem;flex:1">
-            <div class="barra-wrap" style="flex:1"><div class="barra" id="b-pend" style="background:var(--naran)"></div></div>
+        <div class="detalle-row">
+          <span>⏳ Pendientes</span>
+          <div style="display:flex;align-items:center;gap:.75rem">
+            <div class="barra-wrap"><div class="barra" id="b-pend" style="background:var(--naran)"></div></div>
+            <strong id="n-pend" style="color:var(--naran);min-width:24px;text-align:right">0</strong>
           </div>
         </div>
         <div class="detalle-row">
-          <span style="font-size:.78rem;color:var(--gris-m)">✅</span>
-          <div style="display:flex;align-items:center;gap:.5rem;flex:1">
-            <div class="barra-wrap" style="flex:1"><div class="barra" id="b-conf" style="background:var(--verde)"></div></div>
+          <span>✅ Confirmadas</span>
+          <div style="display:flex;align-items:center;gap:.75rem">
+            <div class="barra-wrap"><div class="barra" id="b-conf" style="background:var(--verde)"></div></div>
+            <strong id="n-conf" style="color:var(--verde);min-width:24px;text-align:right">0</strong>
           </div>
         </div>
         <div class="detalle-row">
-          <span style="font-size:.78rem;color:var(--gris-m)">❌</span>
-          <div style="display:flex;align-items:center;gap:.5rem;flex:1">
-            <div class="barra-wrap" style="flex:1"><div class="barra" id="b-canc" style="background:var(--error)"></div></div>
+          <span>❌ Canceladas</span>
+          <div style="display:flex;align-items:center;gap:.75rem">
+            <div class="barra-wrap"><div class="barra" id="b-canc" style="background:var(--error)"></div></div>
+            <strong id="n-canc" style="color:var(--error);min-width:24px;text-align:right">0</strong>
           </div>
         </div>
       </div>
@@ -242,7 +231,7 @@
     <div class="tabla-wrap">
       <table>
         <thead><tr>
-          <th>ID</th><th>Nombre</th><th>Email</th><th>Rol</th><th>ReTHUS</th><th>Estado</th><th>Registrado</th><th>Acciones</th>
+          <th>ID</th><th>Nombre</th><th>Email</th><th>Rol</th><th>Teléfono</th><th>ReTHUS</th><th>Estado</th><th>Registrado</th><th>Acciones</th>
         </tr></thead>
         <tbody id="tabla-body"><tr><td colspan="8" style="text-align:center;padding:2rem;color:var(--gris-m)">Cargando...</td></tr></tbody>
       </table>
@@ -373,6 +362,7 @@ function renderUsuarios(lista) {
       <td><strong>${u.nombre}</strong></td>
       <td style="font-size:.79rem;color:var(--gris-m)">${u.email}</td>
       <td><span class="rol-badge rol-${u.rol}">${u.rol}</span></td>
+      <td style="font-size:.78rem;color:var(--gris-m)">${u.telefono || '—'}</td>
       <td style="font-size:.78rem;color:var(--gris-m)">${u.numero_rethus && u.numero_rethus !== 'undefined' ? u.numero_rethus : '—'}</td>
       <td>
         <span class="estado-badge ${u.activo?'activo-b':'inactivo-b'}">${u.activo?'Activo':'Inactivo'}</span>

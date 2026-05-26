@@ -60,10 +60,17 @@ def del_user(uid: int, u=Depends(admin_only), db: Session = Depends(get_db)):
 @router.get("/estadisticas")
 def estadisticas(u=Depends(admin_only), db: Session = Depends(get_db)):
     """Retorna estadisticas generales del sistema."""
+    import datetime
+    medicos_pendientes = db.query(Usuario).filter(Usuario.rol == "medico", Usuario.aprobado.is_(False)).count()
     return {
-        "total_usuarios":  db.query(Usuario).count(),
-        "total_citas":     db.query(Cita).count(),
-        "total_medicos":   db.query(Usuario).filter(Usuario.rol == "medico").count(),
-        "total_pacientes": db.query(Usuario).filter(Usuario.rol == "paciente").count(),
-        "total_admins":    db.query(Usuario).filter(Usuario.rol == "admin").count(),
+        "total_usuarios":    db.query(Usuario).count(),
+        "total_citas":       db.query(Cita).count(),
+        "total_medicos":     db.query(Usuario).filter(Usuario.rol == "medico").count(),
+        "total_pacientes":   db.query(Usuario).filter(Usuario.rol == "paciente").count(),
+        "total_admins":      db.query(Usuario).filter(Usuario.rol == "admin").count(),
+        "medicos_pendientes": medicos_pendientes,
+        "citas_pendientes":  db.query(Cita).filter(Cita.estado == "pendiente").count(),
+        "citas_confirmadas": db.query(Cita).filter(Cita.estado == "confirmada").count(),
+        "citas_canceladas":  db.query(Cita).filter(Cita.estado == "cancelada").count(),
+        "citas_hoy":         db.query(Cita).filter(Cita.fecha == datetime.date.today().isoformat()).count(),
     }

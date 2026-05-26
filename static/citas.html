@@ -203,7 +203,7 @@
         <h1>Mis Citas Médicas</h1>
         <p id="sub">Agenda y administra tus citas médicas en un solo lugar</p>
       </div>
-      <button class="btn-nueva" id="btn-agendar" onclick="abrirModal()">➕ Agendar cita</button>
+      <button class="btn-nueva" onclick="abrirModal()">➕ Agendar cita</button>
     </div>
     <div class="qs-grid">
       <div class="qs"><div class="qs-icon t">📅</div><div><div class="qs-num" id="tot">0</div><div class="qs-label">Total</div></div></div>
@@ -218,11 +218,10 @@
       </select>
       <select class="fi" id="fe" onchange="filtrar()">
         <option value="">Todos los estados</option>
-        <option value="confirmada">✅ Confirmadas</option>
-        <option value="pendiente">⏳ Pendientes</option>
-        <option value="cancelada">❌ Canceladas</option>
+        <option value="true">✅ Confirmadas</option>
+        <option value="false">⏳ Pendientes</option>
       </select>
-      <input class="fi" id="fm" placeholder="🔍 Buscar médico..." style="flex:1;min-width:140px;display:none" oninput="aplicarFiltroMedico()"/>
+      <input class="fi" id="fm" placeholder="🔍 Buscar médico..." style="flex:1;min-width:140px" oninput="filtrar()"/>
       <button class="btn-l" onclick="limpiar()">Limpiar</button>
     </div>
     <div id="alerta-p" class="alerta"></div>
@@ -304,9 +303,8 @@ const badgeTextos = { admin:'👑 Admin', medico:'👨‍⚕️ Médico', pacien
 const badgeClases = { admin:'badge badge-a', medico:'badge badge-m', paciente:'badge badge-p' };
 document.getElementById('badge-rol').textContent = badgeTextos[usuario.rol];
 document.getElementById('badge-rol').className = badgeClases[usuario.rol];
-if (usuario.rol === 'admin') { document.getElementById('sb-admin').style.display = 'block'; document.getElementById('btn-agendar').style.display = 'none'; }
+if (usuario.rol === 'admin') document.getElementById('sb-admin').style.display = 'block';
 document.getElementById('sub').textContent = usuario.rol === 'admin' ? 'Todas las citas del sistema' : usuario.rol === 'medico' ? 'Citas de tus pacientes' : 'Agenda y gestiona tus citas médicas';
-if (usuario.rol !== 'paciente' && usuario.rol !== 'admin') document.getElementById('fm').style.display = 'none'; else document.getElementById('fm').style.display = '';
 
 const hoy = new Date().toISOString().split('T')[0];
 document.getElementById('m-fecha').min = hoy;
@@ -384,7 +382,7 @@ async function selMedico(id) {
   document.getElementById(`mc-${id}`).classList.add('sel');
   const hint = document.getElementById('med-hint');
   hint.textContent = `✅ ${m.nombre} seleccionado`; hint.style.display = 'block';
-  const tarifa = await getTarifa(medSelId);
+  const tarifa = await getTarifa(m.especialidad_id);
   document.getElementById('m-costo').value = tarifa;
   document.getElementById('m-costo').disabled = usuario.rol === 'paciente';
   document.getElementById('costo-hint').textContent = `Tarifa: $${new Intl.NumberFormat('es-CO').format(tarifa)}`;
@@ -438,27 +436,15 @@ function selHora(h, btn) {
   btn.classList.add('sel'); horaSeleccionada = h; document.getElementById('m-hora').value = h;
 }
 
-let todasLasCitas = [];
-
 async function cargarCitas(params='') {
   try {
-    // Solo enviar tipo y estado al backend — medico_nombre se filtra en frontend
     const res = await fetch('/citas'+params, { headers: { Authorization: `Bearer ${token}` } });
     const data = await res.json();
-    todasLasCitas = data.citas;
     document.getElementById('tot').textContent = data.total;
     document.getElementById('con').textContent = data.citas.filter(c=>c.estado==='confirmada').length;
     document.getElementById('pen').textContent = data.citas.filter(c=>c.estado==='pendiente').length;
-    aplicarFiltroMedico();
+    renderCitas(data.citas);
   } catch { mostrarP('❌ Error al cargar citas','e'); }
-}
-
-function aplicarFiltroMedico() {
-  const m = document.getElementById('fm').value.trim().toLowerCase();
-  const filtradas = m
-    ? todasLasCitas.filter(c => c.medico_nombre && c.medico_nombre.toLowerCase().includes(m))
-    : todasLasCitas;
-  renderCitas(filtradas);
 }
 
 function renderCitas(citas) {
@@ -493,10 +479,12 @@ function renderCitas(citas) {
 }
 
 function filtrar() {
+  const m=document.getElementById('fm').value.trim();
   const e=document.getElementById('fe').value;
   const t=document.getElementById('ftipo').value;
   let p=[];
-  if(e!=='') p.push(`estado=${e}`);
+  if(m) p.push(`medico_nombre=${encodeURIComponent(m)}`);
+  if(e!=='') p.push(`confirmada=${e}`);
   if(t!=='') p.push(`tipo=${t}`);
   cargarCitas(p.length?'?'+p.join('&'):'');
 }
@@ -543,39 +531,8 @@ async function guardarCita() {
 async function editarCita(id) {
   try {
     const res=await fetch(`/citas/${id}`,{headers:{Authorization:`Bearer ${token}`}});
-    const c=await res.json();
-    if (usuario.rol === 'admin') {
-      citaEditId = c.id;
-      document.getElementById('admin-estado').value = c.estado;
-      document.getElementById('admin-costo').value = c.costo;
-      document.getElementById('admin-notas').value = c.notas_medico || '';
-      document.getElementById('alerta-admin').style.display = 'none';
-      document.getElementById('overlay-admin').classList.add('on');
-    } else {
-      abrirModal(c);
-    }
+    const c=await res.json(); abrirModal(c);
   } catch { mostrarP('❌ Error al cargar','e'); }
-}
-
-function cerrarModalAdmin() { document.getElementById('overlay-admin').classList.remove('on'); }
-
-async function guardarCitaAdmin() {
-  const estado = document.getElementById('admin-estado').value;
-  const costo = parseFloat(document.getElementById('admin-costo').value) || 0;
-  const notas = document.getElementById('admin-notas').value.trim();
-  try {
-    const res = await fetch(`/citas/${citaEditId}`, {
-      method: 'PUT',
-      headers: {'Content-Type':'application/json', Authorization:`Bearer ${token}`},
-      body: JSON.stringify({estado, costo, notas_medico: notas || null})
-    });
-    const d = await res.json();
-    if (!res.ok) throw new Error(d.detail);
-    cerrarModalAdmin(); mostrarP('✅ Cita actualizada', 's'); cargarCitas();
-  } catch(err) { 
-    const el = document.getElementById('alerta-admin');
-    el.textContent = '❌ ' + err.message; el.className = 'alerta e'; el.style.display = 'block';
-  }
 }
 
 async function eliminarCita(id) {
@@ -643,30 +600,5 @@ document.getElementById('overlay').addEventListener('click',e=>{if(e.target.id==
 cargarEspecialidades();
 cargarCitas();
 </script>
-
-<!-- Modal edición admin -->
-<div class="overlay" id="overlay-admin">
-  <div class="modal" style="max-width:420px">
-    <div class="mh"><div class="mt">Editar cita</div><button class="mc" onclick="cerrarModalAdmin()">✕</button></div>
-    <div id="alerta-admin" class="alerta"></div>
-    <div class="campo"><label>Estado</label>
-      <select id="admin-estado" class="fi" style="width:100%;padding:.7rem .9rem">
-        <option value="pendiente">⏳ Pendiente</option>
-        <option value="confirmada">✅ Confirmada</option>
-        <option value="cancelada">❌ Cancelada</option>
-      </select>
-    </div>
-    <div class="campo"><label>Costo (COP)</label>
-      <input class="fi" type="number" id="admin-costo" style="width:100%"/>
-    </div>
-    <div class="campo"><label>Notas médico</label>
-      <input class="fi" type="text" id="admin-notas" placeholder="Diagnóstico, observaciones..." style="width:100%"/>
-    </div>
-    <div class="mf">
-      <button class="btn-can" onclick="cerrarModalAdmin()">Cancelar</button>
-      <button class="btn-ok" onclick="guardarCitaAdmin()">💾 Guardar</button>
-    </div>
-  </div>
-</div>
 </body>
 </html>

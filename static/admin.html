@@ -164,50 +164,58 @@
     <div class="stats-detalle">
       <div class="detalle-card">
         <h3>📋 Distribución de citas</h3>
-        <div class="detalle-row">
-          <span>⏳ Pendientes</span>
-          <div style="display:flex;align-items:center;gap:.75rem">
-            <div class="barra-wrap"><div class="barra" id="b-pend" style="background:var(--naran)"></div></div>
-            <strong id="n-pend">0</strong>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.65rem;margin-bottom:.9rem">
+          <div style="background:#fff7ed;border:1.5px solid #fdba74;border-radius:12px;padding:.9rem;text-align:center">
+            <div style="font-size:1.8rem;font-weight:800;color:#ea580c" id="n-pend">0</div>
+            <div style="font-size:.75rem;color:#c2410c;font-weight:600;margin-top:.2rem">⏳ Pendientes</div>
+          </div>
+          <div style="background:#f0fdf4;border:1.5px solid #86efac;border-radius:12px;padding:.9rem;text-align:center">
+            <div style="font-size:1.8rem;font-weight:800;color:#16a34a" id="n-conf">0</div>
+            <div style="font-size:.75rem;color:#15803d;font-weight:600;margin-top:.2rem">✅ Confirmadas</div>
+          </div>
+          <div style="background:#fef2f2;border:1.5px solid #fca5a5;border-radius:12px;padding:.9rem;text-align:center">
+            <div style="font-size:1.8rem;font-weight:800;color:#dc2626" id="n-canc">0</div>
+            <div style="font-size:.75rem;color:#991b1b;font-weight:600;margin-top:.2rem">❌ Canceladas</div>
+          </div>
+        </div>
+        <div class="detalle-row" style="margin-top:.5rem">
+          <span style="font-size:.78rem;color:var(--gris-m)">⏳</span>
+          <div style="display:flex;align-items:center;gap:.5rem;flex:1">
+            <div class="barra-wrap" style="flex:1"><div class="barra" id="b-pend" style="background:var(--naran)"></div></div>
           </div>
         </div>
         <div class="detalle-row">
-          <span>✅ Confirmadas</span>
-          <div style="display:flex;align-items:center;gap:.75rem">
-            <div class="barra-wrap"><div class="barra" id="b-conf" style="background:var(--verde)"></div></div>
-            <strong id="n-conf">0</strong>
+          <span style="font-size:.78rem;color:var(--gris-m)">✅</span>
+          <div style="display:flex;align-items:center;gap:.5rem;flex:1">
+            <div class="barra-wrap" style="flex:1"><div class="barra" id="b-conf" style="background:var(--verde)"></div></div>
           </div>
         </div>
         <div class="detalle-row">
-          <span>❌ Canceladas</span>
-          <div style="display:flex;align-items:center;gap:.75rem">
-            <div class="barra-wrap"><div class="barra" id="b-canc" style="background:var(--error)"></div></div>
-            <strong id="n-canc">0</strong>
+          <span style="font-size:.78rem;color:var(--gris-m)">❌</span>
+          <div style="display:flex;align-items:center;gap:.5rem;flex:1">
+            <div class="barra-wrap" style="flex:1"><div class="barra" id="b-canc" style="background:var(--error)"></div></div>
           </div>
         </div>
       </div>
       <div class="detalle-card">
         <h3>👥 Distribución de usuarios</h3>
-        <div class="detalle-row">
-          <span>🙋 Pacientes</span>
-          <div style="display:flex;align-items:center;gap:.75rem">
-            <div class="barra-wrap"><div class="barra" id="b-pac" style="background:var(--verde)"></div></div>
-            <strong id="n-pac">0</strong>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.65rem;margin-top:.75rem">
+          <div style="background:#f0fdf4;border:1.5px solid #86efac;border-radius:12px;padding:.9rem;text-align:center">
+            <div style="font-size:1.8rem;font-weight:800;color:#16a34a" id="n-pac">0</div>
+            <div style="font-size:.75rem;color:#15803d;font-weight:600;margin-top:.2rem">🙋 Pacientes</div>
+          </div>
+          <div style="background:#eff6ff;border:1.5px solid #93c5fd;border-radius:12px;padding:.9rem;text-align:center">
+            <div style="font-size:1.8rem;font-weight:800;color:#1d4ed8" id="n-med">0</div>
+            <div style="font-size:.75rem;color:#1e40af;font-weight:600;margin-top:.2rem">🩺 Médicos activos</div>
+          </div>
+          <div style="background:#fff7ed;border:1.5px solid #fdba74;border-radius:12px;padding:.9rem;text-align:center">
+            <div style="font-size:1.8rem;font-weight:800;color:#ea580c" id="n-medp">0</div>
+            <div style="font-size:.75rem;color:#c2410c;font-weight:600;margin-top:.2rem">⏳ Pendientes aprobación</div>
           </div>
         </div>
-        <div class="detalle-row">
-          <span>👨‍⚕️ Médicos activos</span>
-          <div style="display:flex;align-items:center;gap:.75rem">
-            <div class="barra-wrap"><div class="barra" id="b-med" style="background:var(--azul)"></div></div>
-            <strong id="n-med">0</strong>
-          </div>
-        </div>
-        <div class="detalle-row">
-          <span>⏳ Médicos pendientes</span>
-          <div style="display:flex;align-items:center;gap:.75rem">
-            <div class="barra-wrap"><div class="barra" id="b-medp" style="background:var(--naran)"></div></div>
-            <strong id="n-medp">0</strong>
-          </div>
+        <!-- Barras ocultas para mantener compatibilidad JS -->
+        <div style="display:none">
+          <div id="b-pac"></div><div id="b-med"></div><div id="b-medp"></div>
         </div>
       </div>
     </div>
@@ -274,7 +282,7 @@ async function cargarEstadisticas() {
     document.getElementById('s-usuarios').textContent = statsData.total_usuarios;
     document.getElementById('s-pacientes').textContent = statsData.total_pacientes;
     document.getElementById('s-medicos').textContent = statsData.total_medicos;
-    document.getElementById('s-pendientes-num').textContent = statsData.medicos_pendientes;
+    document.getElementById('s-pendientes-num').textContent = statsData.citas_pendientes || 0;
     document.getElementById('s-citas').textContent = statsData.total_citas;
     document.getElementById('s-hoy').textContent = statsData.citas_hoy || 0;
     document.getElementById('s-confirmadas').textContent = statsData.citas_confirmadas;
@@ -291,10 +299,14 @@ async function cargarEstadisticas() {
 
     // Barras usuarios
     const totalU = statsData.total_usuarios || 1;
-    const medActivos = statsData.total_medicos - statsData.medicos_pendientes;
+    const medActivos = (statsData.total_medicos || 0) - (statsData.medicos_pendientes || 0);
     document.getElementById('b-pac').style.width = (statsData.total_pacientes/totalU*100)+'%';
     document.getElementById('b-med').style.width = (medActivos/totalU*100)+'%';
-    document.getElementById('b-medp').style.width = (statsData.medicos_pendientes/totalU*100)+'%';
+    document.getElementById('n-pac').textContent = statsData.total_pacientes || 0;
+    document.getElementById('n-med').textContent = medActivos;
+    document.getElementById('b-pac').style.width = ((statsData.total_pacientes||0)/totalU*100)+'%';
+    document.getElementById('b-med').style.width = (medActivos/totalU*100)+'%';
+    document.getElementById('b-medp').style.width = ((statsData.medicos_pendientes||0)/totalU*100)+'%';
     document.getElementById('n-pac').textContent = statsData.total_pacientes;
     document.getElementById('n-med').textContent = medActivos;
     document.getElementById('n-medp').textContent = statsData.medicos_pendientes;

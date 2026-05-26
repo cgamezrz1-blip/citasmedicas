@@ -8,7 +8,7 @@ from fastapi import HTTPException
 
 from models import Usuario, Cita, Notificacion, MedicoPerfil
 from adapters.auth_adapter import AuthServicePort, JoseJWTAdapter
-from observers.cita_observers import CitaEventPublisher, NotificacionObserver, LogObserver, AdminObserver
+from observers.cita_observers import CitaEventPublisher, NotificacionObserver, LogObserver
 from strategies.cost_strategy import CitaService, TarifaFijaStrategy
 
 
@@ -62,7 +62,6 @@ class CitaServiceFacade:
         self._publisher = CitaEventPublisher()
         self._publisher.suscribir(NotificacionObserver())
         self._publisher.suscribir(LogObserver())
-        self._publisher.suscribir(AdminObserver())
 
     def crear_cita(self, datos, usuario: Usuario, db: Session) -> dict:
         """Crea una cita y notifica via Observer."""
@@ -128,16 +127,16 @@ class AdminService:
     def get_usuarios(self, db: Session) -> list:
         """Retorna todos los usuarios del sistema."""
         from models import MedicoPerfil
-        usuarios = db.query(Usuario).all()
         resultado = []
-        for u in usuarios:
+        for u in db.query(Usuario).all():
             perfil = db.query(MedicoPerfil).filter(
                 MedicoPerfil.usuario_id == u.id).first() if u.rol == "medico" else None
             resultado.append({
                 "id": u.id, "nombre": u.nombre, "email": u.email,
                 "rol": u.rol, "activo": u.activo, "aprobado": u.aprobado,
                 "creado_en": u.creado_en.isoformat() if u.creado_en else None,
-                "numero_rethus": perfil.numero_rethus if perfil else None,
+                "numero_rethus": perfil.numero_rethus if perfil and perfil.numero_rethus else None,
+                "especialidad": perfil.get_especialidad() if perfil else None,
             })
         return resultado
 

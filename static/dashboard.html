@@ -539,15 +539,22 @@ async function cargarNotificaciones() {
       document.getElementById('notif-lista').innerHTML = '<div class="notif-empty">📭 Sin notificaciones</div>';
       return;
     }
-    const iconos = {confirmacion:'📅',confirmada:'✅',cancelada:'❌',aprobacion:'🎉',recordatorio:'🔔'};
-    document.getElementById('notif-lista').innerHTML = lista.map(n => `
+    const iconos = {confirmacion:'📅',confirmada:'✅',cancelada:'❌',aprobacion:'🎉',recordatorio:'🔔',nueva_cita:'🩺',nuevo_medico:'👨‍⚕️'};
+    const noLeidasLista = lista.filter(n => !n.leida);
+    const mostrar = noLeidasLista.length > 0 ? noLeidasLista.slice(0,5) : lista.slice(0,3);
+    if (!mostrar.length) {
+      document.getElementById('notif-lista').innerHTML = '<div class="notif-empty">📭 Sin notificaciones nuevas</div>';
+      return;
+    }
+    const resto = lista.length - mostrar.length;
+    document.getElementById('notif-lista').innerHTML = mostrar.map(n => `
       <div class="notif-item${n.leida?'':' no-leida'}" onclick="leerNotif(${n.id},this)">
         <div class="notif-dot${n.leida?' leida':''}"></div>
         <div>
           <div class="notif-msg">${iconos[n.tipo]||'📌'} ${n.mensaje}</div>
-          <div class="notif-time">${n.creado_en}</div>
+          <div class="notif-time">${n.creado_en ? n.creado_en.substring(0,16).replace('T',' ') : ''}</div>
         </div>
-      </div>`).join('');
+      </div>`).join('') + (resto > 0 ? `<div class="notif-empty" style="font-size:.78rem;padding:.75rem 1.25rem">+${resto} notificaciones anteriores</div>` : '');
   } catch {}
 }
 

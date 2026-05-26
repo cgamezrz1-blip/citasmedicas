@@ -51,7 +51,7 @@ app.include_router(notif_router.router, prefix="/notificaciones", tags=["Notific
 
 # Paginas HTML
 @app.get("/")           
-def home():    return FileResponse("static/login.html")
+def home(request: Request):    return templates.TemplateResponse("login.html", {"request": request})
 @app.get("/registro")
 def reg(request: Request):     return templates.TemplateResponse("registro.html", {"request": request})
 @app.get("/dashboard")

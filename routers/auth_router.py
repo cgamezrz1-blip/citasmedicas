@@ -229,6 +229,18 @@ def registro(d: RegistroReq, db: Session = Depends(get_db)):
     db.commit()
 
     if d.rol == "medico":
+        from models import Notificacion
+        from datetime import datetime
+        admins = db.query(Usuario).filter(Usuario.rol == "admin", Usuario.activo.is_(True)).all()
+        for admin in admins:
+            db.add(Notificacion(
+                usuario_id=admin.id,
+                tipo="nuevo_medico",
+                mensaje=f"Nuevo médico registrado: {usuario.nombre} — pendiente de aprobación",
+                leida=False,
+                creado_en=datetime.utcnow(),
+            ))
+        db.commit()
         return {"mensaje": "Pendiente de aprobacion", "pendiente_aprobacion": True,
                 "usuario": _u(usuario)}
 

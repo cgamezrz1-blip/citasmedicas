@@ -11,7 +11,7 @@ from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
 from database import get_db
-from models import Especialidad, MedicoPerfil, Cita, Notificacion
+from models import Especialidad, MedicoPerfil, Cita, Notificacion, Usuario
 from services.citas_facade import CitasMedicasFacade
 from routers.deps import get_user
 from strategies.cost_strategy import cita_service
@@ -67,7 +67,6 @@ def get_tarifa(esp_id: int, db: Session = Depends(get_db)):
 @router.get("/medicos")
 def get_medicos(especialidad_id: Optional[int] = None, db: Session = Depends(get_db)):
     """Retorna medicos activos y aprobados."""
-    from models import Usuario
     query = db.query(MedicoPerfil).join(Usuario).filter(
         Usuario.activo.is_(True), Usuario.aprobado.is_(True)
     )

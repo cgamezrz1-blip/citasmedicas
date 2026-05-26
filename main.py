@@ -18,7 +18,7 @@ Estructura refactorizada:
 """
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
@@ -97,10 +97,9 @@ def not_found():
 
 
 @app.exception_handler(404)
-async def custom_404(request: Request, exc: Exception):
+async def custom_404(request: Request, _exc: Exception):
     """Maneja errores 404 — retorna JSON para API y HTML para paginas."""
     if request.url.path.startswith(("/auth/", "/admin/", "/citas", "/notificaciones",
                                     "/especialidades", "/medicos", "/disponibilidad")):
-        from fastapi.responses import JSONResponse
         return JSONResponse(status_code=404, content={"detail": "No encontrado"})
     return FileResponse("static/404.html", status_code=404)

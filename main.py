@@ -16,10 +16,11 @@ Estructura refactorizada:
     observers/cita_observers.py — Patron 4: Observer
     strategies/cost_strategy.py — Patron 5: Strategy
 """
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
 
 from database import engine
 from models import Base
@@ -40,6 +41,7 @@ def startup():
     run_seed()
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
+templates = Jinja2Templates(directory="static")
 
 # Montar routers — cada uno con su prefijo y responsabilidad
 app.include_router(auth_router.router,  prefix="/auth",          tags=["Auth"])
@@ -50,16 +52,16 @@ app.include_router(notif_router.router, prefix="/notificaciones", tags=["Notific
 # Paginas HTML
 @app.get("/")           
 def home():    return FileResponse("static/login.html")
-@app.get("/registro")   
-def reg():     return FileResponse("static/registro.html")
-@app.get("/dashboard")  
-def dash():    return FileResponse("static/dashboard.html")
-@app.get("/mis-citas")  
-def citas_pg():return FileResponse("static/citas.html")
+@app.get("/registro")
+def reg(request: Request):     return templates.TemplateResponse("registro.html", {"request": request})
+@app.get("/dashboard")
+def dash(request: Request):    return templates.TemplateResponse("dashboard.html", {"request": request})
+@app.get("/mis-citas")
+def citas_pg(request: Request): return templates.TemplateResponse("citas.html", {"request": request})
 @app.get("/olvide-password")
-def olvide():  return FileResponse("static/olvide_password.html")
-@app.get("/admin")      
-def admin_pg():return FileResponse("static/admin.html")
+def olvide(request: Request):  return templates.TemplateResponse("olvide_password.html", {"request": request})
+@app.get("/admin")
+def admin_pg(request: Request): return templates.TemplateResponse("admin.html", {"request": request})
 @app.get("/404")        
 def not_found():return FileResponse("static/404.html")
 

@@ -127,7 +127,6 @@ class AdminService:
 
     def get_usuarios(self, db: Session) -> list:
         """Retorna todos los usuarios del sistema."""
-        from models import MedicoPerfil
         resultado = []
         for u in db.query(Usuario).all():
             perfil = db.query(MedicoPerfil).filter(
@@ -171,8 +170,16 @@ class NotificacionService:
         notifs = db.query(Notificacion).filter(
             Notificacion.usuario_id == usuario.id
         ).order_by(Notificacion.creado_en.desc()).limit(20).all()
-        return [{"id": n.id, "mensaje": n.mensaje, "leida": n.leida,
-                 "tipo": n.tipo} for n in notifs]
+        return [
+            {
+                "id": n.id,
+                "mensaje": n.mensaje,
+                "leida": n.leida,
+                "tipo": n.tipo,
+                "creado_en": n.creado_en.isoformat() if n.creado_en else None,
+            }
+            for n in notifs
+        ]
 
     def marcar_leida(self, nid: int, usuario: Usuario, db: Session) -> dict:
         """Marca una notificacion como leida."""
@@ -181,7 +188,8 @@ class NotificacionService:
             Notificacion.usuario_id == usuario.id
         ).first()
         if n:
-            n.leida = True; db.commit()
+            n.leida = True
+            db.commit()
         return {"mensaje": "Marcada como leida"}
 
 

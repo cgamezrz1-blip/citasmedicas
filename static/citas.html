@@ -498,7 +498,7 @@ function filtrar() {
   const t=document.getElementById('ftipo').value;
   let p=[];
   if(m) p.push(`medico_nombre=${encodeURIComponent(m)}`);
-  if(e!=='') p.push(`confirmada=${e}`);
+  if(e!=='') p.push(`estado=${e}`);
   if(t!=='') p.push(`tipo=${t}`);
   cargarCitas(p.length?'?'+p.join('&'):'');
 }

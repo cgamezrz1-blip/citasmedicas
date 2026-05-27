@@ -265,6 +265,13 @@ def registro(d: RegistroReq, db: Session = Depends(get_db)):
     """
     if db.query(Usuario).filter(Usuario.email == d.email).first():
         raise HTTPException(400, "Email ya registrado")
+    if d.rol == "medico" and d.numero_rethus:
+        from models import MedicoPerfil
+        existe_rethus = db.query(MedicoPerfil).filter(
+            MedicoPerfil.numero_rethus == d.numero_rethus
+        ).first()
+        if existe_rethus:
+            raise HTTPException(400, "El número ReTHUS ya está registrado por otro médico")
     if not d.pregunta_seguridad or not d.respuesta_seguridad:
         raise HTTPException(400, "Pregunta y respuesta de seguridad obligatorias")
     if not d.fecha_nacimiento:

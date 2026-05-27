@@ -56,6 +56,9 @@ def rechazar(uid: int, _u=Depends(admin_only), db: Session = Depends(get_db)):
     x = db.query(Usuario).filter(Usuario.id == uid).first()
     if not x:
         raise HTTPException(404, "No encontrado")
+    from models import MedicoPerfil, Notificacion
+    db.query(Notificacion).filter(Notificacion.usuario_id == x.id).delete()
+    db.query(MedicoPerfil).filter(MedicoPerfil.usuario_id == x.id).delete()
     db.delete(x)
     db.commit()
     return {"mensaje": "Medico rechazado y eliminado"}

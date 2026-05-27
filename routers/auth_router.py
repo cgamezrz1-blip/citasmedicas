@@ -126,7 +126,7 @@ class VerifReq(BaseModel):
             raise ValueError("Respuesta debe tener al menos 2 caracteres")
         if len(v) > 255:
             raise ValueError("Respuesta no puede exceder 255 caracteres")
-        return v.strip().lower()
+        return v.strip()
 
 
 class ResetReq(BaseModel):
@@ -152,7 +152,7 @@ class ResetReq(BaseModel):
         """Valida longitud de la respuesta."""
         if not v or len(v) < 2:
             raise ValueError("Respuesta debe tener al menos 2 caracteres")
-        return v.strip().lower()
+        return v.strip()
 
     @field_validator("nueva_password")
     @classmethod
@@ -309,7 +309,7 @@ def get_pregunta(email: str, db: Session = Depends(get_db)):
 def verificar(d: VerifReq, db: Session = Depends(get_db)):
     """Verifica la respuesta de seguridad."""
     u = db.query(Usuario).filter(Usuario.email == d.email).first()
-    if not u or u.respuesta_seguridad != d.respuesta.strip().lower():
+    if not u or u.respuesta_seguridad != d.respuesta.strip():
         raise HTTPException(400, "Respuesta incorrecta")
     return {"puede_resetear": True}
 
@@ -318,7 +318,7 @@ def verificar(d: VerifReq, db: Session = Depends(get_db)):
 def reset_pass(d: ResetReq, db: Session = Depends(get_db)):
     """Resetea la contrasena usando la pregunta de seguridad."""
     u = db.query(Usuario).filter(Usuario.email == d.email).first()
-    if not u or u.respuesta_seguridad != d.respuesta.strip().lower():
+    if not u or u.respuesta_seguridad != d.respuesta.strip():
         raise HTTPException(400, "Respuesta incorrecta")
     if len(d.nueva_password) < 6:
         raise HTTPException(400, "Minimo 6 caracteres")

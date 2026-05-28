@@ -77,6 +77,15 @@ class CitaServiceFacade:
         ).first()
         if existente:
             raise HTTPException(400, f"El medico ya tiene cita a las {datos.hora}")
+        # Validar que el paciente no tenga ya una cita con este medico ese dia
+        cita_duplicada = db.query(Cita).filter(
+            Cita.paciente_id == usuario.id,
+            Cita.medico_id == datos.medico_id,
+            Cita.fecha == datos.fecha,
+            Cita.estado != "cancelada"
+        ).first()
+        if cita_duplicada:
+            raise HTTPException(400, "Ya tienes una cita con este médico ese día")
         cita = Cita(
             paciente_id=usuario.id,
             medico_id=datos.medico_id,

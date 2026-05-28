@@ -525,6 +525,15 @@ function abrirModal(cita=null) {
 function cerrarModal() { document.getElementById('overlay').classList.remove('on'); }
 
 async function guardarCita() {
+  // Validar que no sea domingo
+  const fechaVal = document.getElementById('m-fecha').value;
+  if (fechaVal) {
+    const dia = new Date(fechaVal + 'T12:00:00').getDay();
+    if (dia === 0) {
+      mostrarP('❌ No se pueden agendar citas los domingos', 'e');
+      return;
+    }
+  }
   if (!medSelId) { mostrarM('❌ Selecciona un médico','e'); return; }
   const fecha=document.getElementById('m-fecha').value, hora=document.getElementById('m-hora').value;
   const motivo=document.getElementById('m-motivo').value.trim(), costo=parseFloat(document.getElementById('m-costo').value)||0;

@@ -309,6 +309,9 @@ document.getElementById('sub').textContent = usuario.rol === 'admin' ? 'Todas la
 
 const hoy = new Date().toISOString().split('T')[0];
 document.getElementById('m-fecha').min = hoy;
+  const maxFecha = new Date();
+  maxFecha.setMonth(maxFecha.getMonth() + 6);
+  document.getElementById('m-fecha').max = maxFecha.toISOString().split('T')[0];
 
 // Patron 5 — Strategy: tarifas vienen del backend
 // ANTES: hardcodeadas aqui (violacion DIP y OCP)
